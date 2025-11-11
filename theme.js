@@ -1,0 +1,117 @@
+const svgLogoTemplate = `
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    polygon { 
+      fill: FAVICON_COLOR; 
+      shape-rendering: crispEdges; 
+    }
+  </style>
+  <polygon points="0,200 100,100 100,200" />
+  <polygon points="400,200 300,100 300,200" />
+  <polygon points="100,0 300,0 300,100 200,200 100,100" />
+</svg>
+`;
+
+const updateFavicon = (color) => {
+  const faviconLink = document.getElementById('dynamic-favicon');
+  if (!faviconLink) {
+    console.error('Could not find #dynamic-favicon element in the DOM.');
+    return;
+  }
+
+  const newSvg = svgLogoTemplate.replace('FAVICON_COLOR', color);
+
+  const dataUrl = `data:image/svg+xml;base64,${btoa(newSvg)}`;
+
+  faviconLink.href = dataUrl;
+};
+
+let currentSavedTheme = 'default';
+
+const applyTheme = (themeName, isPreview = false) => {
+  document.documentElement.dataset.theme = themeName;
+
+  const newAccentColor = getComputedStyle(document.body).getPropertyValue('--accent-color').trim();
+
+  if (newAccentColor) {
+    updateFavicon(newAccentColor);
+  }
+  if (typeof renderAll === 'function') {
+    renderAll(); 
+  }
+  if (typeof rerenderLevelPreviews === 'function') {
+    rerenderLevelPreviews();
+  }
+  if (typeof window.rerenderPalette === 'function') {
+    window.rerenderPalette();
+  }
+  if (typeof rerenderExplorePreviews === 'function') {
+    rerenderExplorePreviews();
+  }
+
+  if (!isPreview) {
+    localStorage.setItem('selectedTheme', themeName);
+    currentSavedTheme = themeName;
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const initialTheme = document.documentElement.dataset.theme || 'default';
+  applyTheme(initialTheme, false);
+
+  const themeSelectorbutton = document.getElementById('theme-selector-button');
+  const themeDropdown = document.getElementById('theme-dropdown');
+  const themeOptions = document.querySelectorAll('.theme-option');
+
+  const toggleThemeDropdown = () => {
+    if (themeDropdown) {
+      themeDropdown.classList.toggle('show');
+    }
+  };
+
+  if (themeSelectorbutton) {
+    themeSelectorbutton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleThemeDropdown();
+    });
+  }
+
+  if (themeOptions.length > 0) {
+    themeOptions.forEach(option => {
+      let previewTimer;
+      const selectedTheme = option.dataset.theme;
+
+      option.addEventListener('mouseenter', () => {
+        previewTimer = setTimeout(() => {
+          applyTheme(selectedTheme, true);
+        }, 500);
+      });
+
+      option.addEventListener('mouseleave', () => {
+        clearTimeout(previewTimer);
+      });
+
+      option.addEventListener('click', (event) => {
+        event.stopPropagation();
+        clearTimeout(previewTimer);
+
+        applyTheme(selectedTheme, false);
+        if (themeDropdown) {
+          themeDropdown.classList.remove('show');
+        }
+      });
+    });
+  }
+
+  document.addEventListener('click', (event) => {
+    if (themeDropdown && themeSelectorbutton && !themeSelectorbutton.contains(event.target) && !themeDropdown.contains(event.target)) {
+      if (themeDropdown.classList.contains('show')) {
+        themeDropdown.classList.remove('show');
+
+        if (document.documentElement.dataset.theme !== currentSavedTheme) {
+          applyTheme(currentSavedTheme, true);
+        }
+      }
+    }
+  });
+});

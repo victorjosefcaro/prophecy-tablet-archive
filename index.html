@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prophecy Tablet</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme-loader.js"></script>
+  <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
+  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
+
+  <script src="puzzles.js"></script>
+  <script src="script.js"></script>
+  <script src="puzzle-core.js"></script>
+  <script src="puzzle-gameplay.js"></script>
+  <script src="theme.js"></script>
+  <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header class="top-navbar">
+    <a href="index.html" class="navbar-brand">
+      <div>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
+          aria-label="Prophecy Tablet Logo">
+          <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor" shape-rendering="crispEdges" />
+        </svg>
+        <span class="navbar-title">Prophecy Tablet</span>
+      </div>
+    </a>
+    <div class="navbar-controls">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <div id="theme-dropdown" class="theme-dropdown">
+          <button class="theme-option" data-theme="default">Default</button>
+          <button class="theme-option" data-theme="mydei">Mydei</button>
+          <button class="theme-option" data-theme="dhpt">DHPT</button>
+          <button class="theme-option" data-theme="anaxa">Anaxa</button>
+          <button class="theme-option" data-theme="cerydra">Cerydra</button>
+          <button class="theme-option" data-theme="hysilens">Hysilens</button>
+          <button class="theme-option" data-theme="cipher">Cipher</button>
+          <button class="theme-option" data-theme="evernight">Evernight</button>
+          <button class="theme-option" data-theme="hyacine">Hyacine</button>
+          <div class="theme-divider"></div>
+          <button class="theme-option" data-theme="tribbie">Tribbie</button>
+          <button class="theme-option" data-theme="aglaea">Aglaea</button>
+          <button class="theme-option" data-theme="phainon">Phainon</button>
+          <button class="theme-option" data-theme="castorice">Castorice</button>
+          <button class="theme-option" data-theme="cyrene">Cyrene</button>
+        </div>
+      </div>
+      <button id="info-button" class="icon-button" aria-label="Information">
+        <i class="fa-solid fa-circle-info"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="canvas-container" id="reference-container-wrapper">
+      <canvas id="reference-canvas"></canvas>
+    </div>
+
+    <div class="canvas-container" id="puzzle-container-wrapper">
+      <canvas id="puzzle-canvas"></canvas>
+    </div>
+
+    <div class="puzzle-info">
+      <div class="puzzle-info-buttons">
+        <button id="prev-puzzle-button" class="button primary-button">Prev</button>
+        <button id="select-level-button" class="button primary-button">Select Puzzle</button>
+        <button id="next-puzzle-button-nav" class="button primary-button">Next</button>
+      </div>
+      <p class="puzzle-group-name" id="puzzle-group-name"></p>
+      <span class="puzzle-counter" id="puzzle-counter"></span>
+    </div>
+  </main>
+
+  <div class="modal" id="completion-modal">
+    <div class="modal-content">
+      <button class="modal-close-button" id="close-completion-x-button">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <p class="modal-header">Puzzle Complete</p>
+      <div class="modal-stats">
+        <div class="stat-item">
+          <span class="stat-label">Time Taken</span>
+          <span id="time-taken" class="stat-value"></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Moves</span>
+          <span id="moves-made" class="stat-value"></span>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button id="play-again-button" class="button secondary-button">Reset</button>
+        <button id="next-puzzle-button" class="button primary-button">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="level-select-modal">
+    <div class="modal-content">
+      <button class="modal-close-button" id="close-level-select-x-button">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <p class="modal-header">Select Puzzle</p>
+      <div class="level-grid" id="level-grid"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="info-modal">
+    <div class="modal-content">
+      <button class="modal-close-button" id="close-info-x-button">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="info">
+        <p>This website is a fan-made project based on the Prophecy Tablet puzzles found in Amphoreus from the game
+          <em>Honkai: Star Rail</em>.
+        </p>
+        <p>The objective of the puzzle is to arrange a set of geometric pieces in the right area to perfectly match a
+          target shape in the left area. You can click and drag pieces to move them around the puzzle area.</p>
+        <p>The unique twist is how pieces interact when they overlap. Instead of simply stacking on top of each other,
+          any overlapping sections will have an interaction based on the number of pieces that overlap them.</p>
+        <p>If an even number of pieces overlap, the intersecting area vanishes. If an odd number of pieces overlap, the
+          intersecting area reappears. </p>
+        <p>The puzzle is solved when the shape you create is a perfect, solid match for the guide image, with no extra
+          parts or empty spaces. After you solve the puzzle, you can see how much time it took and how many moves you
+          made to solve it.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
