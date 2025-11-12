@@ -183,25 +183,29 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
   tempPreviewCanvas.height = canvas.height;
   const tempPreviewCtx = tempPreviewCanvas.getContext('2d');
   tempPreviewCtx.imageSmoothingEnabled = false;
-  tempPreviewCtx.globalCompositeOperation = 'xor';
 
   const cellWidth = canvas.width / GRID_COLS;
   const cellHeight = canvas.height / GRID_ROWS;
   const visualCellWidth = canvas.width / VISUAL_GRID_SIZE;
   const visualCellHeight = canvas.height / VISUAL_GRID_SIZE;
 
+  tempPreviewCtx.globalCompositeOperation = 'source-over';
+  tempPreviewCtx.fillStyle = 'black';
+  tempPreviewCtx.beginPath();
+
   puzzlePieces.forEach(data => {
     const piece = {
       ...data,
-      img: imageMap[data.src],
       x: data.col * cellWidth,
       y: data.row * cellHeight,
       width: data.gridWidth * visualCellWidth,
       height: data.gridHeight * visualCellHeight,
       rotation: data.rotation || 0
     };
-    drawImageTransformed(tempPreviewCtx, piece);
+    addPiecePathToContext(tempPreviewCtx, piece);
   });
+
+  tempPreviewCtx.fill('evenodd');
 
   const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
   tempPreviewCtx.globalCompositeOperation = 'source-in';
@@ -220,8 +224,7 @@ const populateLevelSelector = async () => {
     return solutionData ? solutionData.map(piece => piece.src) : [];
   }))];
 
-  const loadedImages = await Promise.all(allPieceUrls.map(loadImage));
-  const imageMap = Object.fromEntries(allPieceUrls.map((url, i) => [url, loadedImages[i]]));
+  const imageMap = {};
 
   levelGrid.innerHTML = '';
   levelPreviews = [];

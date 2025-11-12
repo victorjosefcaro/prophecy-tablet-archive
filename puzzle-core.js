@@ -155,9 +155,71 @@ const drawImageTransformed = (ctx, piece) => {
   ctx.restore();
 };
 
+const addPiecePathToContext = (ctx, piece) => {
+  let x = piece.x;
+  let y = piece.y;
+  const w = piece.width;
+  const h = piece.height;
+
+  const isNonIntSize = piece.gridWidth % 1 !== 0 || piece.gridHeight % 1 !== 0;
+  const is90or270deg = piece.rotation === 90 || piece.rotation === 270;
+
+  if (isNonIntSize && is90or270deg) {
+    const cellWidth = ctx.canvas.width / GRID_COLS;
+    const cellHeight = ctx.canvas.height / GRID_ROWS;
+    x -= cellWidth * 0.5;
+    y -= cellHeight * 0.5;
+  }
+
+  const angleInRad = (piece.rotation || 0) * Math.PI / 180;
+  ctx.save();
+  ctx.translate(x + piece.width / 2, y + piece.height / 2);
+  ctx.rotate(angleInRad);
+
+  if (piece.shape === 'triangle') {
+    ctx.moveTo(0, -h / 2);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.lineTo(-w / 2, h / 2);
+    ctx.closePath();
+  } else if (piece.shape === 'right-triangle') {
+    ctx.moveTo(-w / 2, -h / 2);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.lineTo(-w / 2, h / 2);
+    ctx.closePath();
+  } else if (piece.shape === 'diamond') {
+    ctx.moveTo(0, -h / 2);
+    ctx.lineTo(w / 2, 0);
+    ctx.lineTo(0, h / 2);
+    ctx.lineTo(-w / 2, 0);
+    ctx.closePath();
+  } else if (piece.shape === 'trapezoid-left') {
+    ctx.moveTo(-w / 2, -h / 6);
+    ctx.lineTo(0, -h / 2);
+    ctx.lineTo(w / 2, -h / 6);
+    ctx.lineTo(-w / 2, h / 2);
+    ctx.closePath();
+  } else if (piece.shape === 'trapezoid-right') {
+    ctx.moveTo(-w / 2, -h / 6);
+    ctx.lineTo(0, -h / 2);
+    ctx.lineTo(w / 2, -h / 6);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.closePath();
+  } else {
+    ctx.moveTo(-w / 2, -h / 2);
+    ctx.lineTo(w / 2, -h / 2);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.lineTo(-w / 2, h / 2);
+    ctx.closePath();
+  }
+
+  ctx.restore();
+};
+
 const renderReference = (referencePieces) => {
   if (!referenceCtx) return;
+
   referenceCtx.clearRect(0, 0, referenceCanvas.width, referenceCanvas.height);
+
   drawGrid(referenceCtx);
 
   const tempRefCanvas = document.createElement('canvas');
@@ -165,24 +227,30 @@ const renderReference = (referencePieces) => {
   tempRefCtx.imageSmoothingEnabled = false;
   tempRefCanvas.width = referenceCanvas.width;
   tempRefCanvas.height = referenceCanvas.height;
-  tempRefCtx.globalCompositeOperation = 'xor';
 
+  tempRefCtx.globalCompositeOperation = 'source-over';
+  tempRefCtx.fillStyle = 'black';
+  tempRefCtx.beginPath();
   referencePieces.forEach(piece => {
     updatePiecePixelDimensions(piece, referenceCanvas);
-    drawImageTransformed(tempRefCtx, piece);
+    addPiecePathToContext(tempRefCtx, piece);
   });
+  tempRefCtx.fill('evenodd');
 
   const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
   tempRefCtx.globalCompositeOperation = 'source-in';
   tempRefCtx.fillStyle = color;
   tempRefCtx.fillRect(0, 0, tempRefCanvas.width, tempRefCanvas.height);
 
+  referenceCtx.globalCompositeOperation = 'source-over';
   referenceCtx.drawImage(tempRefCanvas, 0, 0);
 };
 
 const renderPuzzle = (puzzlePieces, pieceOpacity = 1.0, showGuide = true) => {
   if (!puzzleCtx) return;
+
   puzzleCtx.clearRect(0, 0, puzzleCanvas.width, puzzleCanvas.height);
+
   drawGrid(puzzleCtx);
 
   if (showGuide) {
@@ -192,15 +260,23 @@ const renderPuzzle = (puzzlePieces, pieceOpacity = 1.0, showGuide = true) => {
   }
 
   tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-  tempCtx.globalCompositeOperation = 'xor';
+  tempCtx.globalCompositeOperation = 'source-over';
+  tempCtx.fillStyle = 'black';
+
+  tempCtx.beginPath();
   puzzlePieces.forEach(piece => {
-    drawImageTransformed(tempCtx, piece);
+    addPiecePathToContext(tempCtx, piece);
   });
 
+  tempCtx.fill('evenodd');
+
   const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
+
   tempCtx.globalCompositeOperation = 'source-in';
   tempCtx.fillStyle = color;
   tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+  tempCtx.globalCompositeOperation = 'source-over';
 
   puzzleCtx.globalAlpha = pieceOpacity;
   puzzleCtx.drawImage(tempCanvas, 0, 0);
