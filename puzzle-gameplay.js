@@ -208,11 +208,11 @@ const playCompletionAnimation = () => {
 
     if (glowProgress > 0) {
       puzzleCtx.save();
-      puzzleCtx.globalCompositeOperation = 'screen';
+      puzzleCtx.globalCompositeOperation = 'hard-light';
       puzzleCtx.strokeStyle = animationColor;
-      puzzleCtx.lineWidth = (2 * glowProgress) * window.devicePixelRatio;
+      puzzleCtx.lineWidth = (1 * glowProgress) * window.devicePixelRatio;
       puzzleCtx.shadowColor = animationColor;
-      puzzleCtx.shadowBlur = 15 * glowProgress;
+      puzzleCtx.shadowBlur = 16 * glowProgress;
 
       const gridSize = VISUAL_GRID_SIZE;
       const cellSize = puzzleCanvas.width / gridSize;
