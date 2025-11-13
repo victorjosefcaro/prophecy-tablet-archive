@@ -281,11 +281,7 @@ body {
   color: var(--primary-text-color);
   cursor: pointer;
 }
-
-.navbar-controls i:hover {
-  color: var(--accent-color);
-}
-
+ 
 .theme-selector-container {
   position: relative;
 }
@@ -299,10 +295,6 @@ body {
   font-size: inherit;
   cursor: pointer;
   line-height: 1;
-}
-
-.icon-button:hover i {
-  color: var(--accent-color);
 }
 
 .theme-dropdown {
@@ -336,10 +328,6 @@ body {
   width: 100%;
 }
 
-.theme-option:hover {
-  background-color: var(--background-hover-color);
-}
-
 .theme-divider {
   height: 1px;
   background-color: var(--container-border-color);
@@ -359,7 +347,7 @@ body {
 .canvas-container {
   position: relative;
   border-radius: 50%;
-  border: 16px solid var(--container-border-color);
+  border: min(2vh, 2vw) solid var(--container-border-color);
   overflow: hidden;
   background-color: var(--container-bg-color);
   width: min(60vh, 60vw);
@@ -370,6 +358,7 @@ canvas {
   display: block;
   width: 100%;
   height: 100%;
+  touch-action: none;
 }
 
 .puzzle-info {
@@ -417,16 +406,6 @@ canvas {
   color: var(--accent-color);
   border: 2px solid var(--accent-color);
 }
-
-.primary-button:hover:not(:disabled) {
-  background-color: var(--accent-hover-color);
-}
-
-.secondary-button:hover:not(:disabled) {
-  background-color: var(--background-hover-color);
-  border-color: var(--accent-hover-color);
-}
-
 .button:disabled {
   filter: brightness(0.4);
 }
@@ -455,8 +434,8 @@ canvas {
 .modal-content {
   background-color: var(--background-color);
   color: var(--primary-text-color);
-  padding: 3rem;
-  border-radius: var(--border-radius);
+  padding: 1.5rem 2rem 2rem 2rem;
+  border-radius: calc(var(--border-radius) * 2);
   text-align: center;
   position: relative;
 }
@@ -464,6 +443,7 @@ canvas {
 .modal-header {
   font-family: DINBold;
   font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 .modal-stats {
@@ -475,54 +455,43 @@ canvas {
 
 .stat-item {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
 }
 
 .stat-label {
-  font-size: 0.8rem;
+  font-size: 1rem;
   opacity: 0.8;
 }
 
 .stat-value {
   font-family: DINBold;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .modal-buttons {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin-top: 2rem;
 }
 
 .modal-buttons button {
   flex: 1;
 }
 
-.modal-close-button {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
-  border-radius: var(--border-radius);
-  color: var(--primary-text-color);
-  cursor: pointer;
-}
-
-.modal-close-button:hover {
-  background-color: var(--background-hover-color);
+.modal .button {
+  margin-top: 1rem;
 }
 
 .level-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem 2rem;
-  margin: 1rem 2rem;
-  padding: 1rem 2rem;
-  max-height: 60vh;
+  padding: 0 2rem;
+  max-height: 70vh;
+  max-width: 70vw;
   overflow-y: auto;
   text-align: left;
 }
@@ -530,7 +499,7 @@ canvas {
 .level-group-header {
   color: var(--primary-text-color);
   font-size: 1rem;
-  padding: 1rem 0 0.8rem 0;
+  margin-bottom: 1rem;
 }
 
 .level-group-buttons {
@@ -548,17 +517,13 @@ canvas {
   padding: 5px;
 }
 
-.level-select-preview:hover {
-  border-color: var(--primary-text-color);
-}
-
 .info {
   text-align: left;
   max-width: 60vw;
 }
 
 .info p {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin-bottom: 2rem;
 }
 
@@ -577,4 +542,125 @@ canvas {
 ::-webkit-scrollbar-thumb {
   background-color: var(--accent-color);
   border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --navbar-height: 40px;
+    --border-radius: 4px;
+  }
+
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .top-navbar {
+    padding: 0 1rem;
+  }
+
+  .navbar-brand div {
+    gap: 0.5rem;
+  }
+
+  .navbar-logo {
+    height: 24px;
+    width: 24px;
+  }
+
+  .navbar-title {
+    font-size: 1.2rem;
+  }
+
+  .navbar-controls {
+    gap: 1rem;
+    font-size: 1rem;
+  }
+
+  .main-content {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  .canvas-container {
+    width: min(75vh, 75vw);
+    height: min(75vh, 75vw);
+  }
+
+  .puzzle-info {
+    margin-top: 0.5rem;
+    gap: 2px;
+  }
+
+  .puzzle-info-buttons {
+    gap: 0.5rem;
+  }
+
+  .button {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+
+  .puzzle-group-name {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .puzzle-counter {
+    font-size: 0.8rem;
+  }
+
+  .level-grid {
+    grid-template-columns: 1fr;
+    max-width: 80vw;
+    padding: 0 1rem;
+  }
+
+  .level-group-buttons {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  }
+
+  .info p {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .info p:last-child {
+    margin-bottom: 0;
+  
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-controls i:hover {
+    color: var(--accent-color);
+  }
+
+  .icon-button:hover i {
+    color: var(--accent-color);
+  }
+
+  .theme-option:hover {
+    background-color: var(--background-hover-color);
+  }
+
+  .primary-button:hover:not(:disabled) {
+    background-color: var(--accent-hover-color);
+  }
+
+  .secondary-button:hover:not(:disabled) {
+    background-color: var(--background-hover-color);
+    border-color: var(--accent-hover-color);
+  }
+
+  .modal-close-button:hover {
+    background-color: var(--background-hover-color);
+  }
+
+  .level-select-preview:hover {
+    border-color: var(--primary-text-color);
+  }
 }

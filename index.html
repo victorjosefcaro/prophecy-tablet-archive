@@ -82,13 +82,10 @@
 
   <div class="modal" id="completion-modal">
     <div class="modal-content">
-      <button class="modal-close-button" id="close-completion-x-button">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
       <p class="modal-header">Puzzle Complete</p>
       <div class="modal-stats">
         <div class="stat-item">
-          <span class="stat-label">Time Taken</span>
+          <span class="stat-label">Time</span>
           <span id="time-taken" class="stat-value"></span>
         </div>
         <div class="stat-item">
@@ -105,19 +102,14 @@
 
   <div class="modal" id="level-select-modal">
     <div class="modal-content">
-      <button class="modal-close-button" id="close-level-select-x-button">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
       <p class="modal-header">Select Puzzle</p>
       <div class="level-grid" id="level-grid"></div>
+      <button id="close-level-select-button" class="button primary-button">Close</button>
     </div>
   </div>
 
   <div class="modal" id="info-modal">
     <div class="modal-content">
-      <button class="modal-close-button" id="close-info-x-button">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
       <div class="info">
         <p>This website is a fan-made project based on the Prophecy Tablet puzzles found in Amphoreus from the game
           <em>Honkai: Star Rail</em>.
@@ -132,6 +124,7 @@
           parts or empty spaces. After you solve the puzzle, you can see how much time it took and how many moves you
           made to solve it.</p>
       </div>
+      <button id="close-info-modal-button" class="button primary-button">Close</button>
     </div>
   </div>
 

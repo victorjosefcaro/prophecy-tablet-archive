@@ -42,13 +42,11 @@ const initializeEventListeners = () => {
 
   document.getElementById('play-again-button').addEventListener('click', resetPuzzle);
   document.getElementById('next-puzzle-button').addEventListener('click', goToNextPuzzleFromModal);
-  document.getElementById('close-completion-x-button').addEventListener('click', () => hideModal('completion-modal'));
   document.getElementById('completion-modal').addEventListener('click', (e) => {
     if (e.target.id === 'completion-modal') hideModal('completion-modal');
   });
 
   document.getElementById('select-level-button').addEventListener('click', () => showModal('level-select-modal'));
-  document.getElementById('close-level-select-x-button').addEventListener('click', () => hideModal('level-select-modal'));
   document.getElementById('level-select-modal').addEventListener('click', (e) => {
     if (e.target.id === 'level-select-modal') hideModal('level-select-modal');
   });
@@ -57,10 +55,12 @@ const initializeEventListeners = () => {
   document.getElementById('next-puzzle-button-nav').addEventListener('click', goToNextPuzzle);
 
   document.getElementById('info-button').addEventListener('click', () => showModal('info-modal'));
-  document.getElementById('close-info-x-button').addEventListener('click', () => hideModal('info-modal'));
   document.getElementById('info-modal').addEventListener('click', (e) => {
     if (e.target.id === 'info-modal') hideModal('info-modal');
   });
+
+  document.getElementById('close-level-select-button').addEventListener('click', () => hideModal('level-select-modal'));
+  document.getElementById('close-info-modal-button').addEventListener('click', () => hideModal('info-modal'));
 };
 
 window.onload = () => {

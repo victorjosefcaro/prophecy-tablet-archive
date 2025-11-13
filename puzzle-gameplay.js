@@ -39,7 +39,10 @@ const handlePointerDown = (e, puzzlePieces, renderFn, isGameSolved) => {
 
       puzzleCanvas.addEventListener('pointermove', handlePointerMove);
       puzzleCanvas.addEventListener('pointerup', handlePointerUp, { once: true });
-      puzzleCanvas.addEventListener('pointerleave', handlePointerUp, { once: true });
+      puzzleCanvas.addEventListener('pointercancel', handlePointerUp, { once: true });
+      if (e.pointerType === 'mouse') {
+        puzzleCanvas.addEventListener('pointerleave', handlePointerUp, { once: true });
+      }
 
       renderFn();
       break;
@@ -79,6 +82,7 @@ const handlePointerUp = () => {
   activePiece = null;
   isSnapping = true;
   puzzleCanvas.removeEventListener('pointermove', handlePointerMove);
+  puzzleCanvas.removeEventListener('pointercancel', handlePointerUp);
 
   const cellWidth = puzzleCanvas.width / GRID_COLS;
   const cellHeight = puzzleCanvas.height / GRID_ROWS;
