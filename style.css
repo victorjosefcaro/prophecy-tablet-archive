@@ -28,13 +28,15 @@ p {
 }
 
 @font-face {
-  font-family: DINMedium;
-  src: url(DINPro\ Medium.otf);
+  font-family: 'DINMedium';
+  src: url(DINPro\ Medium.otf) format('opentype');
+  font-display: swap;
 }
 
 @font-face {
-  font-family: DINBold;
-  src: url(DINPro\ Bold.otf);
+  font-family: 'DINBold';
+  src: url(DINPro\ Bold.otf) format('opentype');
+  font-display: swap;
 }
 
 :root {
