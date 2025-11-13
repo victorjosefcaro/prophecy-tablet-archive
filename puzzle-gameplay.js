@@ -208,7 +208,7 @@ const playCompletionAnimation = () => {
 
     if (glowProgress > 0) {
       puzzleCtx.save();
-      puzzleCtx.globalCompositeOperation = 'lighter';
+      puzzleCtx.globalCompositeOperation = 'screen';
       puzzleCtx.strokeStyle = animationColor;
       puzzleCtx.lineWidth = (2 * glowProgress) * window.devicePixelRatio;
       puzzleCtx.shadowColor = animationColor;
