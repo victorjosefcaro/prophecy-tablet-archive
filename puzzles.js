@@ -697,6 +697,12 @@ const puzzles = [{
       { src: 'pieces/isosceles-triangle.svg', col: 7, row: 8, shape: 'triangle', rotation: 90, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 180, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 270, size: 0 }
+    ], [
+      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 0, size: 0 },
+      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 90, size: 0 },
+      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 9, shape: 'triangle', rotation: 180, size: 0 },
+      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 8, shape: 'triangle', rotation: 270, size: 0 }
     ]
   ]
 }, {
