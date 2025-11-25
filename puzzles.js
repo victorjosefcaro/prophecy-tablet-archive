@@ -626,6 +626,11 @@ const puzzles = [{
       { src: 'pieces/trapezoid-right.svg', col: 6, row: 7, shape: 'trapezoid-right', rotation: 180, size: 0 },
       { src: 'pieces/trapezoid-right.svg', col: 6, row: 3, shape: 'trapezoid-right', rotation: 0, size: 0 },
       { src: 'pieces/trapezoid-left.svg', col: 6, row: 5, shape: 'trapezoid-left', rotation: 180, size: 0 }
+    ], [
+      { src: 'pieces/trapezoid-left.svg', col: 6, row: 3, shape: 'trapezoid-left', rotation: 0, size: 0 },
+      { src: 'pieces/trapezoid-right.svg', col: 6, row: 5, shape: 'trapezoid-right', rotation: 180, size: 0 },
+      { src: 'pieces/trapezoid-right.svg', col: 6, row: 5, shape: 'trapezoid-right', rotation: 0, size: 0 },
+      { src: 'pieces/trapezoid-left.svg', col: 6, row: 7, shape: 'trapezoid-left', rotation: 180, size: 0 } 
     ]
   ]
 }, {

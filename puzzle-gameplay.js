@@ -135,12 +135,12 @@ const checkCompletion = (puzzlePieces, allSolutions) => {
 
   if (puzzlePieces.length !== allSolutions[0].length) return;
 
-  const sorter = (a, b) => (a.row * GRID_COLS + a.col) - (b.row * GRID_COLS + b.col) || ((a.rotation || 0) - (b.rotation || 0));
-  const currentPositions = puzzlePieces.map(p => ({ col: p.col, row: p.row, rotation: p.rotation || 0 })).sort(sorter);
+  const sorter = (a, b) => (a.row * GRID_COLS + a.col) - (b.row * GRID_COLS + b.col) || a.shape.localeCompare(b.shape) || ((a.rotation || 0) - (b.rotation || 0));
+  const currentPositions = puzzlePieces.map(p => ({ col: p.col, row: p.row, rotation: p.rotation || 0, shape: p.shape })).sort(sorter);
   const currentPositionsString = JSON.stringify(currentPositions);
 
   for (const solution of allSolutions) {
-    const solutionPositions = solution.map(p => ({ col: p.col, row: p.row, rotation: p.rotation || 0 })).sort(sorter);
+    const solutionPositions = solution.map(p => ({ col: p.col, row: p.row, rotation: p.rotation || 0, shape: p.shape })).sort(sorter);
     if (currentPositionsString === JSON.stringify(solutionPositions)) {
       isPuzzleSolved = true;
       hoveredPiece = null;
