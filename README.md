@@ -1,6 +1,6 @@
 # Prophecy Tablet Archive
 
-![Home Page](public/Home.png)
+![Home Page](Home.png)
 
 A website where you can play the Prophecy Tablet puzzles in Amphoreus from the game *Honkai: Star Rail*.
 
