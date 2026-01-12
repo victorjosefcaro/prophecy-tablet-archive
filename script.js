@@ -20,7 +20,7 @@ const renderPuzzleScoped = (opacity, showGuide) => {
 };
 
 const checkCompletionScoped = () => {
-  checkCompletion(puzzlePieces, allSolutions);
+  checkCompletion(puzzlePieces, referencePieces);
 };
 
 const renderAll = () => {

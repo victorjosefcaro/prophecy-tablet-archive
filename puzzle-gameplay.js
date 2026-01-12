@@ -130,26 +130,25 @@ const onPieceSnapComplete = (piece) => {
     moveCount++;
   }
 };
-const checkCompletion = (puzzlePieces, allSolutions) => {
-  if (isSnapping || !allSolutions || allSolutions.length === 0) return;
+const checkCompletion = (puzzlePieces, referencePieces) => {
+  if (isSnapping || !referencePieces || referencePieces.length === 0) return;
+  if (puzzlePieces.length !== referencePieces.length) return;
 
-  if (puzzlePieces.length !== allSolutions[0].length) return;
+  // Render both user pieces and reference to binary masks
+  const userMask = renderPiecesToMask(puzzlePieces, puzzleCanvas);
+  const refMask = renderPiecesToMask(referencePieces, puzzleCanvas);
 
-  const sorter = (a, b) => (a.row * GRID_COLS + a.col) - (b.row * GRID_COLS + b.col) || a.shape.localeCompare(b.shape) || ((a.rotation || 0) - (b.rotation || 0));
-  const currentPositions = puzzlePieces.map(p => ({ col: p.col, row: p.row, rotation: p.rotation || 0, shape: p.shape })).sort(sorter);
-  const currentPositionsString = JSON.stringify(currentPositions);
+  // Compare the masks - if they match, the puzzle is solved
+  const isMatch = compareMasks(userMask, refMask);
+  console.log('[Pixel Validation] Checking solution...', isMatch ? '✓ MATCH!' : '✗ No match');
 
-  for (const solution of allSolutions) {
-    const solutionPositions = solution.map(p => ({ col: p.col, row: p.row, rotation: p.rotation || 0, shape: p.shape })).sort(sorter);
-    if (currentPositionsString === JSON.stringify(solutionPositions)) {
-      isPuzzleSolved = true;
-      hoveredPiece = null;
-      setTimeout(() => {
-        renderPuzzleScoped();
-        playCompletionAnimation();
-      }, 100);
-      return;
-    }
+  if (isMatch) {
+    isPuzzleSolved = true;
+    hoveredPiece = null;
+    setTimeout(() => {
+      renderPuzzleScoped();
+      playCompletionAnimation();
+    }, 100);
   }
 };
 

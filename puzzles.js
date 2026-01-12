@@ -65,12 +65,6 @@ const puzzles = [{
       { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 5, row: 7, shape: 'triangle', rotation: 90, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 5, row: 7, shape: 'triangle', rotation: 270, size: 0 },
-    ], [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 3, row: 7, shape: 'triangle', rotation: 270, size: 0 }
     ]
   ]
 }, {
@@ -134,11 +128,6 @@ const puzzles = [{
       { src: 'pieces/right-triangle.svg', col: 8, row: 5, shape: 'right-triangle', rotation: 270, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 3, row: 6, shape: 'triangle', rotation: 90, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 9, row: 6, shape: 'triangle', rotation: 270, size: 0 }
-    ], [
-      { src: 'pieces/right-triangle.svg', col: 8, row: 5, shape: 'right-triangle', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 4, row: 5, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 270, size: 0 }
     ]
   ]
 }, {
@@ -262,12 +251,6 @@ const puzzles = [{
       { src: 'pieces/isosceles-triangle.svg', col: 5, row: 8, shape: 'triangle', rotation: 180, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 8, row: 7, shape: 'triangle', rotation: 90, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 270, size: 0 }
-    ], [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 8, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 4, row: 7, shape: 'triangle', rotation: 270, size: 0 }
     ]
   ]
 }, {
@@ -319,12 +302,6 @@ const puzzles = [{
       { src: 'pieces/isosceles-triangle.svg', col: 6, row: 11, shape: 'triangle', rotation: 180, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 270, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 90, size: 0 }
-    ], [
-      { src: 'pieces/diamond.svg', col: 5, row: 7, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 5, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 10, shape: 'triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 10, shape: 'triangle', rotation: 90, size: 0 }
     ]
   ]
 }, {
@@ -572,11 +549,6 @@ const puzzles = [{
       { src: 'pieces/trapezoid-right.svg', col: 6, row: 8, shape: 'trapezoid-right', rotation: 180, size: 0 },
       { src: 'pieces/trapezoid-right.svg', col: 6, row: 2, shape: 'trapezoid-right', rotation: 0, size: 0 },
       { src: 'pieces/trapezoid-left.svg', col: 6, row: 8, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ], [
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 6, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 4, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 6, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 4, shape: 'trapezoid-left', rotation: 180, size: 0 }
     ]
   ]
 }, {
@@ -626,11 +598,6 @@ const puzzles = [{
       { src: 'pieces/trapezoid-right.svg', col: 6, row: 7, shape: 'trapezoid-right', rotation: 180, size: 0 },
       { src: 'pieces/trapezoid-right.svg', col: 6, row: 3, shape: 'trapezoid-right', rotation: 0, size: 0 },
       { src: 'pieces/trapezoid-left.svg', col: 6, row: 5, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ], [
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 3, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 5, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 5, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 7, shape: 'trapezoid-left', rotation: 180, size: 0 } 
     ]
   ]
 }, {
@@ -702,12 +669,6 @@ const puzzles = [{
       { src: 'pieces/isosceles-triangle.svg', col: 7, row: 8, shape: 'triangle', rotation: 90, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 180, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 270, size: 0 }
-    ], [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 9, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 8, shape: 'triangle', rotation: 270, size: 0 }
     ]
   ]
 }, {
@@ -727,12 +688,6 @@ const puzzles = [{
       { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 270, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 8, row: 7, shape: 'triangle', rotation: 90, size: 0 }
-    ], [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 4, row: 7, shape: 'triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 90, size: 0 }
     ]
   ]
 }, {
@@ -752,12 +707,6 @@ const puzzles = [{
       { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 0, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 8, row: 7, shape: 'triangle', rotation: 90, size: 0 },
       { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 270, size: 0 }
-    ], [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 8, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 8, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 8, shape: 'triangle', rotation: 270, size: 0 }
     ]
   ]
 }, {

@@ -18,24 +18,14 @@ const fetchPuzzles = async (options = {}) => {
     if (options.limit) params.append('limit', options.limit);
 
     const url = `${API_URL}/puzzles${params.toString() ? '?' + params.toString() : ''}`;
-    console.log('[API] Fetching puzzles from:', url);
 
     try {
         const response = await fetch(url);
-        console.log('[API] Fetch response status:', response.status);
-        let data = await response.json();
-        console.log('[API] Raw response data:', data);
-
-        // Handle Lambda Proxy response format where body is a JSON string
-        if (data.body && typeof data.body === 'string') {
-            data = JSON.parse(data.body);
-            console.log('[API] Parsed body:', data);
-        }
-
         if (!response.ok) throw new Error('Failed to fetch puzzles');
+        const data = await response.json();
         return data.puzzles || [];
     } catch (error) {
-        console.error('[API] Error fetching puzzles:', error);
+        console.error('Error fetching puzzles:', error);
         return [];
     }
 };
