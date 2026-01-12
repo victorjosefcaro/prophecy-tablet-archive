@@ -679,3 +679,464 @@ canvas {
     border-color: var(--primary-text-color);
   }
 }
+
+/* ===== NAVBAR LINKS ===== */
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar-links a {
+  color: var(--primary-text-color);
+  text-decoration: none;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+.navbar-links a span {
+  position: relative;
+  display: inline-block;
+}
+
+.navbar-links a span::before {
+  content: attr(data-hover);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  color: var(--accent-color);
+}
+
+.navbar-links a.active span,
+.navbar-links a:hover span {
+  color: var(--accent-color);
+}
+
+/* ===== EDITOR PAGE STYLES ===== */
+.editor-layout {
+  gap: 3rem;
+}
+
+.editor-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.editor-right-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#solution-container-wrapper {
+  width: min(75vh, 75vw);
+  height: min(75vh, 75vw);
+}
+
+#start-container-wrapper {
+  width: min(65vh, 65vw);
+  height: min(65vh, 65vw);
+}
+
+.editor-card {
+  width: 30vw;
+  background-color: var(--container-bg-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+.editor-card h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  margin-bottom: 1rem;
+}
+
+#piece-palette {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.palette-item {
+  background-color: var(--background-color);
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.palette-item:hover {
+  border-color: var(--primary-text-color);
+}
+
+.keybind {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--primary-text-color);
+  opacity: 0.8;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.palette-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+#controls-panel {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.editor-button {
+  background-color: var(--background-color);
+  position: relative;
+  color: var(--primary-text-color);
+  border: none;
+  padding: 0.8rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+.editor-button:hover:not(:disabled) {
+  background-color: var(--background-hover-color);
+}
+
+#delete-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.delete-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background-color: var(--primary-text-color);
+  z-index: 0;
+  transition: width 0.9s linear;
+}
+
+#delete-button .keybind,
+#delete-button .fa-solid {
+  z-index: 1;
+}
+
+#controls-panel button .fa-solid {
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+#export-button {
+  background-color: var(--accent-color);
+  color: var(--secondary-text-color);
+  font-size: 1.1rem;
+  margin-left: 0.5rem;
+}
+
+#export-button:disabled {
+  filter: brightness(0.5);
+}
+
+#export-button:hover:not(:disabled) {
+  background-color: var(--accent-hover-color);
+}
+
+.publish-modal-layout {
+  display: flex;
+  gap: 2rem;
+  text-align: left;
+}
+
+.publish-modal-left {
+  display: flex;
+  flex-direction: column;
+  max-width: 30vw;
+  justify-content: space-between;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--primary-text-color);
+  border-radius: 4px;
+}
+
+/* ===== EXPLORE PAGE STYLES ===== */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.explore-preview-card {
+  background-color: var(--container-bg-color);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.explore-preview-card:hover {
+  border-color: var(--primary-text-color);
+}
+
+#explore-gameplay-view {
+  padding-top: 0;
+}
+
+.explore-preview-card canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 900px) {
+  .explore-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .explore-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar-links {
+    gap: 1rem;
+  }
+
+  .navbar-links a {
+    font-size: 0.8rem;
+  }
+
+  .editor-card {
+    width: 90vw;
+  }
+
+  .editor-layout {
+    flex-direction: column;
+  }
+}
+
+/* ===== EXPLORE CONTROLS ===== */
+.explore-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 1.5rem auto;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--container-bg-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  flex: 1;
+  max-width: 300px;
+}
+
+.search-box i {
+  color: var(--primary-text-color);
+  opacity: 0.6;
+}
+
+.search-box input {
+  background: none;
+  border: none;
+  color: var(--primary-text-color);
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+}
+
+.search-box input::placeholder {
+  color: var(--primary-text-color);
+  opacity: 0.5;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-controls select {
+  background-color: var(--container-bg-color);
+  color: var(--primary-text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.filter-controls select:focus {
+  outline: 2px solid var(--accent-color);
+}
+
+/* Puzzle Card with Metadata */
+.explore-preview-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.puzzle-card-info {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.puzzle-card-title {
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.puzzle-card-author {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.puzzle-card-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.puzzle-card-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.puzzle-card-stats i {
+  font-size: 0.8rem;
+}
+
+.vote-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.vote-btn {
+  background: var(--background-color);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--primary-text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.vote-btn:hover {
+  background: var(--background-hover-color);
+}
+
+.vote-btn.voted {
+  background: var(--accent-color);
+  color: var(--secondary-text-color);
+}
+
+.no-puzzles-message {
+  text-align: center;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  padding: 2rem;
+}
+
+@media (max-width: 600px) {
+  .explore-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: none;
+  }
+
+  .filter-controls {
+    justify-content: center;
+  }
+}
+
+/* ===== FORM INPUTS ===== */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  opacity: 0.8;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background-color: var(--container-bg-color);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  color: var(--primary-text-color);
+  font-size: 1rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.form-group input::placeholder {
+  color: var(--primary-text-color);
+  opacity: 0.4;
+}
+
+.publish-form h2 {
+  margin-bottom: 1rem;
+}
+
+.publish-hint {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: 1rem;
+}

@@ -354,48 +354,59 @@ const drawBorder = (piece, color, ctx = puzzleCtx) => {
 const isPointInPiece = (_ctx, piece, mouseX, mouseY) => {
   const angleInRad = (piece.rotation || 0) * Math.PI / 180;
 
-  const ctx = tempCtx;
+  // Create a local temporary canvas if tempCtx isn't available (e.g., in editor)
+  let ctx;
+  if (typeof tempCtx !== 'undefined' && tempCtx) {
+    ctx = tempCtx;
+  } else {
+    const localTempCanvas = document.createElement('canvas');
+    localTempCanvas.width = 100;
+    localTempCanvas.height = 100;
+    ctx = localTempCanvas.getContext('2d');
+  }
+
   ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset any existing transform
   ctx.translate(piece.x + piece.width / 2, piece.y + piece.height / 2);
   ctx.rotate(angleInRad);
 
-  tempCtx.beginPath();
+  ctx.beginPath();
   const w = piece.width;
   const h = piece.height;
 
   if (piece.shape === 'triangle') {
-    tempCtx.moveTo(0, -h / 2);
-    tempCtx.lineTo(w / 2, h / 2);
-    tempCtx.lineTo(-w / 2, h / 2);
-    tempCtx.closePath();
+    ctx.moveTo(0, -h / 2);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.lineTo(-w / 2, h / 2);
+    ctx.closePath();
   } else if (piece.shape === 'right-triangle') {
-    tempCtx.moveTo(-w / 2, -h / 2);
-    tempCtx.lineTo(w / 2, h / 2);
-    tempCtx.lineTo(-w / 2, h / 2);
-    tempCtx.closePath();
+    ctx.moveTo(-w / 2, -h / 2);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.lineTo(-w / 2, h / 2);
+    ctx.closePath();
   } else if (piece.shape === 'diamond') {
-    tempCtx.moveTo(0, -h / 2);
-    tempCtx.lineTo(w / 2, 0);
-    tempCtx.lineTo(0, h / 2);
-    tempCtx.lineTo(-w / 2, 0);
-    tempCtx.closePath();
+    ctx.moveTo(0, -h / 2);
+    ctx.lineTo(w / 2, 0);
+    ctx.lineTo(0, h / 2);
+    ctx.lineTo(-w / 2, 0);
+    ctx.closePath();
   } else if (piece.shape === 'trapezoid-left') {
-    tempCtx.moveTo(-w / 2, -h / 6);
-    tempCtx.lineTo(0, -h / 2);
-    tempCtx.lineTo(w / 2, -h / 6);
-    tempCtx.lineTo(-w / 2, h / 2);
-    tempCtx.closePath();
+    ctx.moveTo(-w / 2, -h / 6);
+    ctx.lineTo(0, -h / 2);
+    ctx.lineTo(w / 2, -h / 6);
+    ctx.lineTo(-w / 2, h / 2);
+    ctx.closePath();
   } else if (piece.shape === 'trapezoid-right') {
-    tempCtx.moveTo(-w / 2, -h / 6);
-    tempCtx.lineTo(0, -h / 2);
-    tempCtx.lineTo(w / 2, -h / 6);
-    tempCtx.lineTo(w / 2, h / 2);
-    tempCtx.closePath();
+    ctx.moveTo(-w / 2, -h / 6);
+    ctx.lineTo(0, -h / 2);
+    ctx.lineTo(w / 2, -h / 6);
+    ctx.lineTo(w / 2, h / 2);
+    ctx.closePath();
   } else {
-    tempCtx.rect(-w / 2, -h / 2, w, h);
+    ctx.rect(-w / 2, -h / 2, w, h);
   }
 
-  const isInside = tempCtx.isPointInPath(mouseX, mouseY);
+  const isInside = ctx.isPointInPath(mouseX, mouseY);
   ctx.restore();
   return isInside;
 }
@@ -491,4 +502,47 @@ const animateSnap = (piece, targetX, targetY, onComplete) => {
     }
   }
   requestAnimationFrame(step);
+};
+
+/**
+ * Renders pieces to a binary mask canvas for comparison.
+ * Returns ImageData with white pixels where pieces are filled.
+ */
+const renderPiecesToMask = (pieces, canvas) => {
+  const maskCanvas = document.createElement('canvas');
+  const maskCtx = maskCanvas.getContext('2d');
+  maskCanvas.width = canvas.width;
+  maskCanvas.height = canvas.height;
+  maskCtx.imageSmoothingEnabled = false;
+
+  maskCtx.fillStyle = 'white';
+  maskCtx.beginPath();
+  pieces.forEach(piece => {
+    updatePiecePixelDimensions(piece, canvas);
+    addPiecePathToContext(maskCtx, piece);
+  });
+  maskCtx.fill('evenodd');
+
+  return maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
+};
+
+/**
+ * Compares two ImageData masks pixel-by-pixel.
+ * Returns true if the masks match within the given tolerance (for anti-aliasing).
+ */
+const compareMasks = (mask1, mask2, tolerance = 0.005) => {
+  const data1 = mask1.data;
+  const data2 = mask2.data;
+  const totalPixels = data1.length / 4;
+  let mismatchCount = 0;
+
+  for (let i = 0; i < data1.length; i += 4) {
+    // Check the red channel (since we use white fill, R=G=B)
+    const filled1 = data1[i] > 128;
+    const filled2 = data2[i] > 128;
+    if (filled1 !== filled2) mismatchCount++;
+  }
+
+  const mismatchRatio = mismatchCount / totalPixels;
+  return mismatchRatio <= tolerance;
 };

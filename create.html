@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prophecy Tablet - Create</title>
+  <link rel="stylesheet" href="style.css">
+  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
+  <script src="theme-loader.js" defer></script>
+  <script src="api.js" defer></script>
+  <script src="puzzle-core.js" defer></script>
+  <script src="create.js" defer></script>
+  <script src="theme.js" defer></script>
+  <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
+</head>
+
+<body>
+  <header class="top-navbar">
+    <a href="index.html" class="navbar-brand">
+      <div>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
+          aria-label="Prophecy Tablet Logo">
+          <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor" shape-rendering="crispEdges" />
+        </svg>
+        <span class="navbar-title">Prophecy Tablet</span>
+      </div>
+    </a>
+    <nav class="navbar-links">
+      <a href="index.html"><span data-hover="Archive">Archive</span></a>
+      <a href="explore.html"><span data-hover="Explore">Explore</span></a>
+      <a href="create.html" class="active"><span data-hover="Create">Create</span></a>
+    </nav>
+    <div class="navbar-controls">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <div id="theme-dropdown" class="theme-dropdown">
+          <div class="theme-dropdown-column">
+            <div class="theme-column-header">Dark</div>
+            <button class="theme-option" data-theme="default">Default</button>
+            <button class="theme-option" data-theme="mydei">Mydei</button>
+            <button class="theme-option" data-theme="dhpt">DHPT</button>
+            <button class="theme-option" data-theme="anaxa">Anaxa</button>
+            <button class="theme-option" data-theme="cerydra">Cerydra</button>
+            <button class="theme-option" data-theme="hysilens">Hysilens</button>
+            <button class="theme-option" data-theme="cipher">Cipher</button>
+            <button class="theme-option" data-theme="evernight">Evernight</button>
+            <button class="theme-option" data-theme="hyacine">Hyacine</button>
+          </div>
+          <div class="theme-dropdown-column">
+            <div class="theme-column-header">Light</div>
+            <button class="theme-option" data-theme="tribbie">Tribbie</button>
+            <button class="theme-option" data-theme="aglaea">Aglaea</button>
+            <button class="theme-option" data-theme="phainon">Phainon</button>
+            <button class="theme-option" data-theme="castorice">Castorice</button>
+            <button class="theme-option" data-theme="cyrene">Cyrene</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content editor-layout">
+    <div class="editor-left-column">
+      <div class="editor-card palette-card">
+        <h2>Palette</h2>
+        <div id="piece-palette"></div>
+      </div>
+
+      <div class="editor-card controls-card">
+        <h2>Controls</h2>
+        <div id="controls-panel">
+          <button id="size-toggle-btn" class="editor-button" title="Toggle Size (E)">
+            <span class="keybind">E</span><i class="fa-solid fa-expand-arrows-alt"></i>
+          </button>
+          <button id="rotate-button" class="editor-button" title="Rotate (R)">
+            <span class="keybind">R</span><i class="fa-solid fa-rotate-right"></i>
+          </button>
+          <button id="delete-button" class="editor-button" title="Delete (T) Hold to Delete All">
+            <span class="keybind">T</span><i class="fa-solid fa-trash-can"></i>
+            <div class="delete-progress-fill"></div>
+          </button>
+          <button id="export-button" class="editor-button" title="Publish Puzzle">
+            <i class="fa-solid fa-share"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-right-column">
+      <div class="canvas-container" id="solution-container-wrapper">
+        <canvas id="editor-canvas-solution"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <!-- Publish Confirmation Modal -->
+  <div class="modal" id="publish-confirm-modal">
+    <div class="modal-content">
+      <button class="modal-close-button" id="close-publish-modal-x">&times;</button>
+      <div class="publish-modal-layout">
+        <div class="publish-modal-left">
+          <div class="publish-form">
+            <h2>Publish Puzzle</h2>
+            <div class="form-group">
+              <label for="puzzle-name-input">Puzzle Name</label>
+              <input type="text" id="puzzle-name-input" placeholder="Untitled Puzzle" maxlength="50">
+            </div>
+            <div class="form-group">
+              <label for="author-name-input">Your Name</label>
+              <input type="text" id="author-name-input" placeholder="Anonymous" maxlength="30">
+            </div>
+            <p class="publish-hint">Drag pieces below to adjust their starting positions.</p>
+          </div>
+          <div class="modal-buttons">
+            <button id="cancel-publish-button" class="button secondary-button">Cancel</button>
+            <button id="confirm-publish-button" class="button primary-button">Publish</button>
+          </div>
+        </div>
+        <div class="publish-modal-right">
+          <div class="canvas-container" id="start-container-wrapper">
+            <canvas id="editor-canvas-start"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
