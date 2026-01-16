@@ -72,12 +72,17 @@
       </div>
 
       <div class="editor-card controls-card">
-        <h2>Controls</h2>
+        <div class="card-header">
+          <h2>Controls</h2>
+          <button id="help-button" class="icon-button help-button" title="How to Use">
+            <i class="fa-solid fa-question"></i>
+          </button>
+        </div>
         <div id="controls-panel">
           <button id="size-toggle-btn" class="editor-button" title="Toggle Size (E)">
             <span class="keybind">E</span><i class="fa-solid fa-expand-arrows-alt"></i>
           </button>
-          <button id="rotate-button" class="editor-button" title="Rotate (R)">
+          <button id="rotate-button" class="editor-button" title="Rotate (R) Hold Shift to Rotate Backwards">
             <span class="keybind">R</span><i class="fa-solid fa-rotate-right"></i>
           </button>
           <button id="delete-button" class="editor-button" title="Delete (T) Hold to Delete All">
@@ -112,9 +117,9 @@
             </div>
             <div class="form-group">
               <label for="author-name-input">Your Name</label>
-              <input type="text" id="author-name-input" placeholder="Anonymous" maxlength="30">
+              <input type="text" id="author-name-input" placeholder="Nameless" maxlength="30">
             </div>
-            <p class="publish-hint">Drag pieces below to adjust their starting positions.</p>
+            <p class="publish-hint">Drag the pieces to adjust their starting positions.</p>
           </div>
           <div class="modal-buttons">
             <button id="cancel-publish-button" class="button secondary-button">Cancel</button>
@@ -126,6 +131,40 @@
             <canvas id="editor-canvas-start"></canvas>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div class="modal" id="help-modal">
+    <div class="modal-content help-modal-content">
+      <button class="modal-close-button" id="close-help-modal-x">&times;</button>
+      <h2>How to Use</h2>
+      <div class="help-content">
+        <div class="help-section">
+          <h3>Creating Pieces</h3>
+          <p>Click on a shape in the <strong>Palette</strong> to add it to the canvas, or use number keys
+            <kbd>1</kbd>-<kbd>6</kbd>.
+          </p>
+        </div>
+        <div class="help-section">
+          <h3>Editing Pieces</h3>
+          <ul>
+            <li><strong>Select:</strong> Click on a piece to select it</li>
+            <li><strong>Move:</strong> Drag a piece or use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></li>
+            <li><strong>Rotate:</strong> <kbd>R</kbd> (Hold <kbd>Shift</kbd> to rotate counterclockwise)</li>
+            <li><strong>Resize:</strong> <kbd>E</kbd></li>
+            <li><strong>Delete:</strong> <kbd>T</kbd> (Hold to delete all)</li>
+          </ul>
+        </div>
+        <div class="help-section">
+          <h3>Publishing</h3>
+          <p>Once you have at least 3 pieces, click the <i class="fa-solid fa-share"></i> button to publish. You can
+            adjust the starting positions before confirming. You can place a maximum of 10 pieces.</p>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button id="close-help-button" class="button primary-button">Got it</button>
       </div>
     </div>
   </div>

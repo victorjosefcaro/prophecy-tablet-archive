@@ -390,9 +390,10 @@ const setupEventListeners = () => {
   });
 
   // --- Add Control Button Listeners ---
-  document.getElementById('rotate-button').addEventListener('click', () => {
+  document.getElementById('rotate-button').addEventListener('click', (e) => {
     if (selectedPiece && !document.getElementById('rotate-button').disabled) {
-      selectedPiece.rotation = (selectedPiece.rotation + 90) % 360;
+      const rotationAmount = e.shiftKey ? -90 : 90;
+      selectedPiece.rotation = (selectedPiece.rotation + rotationAmount + 360) % 360;
       if (activeCanvas === 'solution') syncPieceProperties(selectedPiece);
       renderAll();
     }
@@ -434,6 +435,23 @@ const setupEventListeners = () => {
   deleteBtn.addEventListener('pointerup', handleKeyUp); // Reuse keyup logic to cancel
   deleteBtn.addEventListener('pointerleave', handleKeyUp); // Reuse keyup logic to cancel
   document.getElementById('size-toggle-btn').addEventListener('click', togglePieceSize);
+
+  // Help modal
+  const helpModal = document.getElementById('help-modal');
+  const openHelpModal = () => {
+    helpModal.style.display = 'flex';
+    setTimeout(() => helpModal.classList.add('show'), 10);
+  };
+  const closeHelpModal = () => {
+    helpModal.classList.remove('show');
+    setTimeout(() => helpModal.style.display = 'none', 300);
+  };
+  document.getElementById('help-button').addEventListener('click', openHelpModal);
+  document.getElementById('close-help-modal-x').addEventListener('click', closeHelpModal);
+  document.getElementById('close-help-button').addEventListener('click', closeHelpModal);
+  helpModal.addEventListener('click', (e) => {
+    if (e.target === helpModal) closeHelpModal();
+  });
 };
 
 const handlePointerDown = (e, canvasName) => {
@@ -584,6 +602,12 @@ const handleKeyUp = (e) => {
 };
 
 const handleKeyPress = (e) => {
+  // Ignore keypresses when focused on input fields (e.g., in publish modal)
+  const activeEl = document.activeElement;
+  if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+    return;
+  }
+
   // --- Piece Creation Hotkeys (1-6) ---
   // These should work even if no piece is selected.
   const keyNum = parseInt(e.key, 10);
@@ -631,7 +655,9 @@ const handleKeyPress = (e) => {
   // Allow rotation only on the solution canvas
   if ((e.key === 'r' || e.key === 'R') && !isRotationDisabled && activeCanvas === 'solution') {
     e.preventDefault();
-    selectedPiece.rotation = (selectedPiece.rotation + 90) % 360;
+    // Shift+R rotates backwards, R rotates forwards
+    const rotationAmount = e.shiftKey ? -90 : 90;
+    selectedPiece.rotation = (selectedPiece.rotation + rotationAmount + 360) % 360;
     syncPieceProperties(selectedPiece); // Sync the change to the start piece
   } else if (e.key === 'w' || e.key === 'W') {
     e.preventDefault();

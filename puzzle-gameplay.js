@@ -270,7 +270,12 @@ let showCompletionModal = (timeInMs, moves) => {
     movesSpan.textContent = currentMoves;
   }
 
-  configureCompletionModal();
+  // Record completion stats for averages (if recordCompletion exists and we have a puzzle ID)
+  if (typeof recordCompletion === 'function' && typeof currentPuzzle !== 'undefined' && currentPuzzle?.id) {
+    recordCompletion(currentPuzzle.id, timeInMs, currentMoves);
+  }
+
+  configureCompletionModal(timeInMs, currentMoves);
 
   showModal('completion-modal');
 };
