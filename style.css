@@ -1083,12 +1083,13 @@ canvas {
 }
 
 .avg-value {
-  opacity: 1;
+  font-weight: 600;
+  color: var(--primary-text-color);
 }
 
 .avg-inline {
   font-size: 1rem;
-  opacity: 0.8;
+  color: color-mix(in srgb, var(--primary-text-color) 70%, transparent);
 }
 
 /* Stats Row */

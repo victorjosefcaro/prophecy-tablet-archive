@@ -31,6 +31,12 @@ const formatTime = (ms) => {
   return minutes > 0 ? `${minutes}m ${remainingSeconds}s` : `${remainingSeconds}s`;
 };
 
+const formatNumber = (num) => {
+  if (num >= 1000000) return `${(num / 1000000).toFixed(1)}m`;
+  if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
+  return num.toString();
+};
+
 const getAvgStats = (puzzle) => {
   if (!puzzle.completionCount || puzzle.completionCount === 0) {
     return { avgTime: '--', avgMoves: '--' };
@@ -80,8 +86,30 @@ const setupEventListeners = () => {
   document.getElementById('back-to-explore-button').addEventListener('click', showGridView);
 
   // Modal buttons
-  document.getElementById('close-completion-x-button').addEventListener('click', () => hideModal('completion-modal'));
   document.getElementById('play-again-button').addEventListener('click', resetCurrentPuzzle);
+
+  // Info modal
+  const infoButton = document.getElementById('info-button');
+  const infoModal = document.getElementById('info-modal');
+  const closeInfoButton = document.getElementById('close-info-modal-button');
+
+  if (infoButton && infoModal && closeInfoButton) {
+    const openInfoModal = () => {
+      infoModal.style.display = 'flex';
+      setTimeout(() => infoModal.classList.add('show'), 10);
+    };
+
+    const closeInfoModal = () => {
+      infoModal.classList.remove('show');
+      setTimeout(() => infoModal.style.display = 'none', 300);
+    };
+
+    infoButton.addEventListener('click', openInfoModal);
+    closeInfoButton.addEventListener('click', closeInfoModal);
+    infoModal.addEventListener('click', (e) => {
+      if (e.target === infoModal) closeInfoModal();
+    });
+  }
 
   // Completion modal vote buttons
   const completionLikeBtn = document.getElementById('completion-like-btn');
@@ -241,11 +269,11 @@ const populateExploreGrid = async (puzzles) => {
     statsRow.className = 'puzzle-card-stats';
     statsRow.innerHTML = `
       <div class="stats-group votes">
-        <span><i class="fa-solid fa-thumbs-up"></i> ${puzzle.likes}</span>
-        <span><i class="fa-solid fa-thumbs-down"></i> ${puzzle.dislikes}</span>
+        <span><i class="fa-solid fa-thumbs-up"></i> ${formatNumber(puzzle.likes)}</span>
+        <span><i class="fa-solid fa-thumbs-down"></i> ${formatNumber(puzzle.dislikes)}</span>
       </div>
       <div class="stats-group plays">
-        <span><i class="fa-solid fa-play"></i> ${puzzle.playCount}</span>
+        <span><i class="fa-solid fa-play"></i> ${formatNumber(puzzle.playCount)}</span>
       </div>
     `;
     info.appendChild(statsRow);

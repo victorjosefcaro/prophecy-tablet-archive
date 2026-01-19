@@ -447,11 +447,33 @@ const setupEventListeners = () => {
     setTimeout(() => helpModal.style.display = 'none', 300);
   };
   document.getElementById('help-button').addEventListener('click', openHelpModal);
-  document.getElementById('close-help-modal-x').addEventListener('click', closeHelpModal);
   document.getElementById('close-help-button').addEventListener('click', closeHelpModal);
   helpModal.addEventListener('click', (e) => {
     if (e.target === helpModal) closeHelpModal();
   });
+
+  // Info modal
+  const infoButton = document.getElementById('info-button');
+  const infoModal = document.getElementById('info-modal');
+  const closeInfoButton = document.getElementById('close-info-modal-button');
+
+  if (infoButton && infoModal && closeInfoButton) {
+    const openInfoModal = () => {
+      infoModal.style.display = 'flex';
+      setTimeout(() => infoModal.classList.add('show'), 10);
+    };
+
+    const closeInfoModal = () => {
+      infoModal.classList.remove('show');
+      setTimeout(() => infoModal.style.display = 'none', 300);
+    };
+
+    infoButton.addEventListener('click', openInfoModal);
+    closeInfoButton.addEventListener('click', closeInfoModal);
+    infoModal.addEventListener('click', (e) => {
+      if (e.target === infoModal) closeInfoModal();
+    });
+  }
 };
 
 const handlePointerDown = (e, canvasName) => {

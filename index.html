@@ -4,26 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="A fan-made puzzle game of the Prophecy Tablet from Honkai: Star Rail. Arrange and overlap geometric pieces to solve puzzles and match the target shape.">
-  <title>Prophecy Tablet</title>
-  <meta name="description"
-    content="Play the Prophecy Tablet puzzles from Honkai: Star Rail's Amphoreus region directly in your browser.">
-  <meta property="og:title" content="Prophecy Tablet Archive">
-  <meta property="og:description"
-    content="A playable web version of the Prophecy Tablet puzzles from Honkai: Star Rail.">
-  <meta property="og:image" content="https://victorjosefcaro.github.io/prophecy-tablet-archive/Home.png">
-  <meta property="og:url" content="https://victorjosefcaro.github.io/prophecy-tablet-archive/">
-  <meta property="og:type" content="website">
+  <title>Prophecy Tablet - Daily</title>
   <link rel="stylesheet" href="style.css">
-  <script src="theme-loader.js" defer></script>
-  <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
   <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
-
-  <script src="puzzles.js" defer></script>
-  <script src="script.js" defer></script>
-  <script src="puzzle-core.js" defer></script>
-  <script src="puzzle-gameplay.js" defer></script>
+  <script src="theme-loader.js" defer></script>
   <script src="theme.js" defer></script>
   <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
 </head>
@@ -42,9 +26,10 @@
       </div>
     </a>
     <nav class="navbar-links">
-      <a href="index.html" class="active"><span data-hover="Archive">Archive</span></a>
+      <a href="index.html" class="active"><span data-hover="Daily">Daily</span></a>
       <a href="explore.html"><span data-hover="Explore">Explore</span></a>
       <a href="create.html"><span data-hover="Create">Create</span></a>
+      <a href="archive.html"><span data-hover="Archive">Archive</span></a>
     </nav>
     <div class="navbar-controls">
       <div class="theme-selector-container">
@@ -81,52 +66,8 @@
   </header>
 
   <main class="main-content">
-    <div class="canvas-container" id="reference-container-wrapper">
-      <canvas id="reference-canvas"></canvas>
-    </div>
-
-    <div class="canvas-container" id="puzzle-container-wrapper">
-      <canvas id="puzzle-canvas"></canvas>
-    </div>
-
-    <div class="puzzle-info">
-      <div class="puzzle-info-buttons">
-        <button id="prev-puzzle-button" class="button primary-button">Prev</button>
-        <button id="select-level-button" class="button primary-button">Select Puzzle</button>
-        <button id="next-puzzle-button-nav" class="button primary-button">Next</button>
-      </div>
-      <p class="puzzle-group-name" id="puzzle-group-name"></p>
-      <span class="puzzle-counter" id="puzzle-counter"></span>
-    </div>
+    <!-- Daily puzzle content will go here -->
   </main>
-
-  <div class="modal" id="completion-modal">
-    <div class="modal-content">
-      <p class="modal-header">Puzzle Complete</p>
-      <div class="modal-stats">
-        <div class="stat-item">
-          <span class="stat-label">Time</span>
-          <span id="time-taken" class="stat-value"></span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Moves</span>
-          <span id="moves-made" class="stat-value"></span>
-        </div>
-      </div>
-      <div class="modal-buttons">
-        <button id="play-again-button" class="button secondary-button">Reset</button>
-        <button id="next-puzzle-button" class="button primary-button">Next</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="level-select-modal">
-    <div class="modal-content">
-      <p class="modal-header">Select Puzzle</p>
-      <div class="level-grid" id="level-grid"></div>
-      <button id="close-level-select-button" class="button primary-button">Close</button>
-    </div>
-  </div>
 
   <div class="modal" id="info-modal">
     <div class="modal-content">
@@ -147,6 +88,29 @@
       <button id="close-info-modal-button" class="button primary-button">Close</button>
     </div>
   </div>
+
+  <script>
+    // Info modal handling
+    const infoButton = document.getElementById('info-button');
+    const infoModal = document.getElementById('info-modal');
+    const closeInfoButton = document.getElementById('close-info-modal-button');
+
+    const openInfoModal = () => {
+      infoModal.style.display = 'flex';
+      setTimeout(() => infoModal.classList.add('show'), 10);
+    };
+
+    const closeInfoModal = () => {
+      infoModal.classList.remove('show');
+      setTimeout(() => infoModal.style.display = 'none', 300);
+    };
+
+    infoButton.addEventListener('click', openInfoModal);
+    closeInfoButton.addEventListener('click', closeInfoModal);
+    infoModal.addEventListener('click', (e) => {
+      if (e.target === infoModal) closeInfoModal();
+    });
+  </script>
 
 </body>
 
