@@ -3,14 +3,20 @@
 // Relies on functions from puzzle-core.js
 
 // --- Editor State ---
-let selectedPiece = null;
+let selectedPieces = new Set();
 let activeCanvas = null; // 'solution' or 'start'
+let selectionBox = null; // For holding the click-and-drag selection rectangle { x1, y1, x2, y2 }
 const solutionPieces = [];
 const startPieces = [];
 let deleteProgressFill = null; // Reference to the delete button's progress fill element
 let deleteAllTimer = null; // For holding T to delete all
 let deleteAllAnimationTimer = null; // Timer to delay the start of the delete animation
 let isPublishModalOpen = false;
+
+// --- Undo / Redo History ---
+let undoStack = [];
+let redoStack = [];
+const MAX_HISTORY = 50;
 
 // --- Canvas & DOM Elements ---
 let solutionCanvas, solutionCtx, startCanvas, startCtx;
@@ -60,6 +66,9 @@ const initializeEditor = async () => {
   resizeEditorCanvases();
 
   deleteProgressFill = document.getElementById('delete-button').querySelector('.delete-progress-fill');
+
+  // Initial save for undo baseline
+  saveState();
 
   renderAll();
 };
@@ -235,21 +244,32 @@ const addPiece = (type) => {
   updatePiecePixelDimensions(newStartPiece, startCanvas); // From puzzle-core.js
   startPieces.push(newStartPiece);
 
-  selectPiece(newSolutionPiece, 'solution');
+  saveState(); // Save state after adding
+
+  // Select the new piece (and clear others)
+  selectedPieces.clear();
+  selectedPieces.add(newSolutionPiece);
+  activeCanvas = 'solution';
+
+  updateControls();
   updatePaletteState(); // Update palette after adding
   renderAll();
 };
 
-const deleteSelectedPiece = () => {
-  if (!selectedPiece) return;
+const deleteSelectedPieces = () => {
+  if (selectedPieces.size === 0) return;
 
-  const indexInRef = solutionPieces.findIndex(p => p.id === selectedPiece.id);
-  if (indexInRef > -1) solutionPieces.splice(indexInRef, 1);
+  selectedPieces.forEach(piece => {
+    const indexInRef = solutionPieces.findIndex(p => p.id === piece.id);
+    if (indexInRef > -1) solutionPieces.splice(indexInRef, 1);
 
-  const indexInStart = startPieces.findIndex(p => p.id === selectedPiece.id);
-  if (indexInStart > -1) startPieces.splice(indexInStart, 1);
+    const indexInStart = startPieces.findIndex(p => p.id === piece.id);
+    if (indexInStart > -1) startPieces.splice(indexInStart, 1);
+  });
 
-  selectedPiece = null;
+  saveState(); // Save state after deleting
+
+  selectedPieces.clear();
   activeCanvas = null;
   updateControls();
   updatePaletteState(); // Update palette after deleting
@@ -261,7 +281,7 @@ const deleteAllPieces = () => {
   solutionPieces.length = 0;
   startPieces.length = 0;
 
-  selectedPiece = null;
+  selectedPieces.clear(); // Changed from selectedPiece = null;
   activeCanvas = null;
 
   updateControls();
@@ -271,6 +291,7 @@ const deleteAllPieces = () => {
     deleteProgressFill.style.transition = 'none'; // Disable transition for instant reset
     deleteProgressFill.style.width = '0%';
   }
+  saveState(); // Save state after delete all
   renderAll();
 };
 
@@ -303,6 +324,75 @@ const updatePaletteState = () => {
   });
 };
 
+// --- History Management ---
+
+/** Captures current puzzle state into the undo stack. */
+const saveState = () => {
+  // Deep clone pieces, but ignore the 'img' property (we relink it on restore)
+  const clonePieces = (pieces) => pieces.map(p => {
+    const { img, ...rest } = p;
+    return { ...rest };
+  });
+
+  const state = {
+    solution: clonePieces(solutionPieces),
+    start: clonePieces(startPieces)
+  };
+
+  // Don't save if it's identical to the last state
+  if (undoStack.length > 0) {
+    const lastState = undoStack[undoStack.length - 1];
+    if (JSON.stringify(lastState) === JSON.stringify(state)) return;
+  }
+
+  undoStack.push(state);
+  if (undoStack.length > MAX_HISTORY) undoStack.shift();
+  redoStack.length = 0; // Clear redo stack on new action
+};
+
+const restoreState = (state) => {
+  const relinkPieces = (piecesData) => piecesData.map(p => ({
+    ...p,
+    img: imageMap[p.src]
+  }));
+
+  solutionPieces.length = 0;
+  solutionPieces.push(...relinkPieces(state.solution));
+
+  startPieces.length = 0;
+  startPieces.push(...relinkPieces(state.start));
+
+  // Update pixel dimensions for all restored pieces
+  solutionPieces.forEach(p => updatePiecePixelDimensions(p, solutionCanvas));
+  startPieces.forEach(p => updatePiecePixelDimensions(p, startCanvas));
+
+  // Clear selection after restore to avoid stale references
+  selectedPieces.clear();
+  activeCanvas = null;
+
+  updateControls();
+  updatePaletteState();
+  renderAll();
+};
+
+const undo = () => {
+  if (undoStack.length <= 1) return; // Keep at least one baseline state
+
+  const currentState = undoStack.pop();
+  redoStack.push(currentState);
+
+  const prevState = undoStack[undoStack.length - 1];
+  restoreState(prevState);
+};
+
+const redo = () => {
+  if (redoStack.length === 0) return;
+
+  const state = redoStack.pop();
+  undoStack.push(state);
+  restoreState(state);
+};
+
 // --- Rendering ---
 /** Global render function called by theme.js */
 const renderAll = () => {
@@ -324,9 +414,9 @@ const renderCanvas = (ctx, pieces) => {
   // If we are rendering the start canvas AND the modal is open, draw the solution guide without any selection borders.
   if (ctx === startCtx && isPublishModalOpen) {
     // Temporarily remove selection to render a clean guide image.
-    const originalSelectedPiece = selectedPiece;
+    const originalSelectedPieces = selectedPieces;
     const originalActiveCanvas = activeCanvas;
-    selectedPiece = null;
+    selectedPieces = new Set();
     activeCanvas = null;
 
     // Re-render the solution canvas to a temporary canvas without the border.
@@ -338,7 +428,7 @@ const renderCanvas = (ctx, pieces) => {
     ctx.globalAlpha = 1.0;
 
     // Restore the selection state so the main editor view remains correct.
-    selectedPiece = originalSelectedPiece;
+    selectedPieces = originalSelectedPieces;
     activeCanvas = originalActiveCanvas;
   }
 
@@ -368,10 +458,30 @@ const renderCanvas = (ctx, pieces) => {
   ctx.drawImage(tempRenderCanvas, 0, 0);
   // ---------------------------------
 
-  // Draw border on selected piece, if it's on this canvas
-  if (selectedPiece && activeCanvas === (ctx === solutionCtx ? 'solution' : 'start')) {
-    // Use 'drawBorder' from puzzle-core.js, passing the correct context
-    drawBorder(selectedPiece, getComputedStyle(document.body).getPropertyValue('--piece-hover-color').trim(), ctx);
+  // Draw border on selected pieces, if they are on this canvas
+  const currentCanvasType = (ctx === solutionCtx ? 'solution' : 'start');
+  if (activeCanvas === currentCanvasType) {
+    selectedPieces.forEach(piece => {
+      // Use 'drawBorder' from puzzle-core.js, passing the correct context
+      drawBorder(piece, getComputedStyle(document.body).getPropertyValue('--piece-hover-color').trim(), ctx);
+    });
+  }
+
+  // Draw selection box if it exists and we're rendering the active canvas
+  if (selectionBox) {
+    const activeBoxCanvas = (activeCanvas === 'solution' || (!activeCanvas && selectionBox)) ? solutionCanvas : startCanvas;
+    // We only draw the selection box on the canvas it started on (managed by event listener context, but here we check ctx)
+    if (ctx.canvas === activeBoxCanvas || (!activeCanvas && ctx === solutionCtx)) {
+      ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent-color');
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 1 * (window.devicePixelRatio || 1);
+      const minX = Math.min(selectionBox.x1, selectionBox.x2);
+      const maxX = Math.max(selectionBox.x1, selectionBox.x2);
+      const minY = Math.min(selectionBox.y1, selectionBox.y2);
+      const maxY = Math.max(selectionBox.y1, selectionBox.y2);
+      ctx.strokeRect(minX, minY, maxX - minX, maxY - minY);
+      ctx.setLineDash([]);
+    }
   }
 };
 
@@ -391,10 +501,13 @@ const setupEventListeners = () => {
 
   // --- Add Control Button Listeners ---
   document.getElementById('rotate-button').addEventListener('click', (e) => {
-    if (selectedPiece && !document.getElementById('rotate-button').disabled) {
+    if (selectedPieces.size > 0 && !document.getElementById('rotate-button').disabled) {
       const rotationAmount = e.shiftKey ? -90 : 90;
-      selectedPiece.rotation = (selectedPiece.rotation + rotationAmount + 360) % 360;
-      if (activeCanvas === 'solution') syncPieceProperties(selectedPiece);
+      selectedPieces.forEach(p => {
+        p.rotation = (p.rotation + rotationAmount + 360) % 360;
+        if (activeCanvas === 'solution') syncPieceProperties(p);
+      });
+      saveState(); // Save after rotation
       renderAll();
     }
   });
@@ -402,8 +515,8 @@ const setupEventListeners = () => {
   const deleteBtn = document.getElementById('delete-button');
   deleteBtn.addEventListener('click', () => {
     // Only run single delete if a long-press timer isn't active and a piece is selected
-    if (!deleteAllTimer && selectedPiece) {
-      deleteSelectedPiece();
+    if (!deleteAllTimer && selectedPieces.size > 0) {
+      deleteSelectedPieces();
     }
   });
 
@@ -489,53 +602,77 @@ const handlePointerDown = (e, canvasName) => {
   let foundPiece = null;
   for (let i = pieces.length - 1; i >= 0; i--) {
     const piece = pieces[i];
-    // Use 'isPointInPiece' from puzzle-core.js
     if (isPointInPiece(ctx, piece, mouseX, mouseY)) {
       foundPiece = piece;
       break;
     }
   }
 
+  const isCtrl = e.ctrlKey || e.metaKey;
+
   if (foundPiece) {
-    selectPiece(foundPiece, canvasName);
-    const dragOffsetX = mouseX - foundPiece.x;
-    const dragOffsetY = mouseY - foundPiece.y;
+    // Selection logic
+    if (isCtrl) {
+      if (selectedPieces.has(foundPiece)) {
+        selectedPieces.delete(foundPiece);
+        if (selectedPieces.size === 0) activeCanvas = null;
+      } else {
+        selectedPieces.add(foundPiece);
+        activeCanvas = canvasName;
+      }
+    } else {
+      if (!selectedPieces.has(foundPiece)) {
+        selectedPieces.clear();
+        selectedPieces.add(foundPiece);
+        activeCanvas = canvasName;
+      }
+    }
+
+    updateControls();
+    renderAll();
+
+    // Prepare for multi-drag
+    const dragData = new Map();
+    selectedPieces.forEach(p => {
+      dragData.set(p, {
+        offsetX: mouseX - p.x,
+        offsetY: mouseY - p.y
+      });
+    });
 
     const pointerMove = (moveEvent) => {
-      const moveX = (moveEvent.clientX - rect.left) * scaleX;
-      const moveY = (moveEvent.clientY - rect.top) * scaleY;
+      const currentMouseX = (moveEvent.clientX - rect.left) * scaleX;
+      const currentMouseY = (moveEvent.clientY - rect.top) * scaleY;
 
-      // Calculate the potential new top-left position
-      let targetX = moveX - dragOffsetX;
-      let targetY = moveY - dragOffsetY;
+      selectedPieces.forEach(p => {
+        const data = dragData.get(p);
+        if (!data) return;
 
-      // Get the pixel-based bounding box for the rotated piece
-      const bbox = getRotatedBoundingBoxInPixels(foundPiece);
+        let targetX = currentMouseX - data.offsetX;
+        let targetY = currentMouseY - data.offsetY;
 
-      // Calculate the piece's desired center position
-      const centerX = targetX + foundPiece.width / 2;
-      const centerY = targetY + foundPiece.height / 2;
+        // Bounding box for clamping
+        const bbox = getRotatedBoundingBoxInPixels(p);
+        const centerX = targetX + p.width / 2;
+        const centerY = targetY + p.height / 2;
+        const paddingX = ctx.canvas.width / VISUAL_GRID_SIZE;
+        const paddingY = ctx.canvas.height / VISUAL_GRID_SIZE;
 
-      // Clamp the center position to keep the entire piece inside the canvas
-      // Add a 1-cell padding (based on VISUAL_GRID_SIZE)
-      const paddingX = ctx.canvas.width / VISUAL_GRID_SIZE;
-      const paddingY = ctx.canvas.height / VISUAL_GRID_SIZE;
+        const minCenterX = -bbox.offsetX + paddingX;
+        const maxCenterX = ctx.canvas.width - (bbox.width + bbox.offsetX) - paddingX;
+        const minCenterY = -bbox.offsetY + paddingY;
+        const maxCenterY = ctx.canvas.height - (bbox.height + bbox.offsetY) - paddingY;
 
-      const minCenterX = -bbox.offsetX + paddingX;
-      const maxCenterX = ctx.canvas.width - (bbox.width + bbox.offsetX) - paddingX;
-      const minCenterY = -bbox.offsetY + paddingY;
-      const maxCenterY = ctx.canvas.height - (bbox.height + bbox.offsetY) - paddingY;
+        const clampedCenterX = Math.max(minCenterX, Math.min(centerX, maxCenterX));
+        const clampedCenterY = Math.max(minCenterY, Math.min(centerY, maxCenterY));
 
-      const clampedCenterX = Math.max(minCenterX, Math.min(centerX, maxCenterX));
-      const clampedCenterY = Math.max(minCenterY, Math.min(centerY, maxCenterY));
+        p.x = clampedCenterX - p.width / 2;
+        p.y = clampedCenterY - p.height / 2;
 
+        snapPieceToGrid(p, ctx);
+        syncPieceProperties(p);
+      });
 
-      // Convert the clamped center back to top-left coordinates
-      foundPiece.x = clampedCenterX - foundPiece.width / 2;
-      foundPiece.y = clampedCenterY - foundPiece.height / 2;
-
-      snapPieceToGrid(foundPiece, ctx);
-      syncPieceProperties(foundPiece); // Sync if it's the solution piece
       updateControls();
       renderAll();
     };
@@ -543,12 +680,58 @@ const handlePointerDown = (e, canvasName) => {
     const pointerUp = () => {
       window.removeEventListener('pointermove', pointerMove);
       window.removeEventListener('pointerup', pointerUp);
+      saveState(); // Save state after dragging
     };
 
     window.addEventListener('pointermove', pointerMove);
     window.addEventListener('pointerup', pointerUp, { once: true });
+
   } else {
-    selectPiece(null, null);
+    // Selection box logic
+    if (!isCtrl) {
+      selectedPieces.clear();
+      activeCanvas = null;
+    }
+
+    selectionBox = { x1: mouseX, y1: mouseY, x2: mouseX, y2: mouseY };
+    renderAll();
+
+    const pointerMoveSelection = (moveEvent) => {
+      const currentMouseX = (moveEvent.clientX - rect.left) * scaleX;
+      const currentMouseY = (moveEvent.clientY - rect.top) * scaleY;
+
+      selectionBox.x2 = currentMouseX;
+      selectionBox.y2 = currentMouseY;
+
+      const minX = Math.min(selectionBox.x1, selectionBox.x2);
+      const maxX = Math.max(selectionBox.x1, selectionBox.x2);
+      const minY = Math.min(selectionBox.y1, selectionBox.y2);
+      const maxY = Math.max(selectionBox.y1, selectionBox.y2);
+
+      if (!isCtrl) selectedPieces.clear();
+
+      pieces.forEach(p => {
+        const pCenterX = p.x + p.width / 2;
+        const pCenterY = p.y + p.height / 2;
+        if (pCenterX >= minX && pCenterX <= maxX && pCenterY >= minY && pCenterY <= maxY) {
+          selectedPieces.add(p);
+          activeCanvas = canvasName;
+        }
+      });
+
+      renderAll();
+    };
+
+    const pointerUpSelection = () => {
+      selectionBox = null;
+      window.removeEventListener('pointermove', pointerMoveSelection);
+      window.removeEventListener('pointerup', pointerUpSelection);
+      updateControls();
+      renderAll();
+    };
+
+    window.addEventListener('pointermove', pointerMoveSelection);
+    window.addEventListener('pointerup', pointerUpSelection, { once: true });
   }
 };
 
@@ -561,47 +744,48 @@ const snapPieceToGrid = (piece, ctx) => {
   updatePiecePixelDimensions(piece, ctx.canvas); // From puzzle-core.js
 };
 
-const selectPiece = (piece, canvasName) => {
-  selectedPiece = piece;
-  activeCanvas = canvasName;
+const selectPiece = (piece, canvasName, multiSelect = false) => {
+  if (!multiSelect) {
+    selectedPieces.clear();
+  }
+
+  if (piece) {
+    if (multiSelect && selectedPieces.has(piece)) {
+      selectedPieces.delete(piece);
+      if (selectedPieces.size === 0) activeCanvas = null;
+    } else {
+      selectedPieces.add(piece);
+      activeCanvas = canvasName;
+    }
+  } else if (!multiSelect) {
+    selectedPieces.clear();
+    activeCanvas = null;
+  }
   updateControls();
   renderAll();
 };
 
-const setPieceDefaultSize = () => {
-  if (!selectedPiece || activeCanvas !== 'solution') return;
-  const originalPiece = PIECE_TYPES.find(p => p.shape === selectedPiece.shape);
-  if (originalPiece) {
-    selectedPiece.gridWidth = originalPiece.gridWidth;
-    selectedPiece.gridHeight = originalPiece.gridHeight;
-    syncPieceProperties(selectedPiece);
-    updateControls();
-    renderAll();
-  }
-};
-
-const setPieceEnlarged = () => {
-  if (!selectedPiece || activeCanvas !== 'solution') return;
-  const originalPiece = PIECE_TYPES.find(p => p.shape === selectedPiece.shape);
-  if (originalPiece) {
-    // Use optional chaining and a fallback for safety, though originalPiece is checked.
-    selectedPiece.gridWidth = (originalPiece?.gridWidth || 2) * 1.5;
-    selectedPiece.gridHeight = (originalPiece?.gridHeight || 2) * 1.5;
-    syncPieceProperties(selectedPiece);
-    updateControls();
-    renderAll();
-  }
-};
-
 const togglePieceSize = () => {
-  if (!selectedPiece || activeCanvas !== 'solution') return;
-  const originalPiece = PIECE_TYPES.find(p => p.shape === selectedPiece.shape);
-  if (!originalPiece) return;
+  if (selectedPieces.size === 0 || activeCanvas !== 'solution') return;
 
-  const isDefault = selectedPiece.gridWidth === originalPiece.gridWidth && selectedPiece.gridHeight === originalPiece.gridHeight;
+  selectedPieces.forEach(p => {
+    const originalPiece = PIECE_TYPES.find(pt => pt.shape === p.shape);
+    if (originalPiece) {
+      const isDefault = p.gridWidth === originalPiece.gridWidth && p.gridHeight === originalPiece.gridHeight;
+      if (isDefault) {
+        p.gridWidth = originalPiece.gridWidth * 1.5;
+        p.gridHeight = originalPiece.gridHeight * 1.5;
+      } else {
+        p.gridWidth = originalPiece.gridWidth;
+        p.gridHeight = originalPiece.gridHeight;
+      }
+      syncPieceProperties(p);
+    }
+  });
 
-  // If it's default size, enlarge it. Otherwise, set it to default.
-  isDefault ? setPieceEnlarged() : setPieceDefaultSize();
+  saveState(); // Save after toggle size
+  updateControls();
+  renderAll();
 };
 
 const handleKeyUp = (e) => {
@@ -614,9 +798,9 @@ const handleKeyUp = (e) => {
   if (isTKey || isButtonRelease) {
     clearTimeout(deleteAllTimer);
     clearTimeout(deleteAllAnimationTimer);
-    // If timer was active and it was a T-key quick tap, delete selected piece
-    if (isTKey && deleteAllTimer && selectedPiece) {
-      deleteSelectedPiece();
+    // If timer was active and it was a T-key quick tap, delete selected pieces
+    if (isTKey && deleteAllTimer && selectedPieces.size > 0) {
+      deleteSelectedPieces();
     }
     deleteAllTimer = null;
     if (deleteProgressFill) deleteProgressFill.style.width = '0%';
@@ -630,10 +814,28 @@ const handleKeyPress = (e) => {
     return;
   }
 
+  const isCtrl = e.ctrlKey || e.metaKey;
+
+  // --- Undo/Redo Keybinds ---
+  if (isCtrl && (e.key === 'z' || e.key === 'Z')) {
+    e.preventDefault();
+    if (e.shiftKey) {
+      redo();
+    } else {
+      undo();
+    }
+    return;
+  }
+  if (isCtrl && (e.key === 'y' || e.key === 'Y')) {
+    e.preventDefault();
+    redo();
+    return;
+  }
+
   // --- Piece Creation Hotkeys (1-6) ---
   // These should work even if no piece is selected.
   const keyNum = parseInt(e.key, 10);
-  if (keyNum >= 1 && keyNum <= 6) {
+  if (keyNum >= 1 && keyNum <= 6 && !isCtrl) {
     const pieceType = PIECE_TYPES[keyNum - 1];
     if (pieceType) {
       e.preventDefault();
@@ -670,67 +872,73 @@ const handleKeyPress = (e) => {
     return; // Stop further processing for the 'T' key
   }
 
-  if (!selectedPiece) return;
+  if (selectedPieces.size === 0) return;
 
-  const isRotationDisabled = selectedPiece.shape === 'square' || selectedPiece.shape === 'diamond';
+  let dCol = 0;
+  let dRow = 0;
+  let doRotate = false;
+  let rotationAmount = 0;
 
   // Allow rotation only on the solution canvas
-  if ((e.key === 'r' || e.key === 'R') && !isRotationDisabled && activeCanvas === 'solution') {
+  if ((e.key === 'r' || e.key === 'R') && activeCanvas === 'solution') {
     e.preventDefault();
-    // Shift+R rotates backwards, R rotates forwards
-    const rotationAmount = e.shiftKey ? -90 : 90;
-    selectedPiece.rotation = (selectedPiece.rotation + rotationAmount + 360) % 360;
-    syncPieceProperties(selectedPiece); // Sync the change to the start piece
+    doRotate = true;
+    rotationAmount = e.shiftKey ? -90 : 90;
   } else if (e.key === 'w' || e.key === 'W') {
     e.preventDefault();
-    selectedPiece.row--;
+    dRow = -1;
   } else if (e.key === 's' || e.key === 'S') {
     e.preventDefault();
-    selectedPiece.row++;
+    dRow = 1;
   } else if (e.key === 'a' || e.key === 'A') {
     e.preventDefault();
-    selectedPiece.col--;
+    dCol = -1;
   } else if (e.key === 'd' || e.key === 'D') {
     e.preventDefault();
-    selectedPiece.col++;
+    dCol = 1;
   } else if (e.key === 'e' || e.key === 'E') {
     e.preventDefault();
     togglePieceSize();
+    return;
   } else {
-    return; // Don't re-render if no key was handled
+    return;
   }
 
-  // --- Apply boundary clamping logic for WASD movement ---
   const canvas = activeCanvas === 'solution' ? solutionCanvas : startCanvas;
   const cellWidth = canvas.width / GRID_COLS;
   const cellHeight = canvas.height / GRID_ROWS;
 
-  // Temporarily update pixel dimensions to calculate clamping
-  updatePiecePixelDimensions(selectedPiece, canvas);
+  selectedPieces.forEach(p => {
+    if (doRotate) {
+      p.rotation = (p.rotation + rotationAmount + 360) % 360;
+    } else {
+      p.col += dCol;
+      p.row += dRow;
+    }
 
-  // Get the pixel-based bounding box for the rotated piece
-  const bbox = getRotatedBoundingBoxInPixels(selectedPiece);
+    // Apply clamping logic
+    updatePiecePixelDimensions(p, canvas);
+    const bbox = getRotatedBoundingBoxInPixels(p);
+    const centerX = p.x + p.width / 2;
+    const centerY = p.y + p.height / 2;
+    const paddingX = canvas.width / VISUAL_GRID_SIZE;
+    const paddingY = canvas.height / VISUAL_GRID_SIZE;
 
-  // Calculate the piece's desired center position from its new col/row
-  const centerX = selectedPiece.x + selectedPiece.width / 2;
-  const centerY = selectedPiece.y + selectedPiece.height / 2;
+    const minCenterX = -bbox.offsetX + paddingX;
+    const maxCenterX = canvas.width - (bbox.width + bbox.offsetX) - paddingX;
+    const minCenterY = -bbox.offsetY + paddingY;
+    const maxCenterY = canvas.height - (bbox.height + bbox.offsetY) - paddingY;
+    const clampedCenterX = Math.max(minCenterX, Math.min(centerX, maxCenterX));
+    const clampedCenterY = Math.max(minCenterY, Math.min(centerY, maxCenterY));
 
-  // Clamp the center position to keep the entire piece inside the canvas
-  // Add a 1-cell padding (based on VISUAL_GRID_SIZE)
-  const paddingX = canvas.width / VISUAL_GRID_SIZE;
-  const paddingY = canvas.height / VISUAL_GRID_SIZE;
+    p.col = Math.round((clampedCenterX - p.width / 2) / cellWidth);
+    p.row = Math.round((clampedCenterY - p.height / 2) / cellHeight);
 
-  const minCenterX = -bbox.offsetX + paddingX;
-  const maxCenterX = canvas.width - (bbox.width + bbox.offsetX) - paddingX;
-  const minCenterY = -bbox.offsetY + paddingY;
-  const maxCenterY = canvas.height - (bbox.height + bbox.offsetY) - paddingY;
-  const clampedCenterX = Math.max(minCenterX, Math.min(centerX, maxCenterX));
-  const clampedCenterY = Math.max(minCenterY, Math.min(centerY, maxCenterY));
+    updatePiecePixelDimensions(p, canvas);
+    syncPieceProperties(p);
+  });
 
-  // Convert the clamped center back to top-left coordinates, then to final col/row
-  selectedPiece.col = Math.round((clampedCenterX - selectedPiece.width / 2) / cellWidth);
-  selectedPiece.row = Math.round((clampedCenterY - selectedPiece.height / 2) / cellHeight);
-
+  saveState(); // Save state after keyboard manipulation
   updateControls();
   renderAll();
 };
@@ -744,40 +952,39 @@ const updateControls = () => {
   const publishBtn = document.getElementById('export-button');
 
   // Determine if a piece is selected and if rotation/sizing is allowed
-  const pieceSelected = selectedPiece !== null;
-  const isSolutionPiece = pieceSelected && activeCanvas === 'solution';
-  const isRotationDisabledByShape = selectedPiece?.shape === 'square' || selectedPiece?.shape === 'diamond';
-  const isRotationDisabled = !isSolutionPiece || isRotationDisabledByShape;
-  const isSizeDisabled = !pieceSelected || !isSolutionPiece;
+  const pieceSelectedCount = selectedPieces.size;
+  const isSolutionCanvas = activeCanvas === 'solution';
+  const isRotationDisabled = !isSolutionCanvas || pieceSelectedCount === 0;
+  const isSizeDisabled = !isSolutionCanvas || pieceSelectedCount === 0;
 
   // --- Update Delete Button ---
-  deleteBtn.disabled = !pieceSelected;
+  deleteBtn.disabled = pieceSelectedCount === 0;
 
   // --- Update Publish Button ---
   publishBtn.disabled = solutionPieces.length < 3;
 
   // --- Update Rotate Button & Notice ---
-  rotateBtn.disabled = !pieceSelected || isRotationDisabled;
+  rotateBtn.disabled = isRotationDisabled;
 
   // --- Update Size Button & Notice ---
   sizeBtn.disabled = isSizeDisabled;
 
-  if (isSolutionPiece) {
-    const originalPiece = PIECE_TYPES.find(p => p.shape === selectedPiece.shape);
+  if (pieceSelectedCount > 0 && isSolutionCanvas) {
+    // For simplicity, we base the icon on the first selected piece
+    const firstPiece = selectedPieces.values().next().value;
+    const originalPiece = PIECE_TYPES.find(p => p.shape === firstPiece.shape);
     if (originalPiece) {
       const icon = sizeBtn.querySelector('i');
-      const isDefaultSize = selectedPiece.gridWidth === originalPiece.gridWidth && selectedPiece.gridHeight === originalPiece.gridHeight;
+      const isDefaultSize = firstPiece.gridWidth === originalPiece.gridWidth && firstPiece.gridHeight === originalPiece.gridHeight;
       // Change icon based on size state
       icon.className = isDefaultSize ? 'fa-solid fa-expand-arrows-alt' : 'fa-solid fa-compress-arrows-alt';
-      sizeBtn.title = isDefaultSize ? 'Make piece 1.5x larger' : 'Set to default size';
+      sizeBtn.title = isDefaultSize ? 'Make pieces 1.5x larger' : 'Set to default size';
     }
   } else {
     // Reset to default icon and text when not applicable
     sizeBtn.querySelector('i').className = 'fa-solid fa-expand-arrows-alt';
     sizeBtn.title = 'Toggle Size (E)';
   }
-
-  // Event listeners are now attached once, so we don't need to re-add them here.
 };
 
 // --- Add this line at the end of create.js ---
