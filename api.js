@@ -31,6 +31,28 @@ const fetchPuzzles = async (options = {}) => {
 };
 
 /**
+ * Fetches the daily puzzle for a specific date
+ * @param {string} date - Date in YYYY-MM-DD format (defaults to today)
+ * @returns {Promise<Object|null>} Daily puzzle object or null
+ */
+const fetchDailyPuzzle = async (date = null) => {
+    if (!date) {
+        date = new Date().toISOString().split('T')[0];
+    }
+    const url = `${API_URL}/puzzles?dailyDate=${date}`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch daily puzzle');
+        const data = await response.json();
+        return data.puzzles && data.puzzles.length > 0 ? data.puzzles[0] : null;
+    } catch (error) {
+        console.error('Error fetching daily puzzle:', error);
+        return null;
+    }
+};
+
+/**
  * Fetches a single puzzle by ID
  * @param {string} puzzleId - The puzzle ID
  * @returns {Promise<Object|null>} Puzzle object or null if not found
@@ -53,13 +75,17 @@ const fetchPuzzleById = async (puzzleId) => {
  * @param {Object} puzzleData - The puzzle data
  * @param {string} puzzleName - Name of the puzzle
  * @param {string} authorName - Author name (default: Nameless)
+ * @param {boolean} isDaily - Whether this is a daily puzzle
+ * @param {string} scheduledDate - Date for the daily puzzle (YYYY-MM-DD)
  * @returns {Promise<Object>} Created puzzle info
  */
-const createPuzzle = async (puzzleData, puzzleName, authorName) => {
+const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, scheduledDate) => {
     const payload = {
         puzzleData,
         puzzleName: puzzleName || 'Untitled Puzzle',
-        authorName: authorName || 'Nameless'
+        authorName: authorName || 'Nameless',
+        isDaily: isDaily || false,
+        scheduledDate: scheduledDate || null
     };
 
     console.log('[API] Creating puzzle:', payload);

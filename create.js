@@ -999,6 +999,13 @@ const openPublishModal = () => {
 
   isPublishModalOpen = true;
 
+  // Reset modal state
+  const confirmBtn = document.getElementById('confirm-publish-button');
+  const puzzleNameInput = document.getElementById('puzzle-name-input');
+  confirmBtn.disabled = false;
+  confirmBtn.innerHTML = 'Publish';
+  puzzleNameInput.value = '';
+
   // Show modal
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('show'), 10);
@@ -1008,13 +1015,10 @@ const openPublishModal = () => {
   renderAll();
 
   // Attach modal-specific listeners
-  const confirmBtn = document.getElementById('confirm-publish-button');
   const cancelBtn = document.getElementById('cancel-publish-button');
-  const closeX = document.getElementById('close-publish-modal-x');
 
   confirmBtn.onclick = publishPuzzle;
   cancelBtn.onclick = closePublishModal;
-  closeX.onclick = closePublishModal;
 
   modal.onclick = (e) => {
     if (e.target.id === 'publish-confirm-modal') {
@@ -1037,7 +1041,6 @@ const closePublishModal = () => {
   // Clear listeners
   document.getElementById('confirm-publish-button').onclick = null;
   document.getElementById('cancel-publish-button').onclick = null;
-  document.getElementById('close-publish-modal-x').onclick = null;
   modal.onclick = null;
 };
 
@@ -1051,7 +1054,7 @@ const publishPuzzle = async () => {
   const authorNameInput = document.getElementById('author-name-input');
   const confirmBtn = document.getElementById('confirm-publish-button');
 
-  confirmBtn.innerHTML = 'Publishing...';
+  confirmBtn.innerHTML = 'Publishing';
   confirmBtn.disabled = true;
 
   // Format piece data for API
@@ -1064,10 +1067,10 @@ const publishPuzzle = async () => {
 
   try {
     await createPuzzle(puzzleData, puzzleNameInput.value, authorNameInput.value);
-    confirmBtn.innerHTML = 'Published!';
+    confirmBtn.innerHTML = 'Published';
     setTimeout(closePublishModal, 1500);
   } catch (error) {
-    confirmBtn.innerHTML = 'Failed - Try Again';
+    confirmBtn.innerHTML = 'Try Again';
     confirmBtn.disabled = false;
     console.error('Publish error:', error);
   }
