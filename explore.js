@@ -78,6 +78,35 @@ const configureCompletionModal = (timeMs, moves) => {
 window.onload = async () => {
   await loadPuzzlesFromAPI();
   setupEventListeners();
+
+  // Handle direct puzzle link
+  const urlParams = new URLSearchParams(window.location.search);
+  let puzzleId = urlParams.get('puzzle');
+
+  // Also check path for domain/explore/CODE format
+  if (!puzzleId) {
+    const pathParts = window.location.pathname.split('/').filter(p => p);
+    const exploreIdx = pathParts.findIndex(p => p.startsWith('explore'));
+    if (exploreIdx !== -1 && pathParts.length > exploreIdx + 1) {
+      puzzleId = pathParts[exploreIdx + 1];
+    }
+  }
+
+  if (puzzleId) {
+    // First check if it's already in the loaded list
+    let puzzle = userPuzzles.find(p => p.id === puzzleId);
+    if (puzzle) {
+      openGameplayView(puzzle);
+    } else {
+      // If not in list, fetch it specifically
+      puzzle = await fetchPuzzleById(puzzleId);
+      if (puzzle) {
+        // We need to ensure we have images preloaded for this puzzle
+        await preloadImages([puzzle]);
+        openGameplayView(puzzle);
+      }
+    }
+  }
 };
 
 const setupEventListeners = () => {
@@ -276,6 +305,36 @@ const populateExploreGrid = async (puzzles) => {
         <span><i class="fa-solid fa-play"></i> ${formatNumber(puzzle.playCount)}</span>
       </div>
     `;
+
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'share-card-btn';
+    shareBtn.innerHTML = '<i class="fa-solid fa-share"></i> <span class="share-btn-text">Share</span>';
+    shareBtn.title = 'Share puzzle';
+    shareBtn.setAttribute('aria-label', 'Share puzzle');
+    shareBtn.onclick = (e) => {
+      e.stopPropagation();
+      // Use query parameter for best local file support
+      const url = new URL(window.location.href);
+      url.searchParams.set('puzzle', puzzle.id);
+      const shareUrl = url.toString();
+
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        const icon = shareBtn.querySelector('i');
+        const text = shareBtn.querySelector('.share-btn-text');
+
+        icon.className = 'fa-solid fa-check';
+        text.textContent = 'Link Copied';
+        shareBtn.classList.add('copied');
+
+        setTimeout(() => {
+          icon.className = 'fa-solid fa-share';
+          text.textContent = 'Share';
+          shareBtn.classList.remove('copied');
+        }, 2000);
+      });
+    };
+    statsRow.appendChild(shareBtn);
+
     info.appendChild(statsRow);
 
     card.appendChild(info);
@@ -465,6 +524,11 @@ const openGameplayView = async (puzzle) => {
   // Record play
   recordPlay(puzzle.id);
   markPuzzlePlayed(puzzle.id);
+
+  // Update URL in browser (without page reload)
+  const url = new URL(window.location.href);
+  url.searchParams.set('puzzle', puzzle.id);
+  window.history.pushState({ puzzleId: puzzle.id }, '', url.toString());
 };
 
 const showGridView = () => {
@@ -475,6 +539,21 @@ const showGridView = () => {
   if (puzzleCtx) puzzleCtx.clearRect(0, 0, puzzleCanvas.width, puzzleCanvas.height);
   if (referenceCtx) referenceCtx.clearRect(0, 0, referenceCtx.canvas.width, referenceCtx.canvas.height);
   hideModal('completion-modal');
+
+  // Clear URL parameter or path code
+  const url = new URL(window.location.href);
+  if (url.searchParams.has('puzzle')) {
+    url.searchParams.delete('puzzle');
+  }
+
+  // Handle path cleanup if it ends with a code (e.g. /explore/nwlbx)
+  let path = url.pathname;
+  const pathParts = path.split('/').filter(p => p);
+  if (pathParts.length > 0 && pathParts[pathParts.length - 2] && pathParts[pathParts.length - 2].startsWith('explore')) {
+    path = '/' + pathParts.slice(0, -1).join('/');
+  }
+
+  window.history.replaceState({}, '', path + url.search);
 
   // Refresh to show updated play counts
   loadPuzzlesFromAPI();

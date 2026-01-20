@@ -31,6 +31,24 @@ const fetchPuzzles = async (options = {}) => {
 };
 
 /**
+ * Fetches a single puzzle by ID
+ * @param {string} puzzleId - The puzzle ID
+ * @returns {Promise<Object|null>} Puzzle object or null if not found
+ */
+const fetchPuzzleById = async (puzzleId) => {
+    const url = `${API_URL}/puzzles/${puzzleId}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch puzzle');
+        const data = await response.json();
+        return data.puzzle || data; // Handle different response formats
+    } catch (error) {
+        console.error('Error fetching puzzle:', error);
+        return null;
+    }
+};
+
+/**
  * Creates a new puzzle
  * @param {Object} puzzleData - The puzzle data
  * @param {string} puzzleName - Name of the puzzle

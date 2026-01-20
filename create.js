@@ -1008,14 +1008,19 @@ const openPublishModal = () => {
   renderAll();
 
   // Attach modal-specific listeners
-  document.getElementById('confirm-publish-button').addEventListener('click', publishPuzzle);
-  document.getElementById('cancel-publish-button').addEventListener('click', closePublishModal);
-  document.getElementById('close-publish-modal-x').addEventListener('click', closePublishModal);
-  modal.addEventListener('click', (e) => {
+  const confirmBtn = document.getElementById('confirm-publish-button');
+  const cancelBtn = document.getElementById('cancel-publish-button');
+  const closeX = document.getElementById('close-publish-modal-x');
+
+  confirmBtn.onclick = publishPuzzle;
+  cancelBtn.onclick = closePublishModal;
+  closeX.onclick = closePublishModal;
+
+  modal.onclick = (e) => {
     if (e.target.id === 'publish-confirm-modal') {
       closePublishModal();
     }
-  });
+  };
 };
 
 const closePublishModal = () => {
@@ -1027,13 +1032,13 @@ const closePublishModal = () => {
   modal.classList.remove('show');
   setTimeout(() => {
     modal.style.display = 'none';
-  }, 400); // Match CSS transition duration
+  }, 400);
 
-  // Clean up listeners to avoid multiple bindings
-  // Note: A more robust solution might use .removeEventListener with named functions
-  // but for this simple case, re-cloning the button is an effective way to clear them.
-  const confirmBtn = document.getElementById('confirm-publish-button');
-  confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+  // Clear listeners
+  document.getElementById('confirm-publish-button').onclick = null;
+  document.getElementById('cancel-publish-button').onclick = null;
+  document.getElementById('close-publish-modal-x').onclick = null;
+  modal.onclick = null;
 };
 
 const publishPuzzle = async () => {
