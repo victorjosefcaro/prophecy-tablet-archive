@@ -107,7 +107,7 @@ const loadDaily = async () => {
 
     try {
         const dailyPuzzle = await fetchDailyPuzzle();
-        loadingIndicator.style.display = 'none';
+        loadingIndicator.classList.add('hidden');
 
         if (dailyPuzzle) {
             puzzleContainer.style.display = 'contents';
@@ -119,7 +119,7 @@ const loadDaily = async () => {
         }
     } catch (error) {
         console.error("Error loading daily puzzle:", error);
-        loadingIndicator.style.display = 'none';
+        loadingIndicator.classList.add('hidden');
         noDailyMessage.style.display = 'block';
     }
 };
