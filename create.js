@@ -214,7 +214,6 @@ const addPiece = (type) => {
   if (solutionPieces.length >= 10) {
     // Optional: Provide feedback to the user
     // For example, flash the controls panel or show a temporary message.
-    console.log("Maximum number of pieces (10) reached.");
     return;
   }
 

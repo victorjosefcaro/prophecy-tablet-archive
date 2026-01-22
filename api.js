@@ -88,9 +88,6 @@ const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, schedul
         scheduledDate: scheduledDate || null
     };
 
-    console.log('[API] Creating puzzle:', payload);
-    console.log('[API] POST to:', `${API_URL}/puzzles`);
-
     try {
         const response = await fetch(`${API_URL}/puzzles`, {
             method: 'POST',
@@ -98,10 +95,7 @@ const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, schedul
             body: JSON.stringify(payload)
         });
 
-        console.log('[API] Response status:', response.status);
         const data = await response.json();
-        console.log('[API] Response data:', data);
-
         if (!response.ok) throw new Error(data.error || 'Failed to create puzzle');
         return data;
     } catch (error) {
@@ -111,22 +105,22 @@ const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, schedul
 };
 
 /**
- * Records a like or dislike vote
+ * Records a star rating
  * @param {string} puzzleId - The puzzle ID
- * @param {string} action - 'like' or 'dislike'
- * @returns {Promise<Object>} Updated vote counts
+ * @param {number} rating - Star rating (1-5)
+ * @returns {Promise<Object>} Updated rating stats
  */
-const votePuzzle = async (puzzleId, action, previousVote = null) => {
+const ratePuzzle = async (puzzleId, rating, previousRating = null) => {
     try {
         const response = await fetch(`${API_URL}/puzzles/${puzzleId}/vote`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action, previousVote })
+            body: JSON.stringify({ rating, previousRating })
         });
-        if (!response.ok) throw new Error('Failed to vote');
+        if (!response.ok) throw new Error('Failed to rate');
         return await response.json();
     } catch (error) {
-        console.error('Error voting:', error);
+        console.error('Error rating:', error);
         throw error;
     }
 };
@@ -192,26 +186,67 @@ const markPuzzlePlayed = (puzzleId) => {
 };
 
 /**
- * Gets the user's vote for a puzzle from localStorage
+ * Gets the user's rating for a puzzle from localStorage
  * @param {string} puzzleId - The puzzle ID
- * @returns {string|null} 'like', 'dislike', or null
+ * @returns {number|null} 1-5, or null
  */
-const getUserVote = (puzzleId) => {
-    const votes = JSON.parse(localStorage.getItem('userVotes') || '{}');
-    return votes[puzzleId] || null;
+const getUserRating = (puzzleId) => {
+    const ratings = JSON.parse(localStorage.getItem('userRatings') || '{}');
+    return ratings[puzzleId] || null;
 };
 
 /**
- * Saves the user's vote in localStorage (prevents double voting)
+ * Saves the user's rating in localStorage
  * @param {string} puzzleId - The puzzle ID
- * @param {string|null} action - 'like', 'dislike', or null to remove
+ * @param {number|null} rating - 1-5, or null to remove
  */
-const saveUserVote = (puzzleId, action) => {
-    const votes = JSON.parse(localStorage.getItem('userVotes') || '{}');
-    if (action === null) {
-        delete votes[puzzleId];
+const saveUserRating = (puzzleId, rating) => {
+    const ratings = JSON.parse(localStorage.getItem('userRatings') || '{}');
+    if (rating === null) {
+        delete ratings[puzzleId];
     } else {
-        votes[puzzleId] = action;
+        ratings[puzzleId] = rating;
     }
-    localStorage.setItem('userVotes', JSON.stringify(votes));
+    localStorage.setItem('userRatings', JSON.stringify(ratings));
+};
+
+const getCompletedDailies = () => {
+    try {
+        const stored = localStorage.getItem('completedDailies');
+        if (!stored) return {};
+        const parsed = JSON.parse(stored);
+        return (typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
+    } catch (e) {
+        return {};
+    }
+};
+
+/**
+ * Checks if a daily puzzle has been completed
+ * @param {string} puzzleId - The puzzle ID
+ * @returns {boolean} True if completed
+ */
+const isDailyCompleted = (puzzleId) => {
+    return !!getCompletedDailies()[puzzleId];
+};
+
+/**
+ * Gets historical stats for a completed daily
+ * @param {string} puzzleId
+ * @returns {Object|null} {time, moves} or null
+ */
+const getDailyCompletion = (puzzleId) => {
+    return getCompletedDailies()[puzzleId] || null;
+};
+
+/**
+ * Marks a daily puzzle as completed with stats
+ * @param {string} puzzleId - The puzzle ID
+ * @param {number} time - Time in ms
+ * @param {number} moves - Moves count
+ */
+const markDailyCompleted = (puzzleId, time, moves) => {
+    const completed = getCompletedDailies();
+    completed[puzzleId] = { time, moves, date: new Date().toISOString() };
+    localStorage.setItem('completedDailies', JSON.stringify(completed));
 };

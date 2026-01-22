@@ -140,7 +140,6 @@ const checkCompletion = (puzzlePieces, referencePieces) => {
 
   // Compare the masks - if they match, the puzzle is solved
   const isMatch = compareMasks(userMask, refMask);
-  console.log('[Pixel Validation] Checking solution...', isMatch ? '✓ MATCH!' : '✗ No match');
 
   if (isMatch) {
     isPuzzleSolved = true;
@@ -257,7 +256,7 @@ const hideModal = (modalId) => {
   }, 400);
 };
 
-let showCompletionModal = (timeInMs, moves) => {
+let showCompletionModal = async (timeInMs, moves, skipRecord = false) => {
   const timeSpan = document.getElementById('time-taken');
   const movesSpan = document.getElementById('moves-made');
   const currentMoves = moves !== undefined ? moves : moveCount;
@@ -270,12 +269,13 @@ let showCompletionModal = (timeInMs, moves) => {
     movesSpan.textContent = currentMoves;
   }
 
+  let updatedStats = null;
   // Record completion stats for averages (if recordCompletion exists and we have a puzzle ID)
-  if (typeof recordCompletion === 'function' && typeof currentPuzzle !== 'undefined' && currentPuzzle?.id) {
-    recordCompletion(currentPuzzle.id, timeInMs, currentMoves);
+  if (!skipRecord && typeof recordCompletion === 'function' && typeof currentPuzzle !== 'undefined' && currentPuzzle?.id) {
+    updatedStats = await recordCompletion(currentPuzzle.id, timeInMs, currentMoves);
   }
 
-  configureCompletionModal(timeInMs, currentMoves);
+  configureCompletionModal(timeInMs, currentMoves, updatedStats);
 
   showModal('completion-modal');
 };

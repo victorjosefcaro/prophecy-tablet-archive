@@ -395,11 +395,17 @@ canvas {
 }
 
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
   font-size: 1.2rem;
   border: none;
-  padding: 6px 16px;
+  padding: 0 20px;
   border-radius: var(--border-radius);
   text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .primary-button {
@@ -484,13 +490,13 @@ canvas {
   justify-content: center;
 }
 
-.modal-buttons button {
+.modal-buttons button,
+.modal-buttons .button {
   flex: 1;
-}
-
-.modal .button {
   margin-top: 1rem;
 }
+
+/* Removed margin-top redundancy */
 
 .level-grid {
   display: grid;
@@ -531,10 +537,6 @@ canvas {
 .info p {
   font-size: 1.2rem;
   margin-bottom: 2rem;
-}
-
-.info p:last-child {
-  margin-bottom: 0;
 }
 
 ::-webkit-scrollbar {
@@ -1137,31 +1139,21 @@ canvas {
   font-family: var(--font-medium);
 }
 
-.vote-buttons {
+.star-rating {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.vote-btn {
-  background: var(--background-color);
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: var(--border-radius);
-  color: var(--primary-text-color);
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.85rem;
+.star-rating i {
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.4;
 }
 
-.vote-btn:hover {
-  background: var(--background-hover-color);
-}
-
-.vote-btn.voted {
-  background: var(--accent-color);
-  color: var(--secondary-text-color);
+.star-rating i.active {
+  color: var(--accent-color);
+  opacity: 1;
 }
 
 .no-puzzles-message {
@@ -1414,28 +1406,14 @@ kbd {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
   margin: 1rem 0;
+  gap: 0.5rem;
 }
 
 .completion-vote-section p {
   font-size: 0.95rem;
   opacity: 0.8;
   margin: 0;
-}
-
-.completion-vote-section .vote-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.completion-vote-section .vote-btn {
-  width: 50px;
-  height: 50px;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* ===== PERFORMANCE COMPARISON ===== */
@@ -1489,4 +1467,11 @@ kbd {
   font-size: 0.7rem;
   opacity: 0.6;
   text-transform: uppercase;
+}
+
+.completed-badge {
+  color: #4ade80;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
 }

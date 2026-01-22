@@ -100,7 +100,7 @@
 
   <div class="modal" id="completion-modal">
     <div class="modal-content">
-      <p class="modal-header">Daily Tablet Restored</p>
+      <p class="modal-header">Puzzle Complete</p>
       <div class="modal-stats">
         <div class="stat-item">
           <span class="stat-label">Time</span>
@@ -111,9 +111,24 @@
           <span id="moves-made" class="stat-value"></span>
         </div>
       </div>
+      <div id="performance-comparison" class="performance-comparison" style="display: none;">
+        <div class="comparison-heading">vs Average</div>
+        <div class="comparison-items">
+          <div class="comparison-item">
+            <span id="time-diff" class="comparison-value"></span>
+            <span class="comparison-label">Time</span>
+          </div>
+          <div class="comparison-item">
+            <span id="moves-diff" class="comparison-value"></span>
+            <span class="comparison-label">Moves</span>
+          </div>
+        </div>
+      </div>
       <div class="modal-buttons">
-        <button id="play-again-button" class="button secondary-button">Retry</button>
-        <a href="explore.html" class="button primary-button">Explore More</a>
+        <button id="share-button" class="button secondary-button">
+          Share
+        </button>
+        <a href="explore.html" class="button primary-button">Explore</a>
       </div>
     </div>
   </div>

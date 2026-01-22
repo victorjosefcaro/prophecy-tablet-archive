@@ -30,21 +30,106 @@ const initializeEventListeners = () => {
         }
     });
 
-    document.getElementById('play-again-button').addEventListener('click', () => {
-        hideModal('completion-modal');
-        setupDailyPuzzle(currentPuzzle);
-    });
-
     document.getElementById('info-button').addEventListener('click', () => showModal('info-modal'));
     document.getElementById('info-modal').addEventListener('click', (e) => {
         if (e.target.id === 'info-modal') hideModal('info-modal');
     });
 
     document.getElementById('close-info-modal-button').addEventListener('click', () => hideModal('info-modal'));
+
+    document.getElementById('completion-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'completion-modal') hideModal('completion-modal');
+    });
+
+    document.getElementById('share-button').addEventListener('click', () => {
+        const timeTaken = document.getElementById('time-taken').textContent;
+        const movesMade = document.getElementById('moves-made').textContent;
+        const puzzleName = document.getElementById('daily-puzzle-name').textContent;
+        const puzzleDate = document.getElementById('daily-author').textContent;
+
+        const timeDiffEl = document.getElementById('time-diff');
+        const movesDiffEl = document.getElementById('moves-diff');
+
+        let vsAverage = '';
+        if (timeDiffEl && timeDiffEl.textContent) {
+            vsAverage = `\nvs Average:\n- Time: ${timeDiffEl.textContent}\n- Moves: ${movesDiffEl.textContent}`;
+        }
+
+        const shareUrl = `https://prophecytablet.com`; // Placeholder URL
+        const shareText = `${puzzleName} - ${puzzleDate}
+Stats:
+- Time: ${timeTaken}
+- Moves: ${movesMade}${vsAverage}
+
+Play here: ${shareUrl}`;
+
+        navigator.clipboard.writeText(shareText).then(() => {
+            const shareBtn = document.getElementById('share-button');
+            const originalContent = shareBtn.innerHTML;
+            shareBtn.innerHTML = 'Copied';
+            setTimeout(() => {
+                shareBtn.innerHTML = originalContent;
+            }, 2000);
+        });
+    });
 };
 
-const configureCompletionModal = () => {
-    // No next/prev buttons for daily puzzle for now
+const updatePerformanceComparison = (userTimeMs, userMoves, stats) => {
+    const comparisonSection = document.getElementById('performance-comparison');
+    if (!comparisonSection || !stats) return;
+
+    // The API might return avgTimeMs directly, or we might be using the original puzzle object
+    let avgTimeMs, avgMoves;
+
+    if (stats.avgTimeMs !== undefined) {
+        // From completion API
+        avgTimeMs = stats.avgTimeMs;
+        avgMoves = stats.avgMoves;
+    } else if (stats.completionCount > 0) {
+        // From initial puzzle data
+        avgTimeMs = stats.totalTimeMs / stats.completionCount;
+        avgMoves = stats.totalMoves / stats.completionCount;
+    } else {
+        comparisonSection.style.display = 'none';
+        return;
+    }
+
+    const timeDiff = userTimeMs - avgTimeMs;
+    const movesDiff = userMoves - avgMoves;
+
+    const formatTimeDiff = (diffMs) => {
+        const absDiff = Math.abs(diffMs);
+        const seconds = Math.floor(absDiff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        const sign = diffMs < 0 ? '-' : '+';
+        if (minutes > 0) return `${sign}${minutes}m ${remainingSeconds}s`;
+        return `${sign}${remainingSeconds}s`;
+    };
+
+    const timeDiffEl = document.getElementById('time-diff');
+    const movesDiffEl = document.getElementById('moves-diff');
+
+    timeDiffEl.textContent = formatTimeDiff(timeDiff);
+    timeDiffEl.className = 'comparison-value ' + (timeDiff < -500 ? 'better' : timeDiff > 500 ? 'worse' : 'same');
+
+    const movesDiffSign = movesDiff > 0 ? '+' : '';
+    movesDiffEl.textContent = `${movesDiffSign}${Math.round(movesDiff)}`;
+    movesDiffEl.className = 'comparison-value ' + (movesDiff < -0.5 ? 'better' : movesDiff > 0.5 ? 'worse' : 'same');
+
+    comparisonSection.style.display = 'block';
+};
+
+const configureCompletionModal = (timeMs, moves, updatedStats) => {
+    // Update vs average section
+    if (timeMs !== undefined && moves !== undefined) {
+        updatePerformanceComparison(timeMs, moves, updatedStats || currentPuzzle);
+    }
+
+    // Mark as completed in local storage
+    if (currentPuzzle?.id) {
+        markDailyCompleted(currentPuzzle.id, timeMs, moves);
+    }
 };
 
 const setupDailyPuzzle = async (puzzle) => {
@@ -113,6 +198,17 @@ const loadDaily = async () => {
             puzzleContainer.style.display = 'contents';
             await setupDailyPuzzle(dailyPuzzle);
             recordPlay(dailyPuzzle.id);
+
+            // If already completed, show modal automatically
+            const completion = getDailyCompletion(dailyPuzzle.id);
+            if (completion) {
+                isPuzzleSolved = true;
+                hoveredPiece = null;
+                renderPuzzleScoped(); // Hide the pieces immediately
+                setTimeout(() => {
+                    showCompletionModal(completion.time, completion.moves, true);
+                }, 500); // Small delay to ensure everything is rendered
+            }
         } else {
             puzzleContainer.style.display = 'none';
             noDailyMessage.style.display = 'block';

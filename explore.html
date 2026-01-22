@@ -81,8 +81,7 @@
           <div class="custom-select">
             <select id="sort-field">
               <option value="date">Date</option>
-              <option value="likes">Likes</option>
-              <option value="dislikes">Dislikes</option>
+              <option value="rating">Rating</option>
               <option value="playCount">Play Count</option>
               <option value="avgTime">Avg Time</option>
               <option value="avgMoves">Avg Moves</option>
@@ -173,14 +172,13 @@
         </div>
       </div>
       <div id="completion-vote-section" class="completion-vote-section">
-        <p>Did you enjoy this puzzle?</p>
-        <div class="vote-buttons">
-          <button id="completion-like-btn" class="vote-btn">
-            <i class="fa-solid fa-thumbs-up"></i>
-          </button>
-          <button id="completion-dislike-btn" class="vote-btn">
-            <i class="fa-solid fa-thumbs-down"></i>
-          </button>
+        <p>Rate this puzzle</p>
+        <div class="star-rating" id="completion-star-rating">
+          <i class="fa-regular fa-star" data-rating="1"></i>
+          <i class="fa-regular fa-star" data-rating="2"></i>
+          <i class="fa-regular fa-star" data-rating="3"></i>
+          <i class="fa-regular fa-star" data-rating="4"></i>
+          <i class="fa-regular fa-star" data-rating="5"></i>
         </div>
       </div>
       <div class="modal-buttons">

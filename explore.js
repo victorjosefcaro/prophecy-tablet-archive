@@ -140,16 +140,17 @@ const setupEventListeners = () => {
     });
   }
 
-  // Completion modal vote buttons
-  const completionLikeBtn = document.getElementById('completion-like-btn');
-  const completionDislikeBtn = document.getElementById('completion-dislike-btn');
-
-  completionLikeBtn.addEventListener('click', () => {
-    if (currentPuzzle) handleCompletionVote('like', completionLikeBtn, completionDislikeBtn);
-  });
-  completionDislikeBtn.addEventListener('click', () => {
-    if (currentPuzzle) handleCompletionVote('dislike', completionLikeBtn, completionDislikeBtn);
-  });
+  // Completion modal star rating
+  const completionStars = document.getElementById('completion-star-rating');
+  if (completionStars) {
+    const stars = completionStars.querySelectorAll('i');
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const rating = parseInt(star.getAttribute('data-rating'));
+        handleCompletionRating(rating);
+      });
+    });
+  }
 
   // Filter controls
   let searchTimeout;
@@ -187,10 +188,14 @@ const loadPuzzlesFromAPI = async () => {
       : puzzle.totalMoves / puzzle.completionCount;
   };
 
+  const getRating = (puzzle) => {
+    if (!puzzle.ratingCount || puzzle.ratingCount === 0) return order === 'asc' ? Infinity : -Infinity;
+    return (puzzle.ratingSum || 0) / puzzle.ratingCount;
+  };
+
   const sortFunctions = {
     date: (a, b) => b.createdAt - a.createdAt,
-    likes: (a, b) => b.likes - a.likes,
-    dislikes: (a, b) => b.dislikes - a.dislikes,
+    rating: (a, b) => getRating(b) - getRating(a),
     playCount: (a, b) => b.playCount - a.playCount,
     avgTime: (a, b) => getAvg(b, 'time') - getAvg(a, 'time'),
     avgMoves: (a, b) => getAvg(b, 'moves') - getAvg(a, 'moves')
@@ -293,13 +298,15 @@ const populateExploreGrid = async (puzzles) => {
     `;
     info.appendChild(gridSection);
 
-    // Stats row: votes and plays on left
+    // Stats row: rating and plays on left
+    const ratingCount = puzzle.ratingCount || 0;
+    const ratingSum = puzzle.ratingSum || 0;
+    const rating = ratingCount > 0 ? (ratingSum / ratingCount).toFixed(1) : '--';
     const statsRow = document.createElement('div');
     statsRow.className = 'puzzle-card-stats';
     statsRow.innerHTML = `
-      <div class="stats-group votes">
-        <span><i class="fa-solid fa-thumbs-up"></i> ${formatNumber(puzzle.likes)}</span>
-        <span><i class="fa-solid fa-thumbs-down"></i> ${formatNumber(puzzle.dislikes)}</span>
+      <div class="stats-group rating">
+        <span><i class="fa-solid fa-star"></i> ${rating}</span>
       </div>
       <div class="stats-group plays">
         <span><i class="fa-solid fa-play"></i> ${formatNumber(puzzle.playCount)}</span>
@@ -350,116 +357,69 @@ const populateExploreGrid = async (puzzles) => {
   });
 };
 
-const handleVote = async (puzzleId, action, likeBtn, dislikeBtn, statsEl, puzzle) => {
-  const currentVote = getUserVote(puzzleId);
-
-  // Calculate new counts optimistically
-  let newLikes = puzzle.likes;
-  let newDislikes = puzzle.dislikes;
-  let newVote = action;
-
-  // If clicking the same button, remove the vote (toggle off)
-  if (currentVote === action) {
-    if (action === 'like') {
-      newLikes--;
-    } else {
-      newDislikes--;
-    }
-    newVote = null; // Clear the vote
-  } else if (currentVote === 'like' && action === 'dislike') {
-    // Switching from like to dislike
-    newLikes--;
-    newDislikes++;
-  } else if (currentVote === 'dislike' && action === 'like') {
-    // Switching from dislike to like
-    newDislikes--;
-    newLikes++;
-  } else if (action === 'like') {
-    // New like
-    newLikes++;
-  } else if (action === 'dislike') {
-    // New dislike
-    newDislikes++;
-  }
-
-  // Save vote locally first (optimistic)
-  saveUserVote(puzzleId, newVote);
-  puzzle.likes = newLikes;
-  puzzle.dislikes = newDislikes;
-
-  // Update UI immediately (optimistic)
-  likeBtn.classList.toggle('voted', newVote === 'like');
-  dislikeBtn.classList.toggle('voted', newVote === 'dislike');
-  updateStatsDisplay(statsEl, newLikes, newDislikes, puzzle.playCount);
-
-  // Fire API call in background (don't await)
-  votePuzzle(puzzleId, newVote, currentVote).catch(error => {
-    console.error('Vote failed:', error);
-    // Optionally rollback on error
-  });
-};
-
-const updateStatsDisplay = (statsEl, likes, dislikes, playCount) => {
-  statsEl.innerHTML = `
-    <span><i class="fa-solid fa-thumbs-up"></i> ${likes}</span>
-    <span><i class="fa-solid fa-thumbs-down"></i> ${dislikes}</span>
-    <span><i class="fa-solid fa-play"></i> ${playCount}</span>
-  `;
-};
-
-const handleCompletionVote = (action, likeBtn, dislikeBtn) => {
+const handleCompletionRating = (rating) => {
   if (!currentPuzzle) return;
 
   const puzzleId = currentPuzzle.id;
-  const currentVote = getUserVote(puzzleId);
+  const currentRating = getUserRating(puzzleId);
 
-  let newLikes = currentPuzzle.likes;
-  let newDislikes = currentPuzzle.dislikes;
-  let newVote = action;
+  // If clicking the same rating, remove it? 
+  // Most star systems don't allow 0 stars by clicking the same star.
+  // But we can allow it if we want. Let's say clicking the same star clears it.
+  const newRating = currentRating === rating ? null : rating;
 
-  // If clicking the same button, remove the vote (toggle off)
-  if (currentVote === action) {
-    if (action === 'like') {
-      newLikes--;
-    } else {
-      newDislikes--;
-    }
-    newVote = null;
-  } else if (currentVote === 'like' && action === 'dislike') {
-    newLikes--;
-    newDislikes++;
-  } else if (currentVote === 'dislike' && action === 'like') {
-    newDislikes--;
-    newLikes++;
-  } else if (action === 'like') {
-    newLikes++;
-  } else if (action === 'dislike') {
-    newDislikes++;
+  // Calculate new stats optimistically
+  let newRatingSum = currentPuzzle.ratingSum || 0;
+  let newRatingCount = currentPuzzle.ratingCount || 0;
+
+  if (currentRating) {
+    newRatingSum -= currentRating;
+    newRatingCount--;
+  }
+  if (newRating) {
+    newRatingSum += newRating;
+    newRatingCount++;
   }
 
-  // Save vote locally
-  saveUserVote(puzzleId, newVote);
-  currentPuzzle.likes = newLikes;
-  currentPuzzle.dislikes = newDislikes;
+  // Save rating locally
+  saveUserRating(puzzleId, newRating);
+  currentPuzzle.ratingSum = newRatingSum;
+  currentPuzzle.ratingCount = newRatingCount;
 
-  // Update button styles
-  likeBtn.classList.toggle('voted', newVote === 'like');
-  dislikeBtn.classList.toggle('voted', newVote === 'dislike');
+  // Update UI
+  updateCompletionVoteButtons();
 
-  // Fire API call in background
-  votePuzzle(puzzleId, newVote, currentVote).catch(error => {
-    console.error('Vote failed:', error);
+  // Fire API call
+  ratePuzzle(puzzleId, newRating, currentRating).catch(error => {
+    console.error('Rating failed:', error);
+  });
+};
+
+const highlightStars = (stars, rating) => {
+  stars.forEach(star => {
+    const starRating = parseInt(star.getAttribute('data-rating'));
+    if (starRating <= rating) {
+      star.classList.replace('fa-regular', 'fa-solid');
+      star.classList.add('active');
+    } else {
+      star.classList.replace('fa-solid', 'fa-regular');
+      star.classList.remove('active');
+    }
   });
 };
 
 // Update vote button states when completion modal opens
 const updateCompletionVoteButtons = () => {
   if (!currentPuzzle) return;
-  const userVote = getUserVote(currentPuzzle.id);
-  const likeBtn = document.getElementById('completion-like-btn');
-  const dislikeBtn = document.getElementById('completion-dislike-btn');
-  likeBtn.classList.toggle('voted', userVote === 'like');
-  dislikeBtn.classList.toggle('voted', userVote === 'dislike');
+  const userRating = getUserRating(currentPuzzle.id);
+  const completionStars = document.getElementById('completion-star-rating');
+  if (completionStars) {
+    const stars = completionStars.querySelectorAll('i');
+    highlightStars(stars, userRating || 0);
+    stars.forEach(star => {
+      star.classList.toggle('voted', !!userRating);
+    });
+  }
 };
 
 // Update performance comparison section
