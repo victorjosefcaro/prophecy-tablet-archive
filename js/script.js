@@ -79,6 +79,10 @@ const loadArchivePuzzles = async () => {
 
   puzzles = await fetchPuzzles({ isDaily: 'true', sortBy: 'oldest', limit: 100 });
 
+  // Filter out today's puzzle - it should be played on the main page, not archive
+  const today = new Date().toISOString().split('T')[0];
+  puzzles = puzzles.filter(p => p.scheduledDate !== today);
+
   if (puzzles.length === 0) {
     loadingIndicator.classList.add('hidden');
     levelGrid.innerHTML = '<p>No daily puzzles found in archive.</p>';

@@ -37,7 +37,7 @@ const applyTheme = (themeName, isPreview = false) => {
     updateFavicon(newAccentColor);
   }
   if (typeof renderAll === 'function') {
-    renderAll(); 
+    renderAll();
   }
   if (typeof rerenderLevelPreviews === 'function') {
     rerenderLevelPreviews();

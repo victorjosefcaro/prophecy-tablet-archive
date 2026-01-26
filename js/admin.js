@@ -216,6 +216,7 @@ const addPiece = (type) => {
   if (solutionPieces.length >= 10) {
     // Optional: Provide feedback to the user
     // For example, flash the controls panel or show a temporary message.
+    console.log("Maximum number of pieces (10) reached.");
     return;
   }
 
@@ -1006,7 +1007,24 @@ const openPublishModal = () => {
   confirmBtn.disabled = false;
   confirmBtn.innerHTML = 'Publish';
   puzzleNameInput.value = '';
-  document.getElementById('publish-error').classList.remove('show');
+
+  const dailyCheckbox = document.getElementById('daily-checkbox');
+  const scheduleGroup = document.getElementById('schedule-group');
+  const scheduleInput = document.getElementById('schedule-date-input');
+
+  dailyCheckbox.checked = false;
+  scheduleGroup.style.display = 'none';
+  scheduleInput.value = '';
+
+  dailyCheckbox.onchange = (e) => {
+    scheduleGroup.style.display = e.target.checked ? 'block' : 'none';
+    if (e.target.checked && !scheduleInput.value) {
+      // Default to tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      scheduleInput.value = tomorrow.toISOString().split('T')[0];
+    }
+  };
 
   // Show modal
   modal.style.display = 'flex';
@@ -1067,9 +1085,15 @@ const publishPuzzle = async () => {
     ]
   };
 
+  const dailyCheckbox = document.getElementById('daily-checkbox');
+  const scheduleInput = document.getElementById('schedule-date-input');
+
+  const isDaily = dailyCheckbox.checked;
+  const scheduledDate = isDaily ? scheduleInput.value : null;
+
   try {
     document.getElementById('loading-indicator').classList.remove('hidden');
-    await createPuzzle(puzzleData, puzzleNameInput.value, authorNameInput.value);
+    await createPuzzle(puzzleData, puzzleNameInput.value, authorNameInput.value, isDaily, scheduledDate);
     document.getElementById('loading-indicator').classList.add('hidden');
     confirmBtn.innerHTML = 'Published';
     setTimeout(closePublishModal, 1500);
@@ -1077,19 +1101,7 @@ const publishPuzzle = async () => {
     document.getElementById('loading-indicator').classList.add('hidden');
     confirmBtn.innerHTML = 'Try Again';
     confirmBtn.disabled = false;
-
-    // Show the error message to the user nicely
-    const errorEl = document.getElementById('publish-error');
-    if (errorEl) {
-      errorEl.textContent = error.message;
-      errorEl.classList.add('show');
-
-      // Auto-hide after 5 seconds
-      if (window.publishErrorTimeout) clearTimeout(window.publishErrorTimeout);
-      window.publishErrorTimeout = setTimeout(() => {
-        errorEl.classList.remove('show');
-      }, 5000);
-    }
+    console.error('Publish error:', error);
   }
 };
 

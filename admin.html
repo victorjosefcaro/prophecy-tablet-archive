@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prophecy Tablet</title>
+  <title>Prophecy Tablet - Admin</title>
   <link rel="stylesheet" href="css/style.css">
   <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
   <script src="js/theme-loader.js" defer></script>
   <script src="js/api.js" defer></script>
   <script src="js/puzzle-core.js" defer></script>
-  <script src="js/create.js" defer></script>
+  <script src="js/admin.js" defer></script>
   <script src="js/theme.js" defer></script>
   <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
 </head>
@@ -31,7 +31,7 @@
     <nav class="navbar-links">
       <a href="index.html"><span data-hover="Daily">Daily</span></a>
       <a href="explore.html"><span data-hover="Explore">Explore</span></a>
-      <a href="create.html" class="active"><span data-hover="Create">Create</span></a>
+      <a href="admin.html" class="active"><span data-hover="Admin">Admin</span></a>
       <a href="archive.html"><span data-hover="Archive">Archive</span></a>
     </nav>
     <div class="navbar-controls">
@@ -71,7 +71,9 @@
   <main class="main-content editor-layout">
     <div class="editor-left-column">
       <div class="editor-card palette-card">
-        <h2>Palette</h2>
+        <h2>Admin Palette</h2>
+        <div class="admin-warning" style="color: #f87171; font-size: 0.8rem; margin-bottom: 1rem;">Internal Use Only -
+          Daily Puzzle Scheduling Enabled</div>
         <div id="piece-palette"></div>
       </div>
 
@@ -94,7 +96,7 @@
             <div class="delete-progress-fill"></div>
           </button>
           <button id="export-button" class="editor-button" title="Publish Puzzle">
-            <i class="fa-solid fa-floppy-disk"></i>
+            <i class="fa-solid fa-share"></i>
           </button>
         </div>
       </div>
@@ -126,8 +128,18 @@
               <label for="author-name-input">Your Name</label>
               <input type="text" id="author-name-input" placeholder="Nameless" maxlength="30">
             </div>
+            <div class="form-group checkbox-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="daily-checkbox">
+                <span class="checkmark"></span>
+                Mark as Daily Puzzle
+              </label>
+            </div>
+            <div id="schedule-group" class="form-group" style="display: none;">
+              <label for="schedule-date-input">Schedule Date</label>
+              <input type="date" id="schedule-date-input">
+            </div>
             <p class="publish-hint">Drag the pieces to adjust their starting positions.</p>
-            <div id="publish-error" class="form-error"></div>
           </div>
           <div class="modal-buttons">
             <button id="cancel-publish-button" class="button secondary-button">Cancel</button>
@@ -170,8 +182,7 @@
         </div>
         <div class="help-section">
           <h3>Publishing</h3>
-          <p>Once you have at least 3 pieces, click the <i class="fa-solid fa-floppy-disk"></i> button to publish. You
-            can
+          <p>Once you have at least 3 pieces, click the <i class="fa-solid fa-share"></i> button to publish. You can
             adjust the starting positions before confirming. You can place a maximum of 10 pieces.</p>
         </div>
       </div>

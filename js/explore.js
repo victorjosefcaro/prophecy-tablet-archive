@@ -140,6 +140,14 @@ const setupEventListeners = () => {
     });
   }
 
+  // Completion modal close on overlay click
+  const completionModal = document.getElementById('completion-modal');
+  if (completionModal) {
+    completionModal.addEventListener('click', (e) => {
+      if (e.target === completionModal) hideModal('completion-modal');
+    });
+  }
+
   // Completion modal star rating
   const completionStars = document.getElementById('completion-star-rating');
   if (completionStars) {
@@ -465,6 +473,7 @@ const updatePerformanceComparison = (userTimeMs, userMoves) => {
 };
 
 const openGameplayView = async (puzzle) => {
+  window.scrollTo(0, 0);
   gridView.style.display = 'none';
   gameplayView.style.display = 'flex';
   document.body.classList.add('no-scroll');

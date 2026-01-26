@@ -129,6 +129,15 @@ const configureCompletionModal = (timeMs, moves, updatedStats) => {
     // Mark as completed in local storage
     if (currentPuzzle?.id) {
         markDailyCompleted(currentPuzzle.id, timeMs, moves);
+
+        // Show View Stats button now that it's completed
+        const viewStatsButton = document.getElementById('view-stats-button');
+        if (viewStatsButton) {
+            viewStatsButton.classList.remove('hidden');
+            viewStatsButton.onclick = () => {
+                showCompletionModal(timeMs, moves, true);
+            };
+        }
     }
 };
 
@@ -189,6 +198,7 @@ const loadDaily = async () => {
     const loadingIndicator = document.getElementById('loading-indicator');
     const puzzleContainer = document.getElementById('daily-puzzle-container');
     const noDailyMessage = document.getElementById('no-daily-message');
+    const viewStatsButton = document.getElementById('view-stats-button');
 
     try {
         const dailyPuzzle = await fetchDailyPuzzle();
@@ -199,12 +209,21 @@ const loadDaily = async () => {
             await setupDailyPuzzle(dailyPuzzle);
             recordPlay(dailyPuzzle.id);
 
-            // If already completed, show modal automatically
+            // If already completed, show modal automatically and display View Stats button
             const completion = getDailyCompletion(dailyPuzzle.id);
             if (completion) {
                 isPuzzleSolved = true;
                 hoveredPiece = null;
                 renderPuzzleScoped(); // Hide the pieces immediately
+
+                // Show View Stats button
+                if (viewStatsButton) {
+                    viewStatsButton.classList.remove('hidden');
+                    viewStatsButton.onclick = () => {
+                        showCompletionModal(completion.time, completion.moves, true);
+                    };
+                }
+
                 setTimeout(() => {
                     showCompletionModal(completion.time, completion.moves, true);
                 }, 500); // Small delay to ensure everything is rendered
