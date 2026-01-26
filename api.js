@@ -16,6 +16,7 @@ const fetchPuzzles = async (options = {}) => {
     if (options.sortBy) params.append('sortBy', options.sortBy);
     if (options.timeRange) params.append('timeRange', options.timeRange);
     if (options.limit) params.append('limit', options.limit);
+    if (options.isDaily) params.append('isDaily', options.isDaily);
 
     const url = `${API_URL}/puzzles${params.toString() ? '?' + params.toString() : ''}`;
 
@@ -99,7 +100,8 @@ const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, schedul
         if (!response.ok) throw new Error(data.error || 'Failed to create puzzle');
         return data;
     } catch (error) {
-        console.error('[API] Error creating puzzle:', error);
+        // We throw the error but don't log it here to avoid cluttering the console 
+        // with expected validation errors.
         throw error;
     }
 };

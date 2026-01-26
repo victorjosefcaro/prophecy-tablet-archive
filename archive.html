@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
   <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
 
-  <script src="puzzles.js" defer></script>
+  <script src="api.js" defer></script>
   <script src="script.js" defer></script>
   <script src="puzzle-core.js" defer></script>
   <script src="puzzle-gameplay.js" defer></script>
@@ -82,22 +82,29 @@
   </header>
 
   <main class="main-content">
-    <div class="canvas-container" id="reference-container-wrapper">
-      <canvas id="reference-canvas"></canvas>
-    </div>
-
-    <div class="canvas-container" id="puzzle-container-wrapper">
-      <canvas id="puzzle-canvas"></canvas>
-    </div>
-
-    <div class="puzzle-info">
-      <div class="puzzle-info-buttons">
-        <button id="prev-puzzle-button" class="button primary-button">Prev</button>
-        <button id="select-level-button" class="button primary-button">Select Puzzle</button>
-        <button id="next-puzzle-button-nav" class="button primary-button">Next</button>
+    <div id="archive-content" style="display: none;">
+      <div class="canvas-container" id="reference-container-wrapper">
+        <canvas id="reference-canvas"></canvas>
       </div>
-      <p class="puzzle-group-name" id="puzzle-group-name"></p>
-      <span class="puzzle-counter" id="puzzle-counter"></span>
+
+      <div class="canvas-container" id="puzzle-container-wrapper">
+        <canvas id="puzzle-canvas"></canvas>
+      </div>
+
+      <div class="puzzle-info">
+        <p class="puzzle-group-name" id="puzzle-group-name"></p>
+        <span class="puzzle-counter" id="puzzle-counter"></span>
+        <div class="puzzle-info-buttons">
+          <button id="prev-puzzle-button" class="button primary-button">Prev</button>
+          <button id="select-level-button" class="button primary-button">Select Puzzle</button>
+          <button id="next-puzzle-button-nav" class="button primary-button">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading-indicator" id="loading-indicator">
+      <div class="spinner"></div>
+      <p></p>
     </div>
   </main>
 

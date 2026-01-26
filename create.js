@@ -1004,6 +1004,7 @@ const openPublishModal = () => {
   confirmBtn.disabled = false;
   confirmBtn.innerHTML = 'Publish';
   puzzleNameInput.value = '';
+  document.getElementById('publish-error').classList.remove('show');
 
   // Show modal
   modal.style.display = 'flex';
@@ -1071,7 +1072,19 @@ const publishPuzzle = async () => {
   } catch (error) {
     confirmBtn.innerHTML = 'Try Again';
     confirmBtn.disabled = false;
-    console.error('Publish error:', error);
+
+    // Show the error message to the user nicely
+    const errorEl = document.getElementById('publish-error');
+    if (errorEl) {
+      errorEl.textContent = error.message;
+      errorEl.classList.add('show');
+
+      // Auto-hide after 5 seconds
+      if (window.publishErrorTimeout) clearTimeout(window.publishErrorTimeout);
+      window.publishErrorTimeout = setTimeout(() => {
+        errorEl.classList.remove('show');
+      }, 5000);
+    }
   }
 };
 
