@@ -48,6 +48,9 @@ const applyTheme = (themeName, isPreview = false) => {
   if (typeof rerenderExplorePreviews === 'function') {
     rerenderExplorePreviews();
   }
+  if (typeof rerenderGameplayCanvases === 'function') {
+    rerenderGameplayCanvases();
+  }
 
   if (!isPreview) {
     localStorage.setItem('selectedTheme', themeName);
@@ -63,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeDropdown = document.getElementById('theme-dropdown');
   const themeOptions = document.querySelectorAll('.theme-option');
 
+  // Flag to prevent document click handler from reverting after a deliberate selection
+  let themeJustSelected = false;
+
   const toggleThemeDropdown = () => {
     if (themeDropdown) {
       themeDropdown.classList.toggle('show');
@@ -72,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (themeSelectorbutton) {
     themeSelectorbutton.addEventListener('click', (event) => {
       event.stopPropagation();
+      event.preventDefault();
       toggleThemeDropdown();
     });
   }
@@ -93,23 +100,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
       option.addEventListener('click', (event) => {
         event.stopPropagation();
+        event.preventDefault();
         clearTimeout(previewTimer);
+
+        // Set flag to prevent document click handler from reverting
+        themeJustSelected = true;
 
         applyTheme(selectedTheme, false);
         if (themeDropdown) {
           themeDropdown.classList.remove('show');
         }
+
+        // Reset flag after a brief delay
+        setTimeout(() => {
+          themeJustSelected = false;
+        }, 100);
       });
     });
   }
 
   document.addEventListener('click', (event) => {
+    // Skip if a theme was just selected
+    if (themeJustSelected) return;
+
     if (themeDropdown && themeSelectorbutton && !themeSelectorbutton.contains(event.target) && !themeDropdown.contains(event.target)) {
       if (themeDropdown.classList.contains('show')) {
         themeDropdown.classList.remove('show');
 
+        // Revert preview to saved theme when clicking outside
         if (document.documentElement.dataset.theme !== currentSavedTheme) {
-          applyTheme(currentSavedTheme, true);
+          applyTheme(currentSavedTheme, false);
         }
       }
     }

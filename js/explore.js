@@ -638,7 +638,22 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
 };
 
 const rerenderExplorePreviews = () => {
+  // Skip if grid view is hidden (user is in gameplay mode)
+  if (gridView && gridView.style.display === 'none') return;
+
   levelPreviews.forEach(preview => {
     drawPuzzlePreview(preview.canvas, preview.puzzlePieces, preview.imageMap);
   });
+};
+
+// Expose function to re-render gameplay canvases when theme changes
+const rerenderGameplayCanvases = () => {
+  if (gameplayView && gameplayView.style.display !== 'none') {
+    if (referencePieces.length > 0) {
+      renderReference(referencePieces);
+    }
+    if (puzzlePieces.length > 0) {
+      renderPuzzleScoped();
+    }
+  }
 };
