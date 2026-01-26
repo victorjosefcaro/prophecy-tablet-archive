@@ -44,8 +44,10 @@ const initializeEditor = async () => {
     // Use 'loadImage' from puzzle-core.js
     const loadedImages = await Promise.all(allUrls.map(loadImage));
     imageMap = Object.fromEntries(allUrls.map((url, i) => [url, loadedImages[i]]));
+    document.getElementById('loading-indicator').classList.add('hidden');
   } catch {
     console.error("Failed to load piece images for the editor.");
+    document.getElementById('loading-indicator').classList.add('hidden');
     return;
   }
 
@@ -1066,10 +1068,13 @@ const publishPuzzle = async () => {
   };
 
   try {
+    document.getElementById('loading-indicator').classList.remove('hidden');
     await createPuzzle(puzzleData, puzzleNameInput.value, authorNameInput.value);
+    document.getElementById('loading-indicator').classList.add('hidden');
     confirmBtn.innerHTML = 'Published';
     setTimeout(closePublishModal, 1500);
   } catch (error) {
+    document.getElementById('loading-indicator').classList.add('hidden');
     confirmBtn.innerHTML = 'Try Again';
     confirmBtn.disabled = false;
 

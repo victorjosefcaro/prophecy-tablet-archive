@@ -455,9 +455,12 @@ canvas {
   max-width: 450px;
 }
 
-#level-select-modal .modal-content,
-#info-modal .modal-content {
+#level-select-modal .modal-content {
   max-width: 800px;
+}
+
+#info-modal .modal-content {
+  max-width: 600px;
 }
 
 .modal-header {
@@ -495,6 +498,20 @@ canvas {
   display: flex;
   gap: 1rem;
   justify-content: center;
+}
+
+.next-puzzle-countdown {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.next-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .modal-buttons button,
@@ -577,7 +594,7 @@ canvas {
 
 .info {
   text-align: left;
-  max-width: 60vw;
+  max-width: 100%;
 }
 
 .info p {
@@ -998,7 +1015,12 @@ canvas {
   align-items: center;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto 1.5rem auto;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  position: sticky;
+  top: var(--navbar-height);
+  background-color: var(--background-color);
+  z-index: 80;
 }
 
 .search-box {

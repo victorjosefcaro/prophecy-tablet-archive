@@ -220,6 +220,34 @@ const loadDaily = async () => {
     }
 };
 
+const startCountdown = () => {
+    const countdownEl = document.getElementById('countdown-timer');
+    if (!countdownEl) return;
+
+    const update = () => {
+        const now = new Date();
+        const nextReset = new Date();
+        nextReset.setUTCHours(24, 0, 0, 0); // Next UTC Midnight
+
+        const diff = nextReset - now;
+        if (diff <= 0) {
+            countdownEl.textContent = "00:00:00";
+            // Optional: reload the page or fetch new daily if it reached zero
+            return;
+        }
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        countdownEl.textContent =
+            `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    };
+
+    update();
+    setInterval(update, 1000);
+};
+
 window.onload = () => {
     initializeCoreCanvases(
         document.getElementById('puzzle-canvas'),
@@ -227,4 +255,5 @@ window.onload = () => {
     );
     initializeEventListeners();
     loadDaily();
+    startCountdown();
 };
