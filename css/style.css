@@ -1423,6 +1423,16 @@ html[data-theme="cyrene"] input[type="date"]::-webkit-calendar-picker-indicator 
   font-size: 0.8rem;
 }
 
+.piece-counter {
+  font-size: 0.9rem;
+  color: var(--primary-text-color);
+  font-weight: 500;
+}
+
+.piece-counter.limit-reached {
+  color: var(--error-color);
+}
+
 /* ===== HELP MODAL ===== */
 .help-modal-content {
   max-width: 500px;

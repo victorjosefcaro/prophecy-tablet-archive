@@ -72,6 +72,7 @@ const initializeEditor = async () => {
   // Initial save for undo baseline
   saveState();
 
+  updatePaletteState(); // Initialize piece counter
   renderAll();
 };
 
@@ -311,9 +312,10 @@ const syncPieceProperties = (sourcePiece) => {
   }
 };
 
-/** Disables or enables the piece palette based on the piece count. */
+/** Disables or enables the piece palette based on the piece count, and updates the counter. */
 const updatePaletteState = () => {
-  const isLimitReached = solutionPieces.length >= 10;
+  const pieceCount = solutionPieces.length;
+  const isLimitReached = pieceCount >= 10;
   const paletteDivs = paletteContainer.querySelectorAll('.palette-item');
 
   paletteDivs.forEach(item => {
@@ -323,6 +325,17 @@ const updatePaletteState = () => {
       item.classList.remove('disabled');
     }
   });
+
+  // Update the piece counter
+  const pieceCounter = document.getElementById('piece-counter');
+  if (pieceCounter) {
+    pieceCounter.textContent = `${pieceCount} / 10`;
+    if (isLimitReached) {
+      pieceCounter.classList.add('limit-reached');
+    } else {
+      pieceCounter.classList.remove('limit-reached');
+    }
+  }
 };
 
 // --- History Management ---
