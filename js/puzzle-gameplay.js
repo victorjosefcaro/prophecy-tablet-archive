@@ -125,6 +125,16 @@ const resetGameplayStats = () => {
   isPuzzleSolved = false;
 };
 
+const resetPuzzlePositions = (puzzlePieces, renderFn) => {
+  if (isPuzzleSolved || isSnapping) return;
+  puzzlePieces.forEach(piece => {
+    piece.col = piece.startCol;
+    piece.row = piece.startRow;
+    updatePiecePixelDimensions(piece, puzzleCanvas);
+  });
+  renderFn();
+};
+
 const onPieceSnapComplete = (piece) => {
   if (piece.col !== piece.initialCol || piece.row !== piece.initialRow) {
     moveCount++;

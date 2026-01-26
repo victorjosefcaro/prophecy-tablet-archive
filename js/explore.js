@@ -112,10 +112,10 @@ window.onload = async () => {
 const setupEventListeners = () => {
   // Back buttons
   document.getElementById('back-to-grid-button').addEventListener('click', showGridView);
-  document.getElementById('back-to-explore-button').addEventListener('click', showGridView);
 
   // Modal buttons
-  document.getElementById('play-again-button').addEventListener('click', resetCurrentPuzzle);
+  document.getElementById('share-completion-button').addEventListener('click', shareCurrentPuzzleLink);
+  document.getElementById('back-to-explore-button').addEventListener('click', showGridView);
 
   // Info modal
   const infoButton = document.getElementById('info-button');
@@ -139,6 +139,11 @@ const setupEventListeners = () => {
       if (e.target === infoModal) closeInfoModal();
     });
   }
+
+  // Canvas reset button
+  document.getElementById('reset-button').addEventListener('click', () => {
+    resetPuzzlePositions(puzzlePieces, renderPuzzleScoped);
+  });
 
   // Completion modal close on overlay click
   const completionModal = document.getElementById('completion-modal');
@@ -339,12 +344,10 @@ const populateExploreGrid = async (puzzles) => {
 
         icon.className = 'fa-solid fa-check';
         text.textContent = 'Link Copied';
-        shareBtn.classList.add('copied');
 
         setTimeout(() => {
           icon.className = 'fa-solid fa-share';
           text.textContent = 'Share';
-          shareBtn.classList.remove('copied');
         }, 2000);
       });
     };
@@ -563,6 +566,45 @@ const resetCurrentPuzzle = () => {
   if (currentPuzzle) {
     loadPuzzle(currentPuzzle);
   }
+};
+
+const shareCurrentPuzzleLink = (e) => {
+  if (!currentPuzzle) return;
+
+  const btn = e.currentTarget;
+  const originalText = btn.textContent;
+
+  const timeTaken = document.getElementById('time-taken').textContent;
+  const movesMade = document.getElementById('moves-made').textContent;
+  const puzzleName = document.getElementById('explore-puzzle-name').textContent;
+  const puzzleAuthor = document.getElementById('explore-puzzle-author').textContent;
+
+  const timeDiffEl = document.getElementById('time-diff');
+  const movesDiffEl = document.getElementById('moves-diff');
+
+  let vsAverage = '';
+  if (timeDiffEl && timeDiffEl.textContent && document.getElementById('performance-comparison').style.display !== 'none') {
+    vsAverage = `\nvs Average:\n- Time: ${timeDiffEl.textContent}\n- Moves: ${movesDiffEl.textContent}`;
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set('puzzle', currentPuzzle.id);
+  const shareUrl = url.toString();
+
+  const shareText = `${puzzleName} ${puzzleAuthor}
+Stats:
+- Time: ${timeTaken}
+- Moves: ${movesMade}${vsAverage}
+
+Play here: ${shareUrl}`;
+
+  navigator.clipboard.writeText(shareText).then(() => {
+    btn.textContent = 'Copied';
+
+    setTimeout(() => {
+      btn.textContent = originalText;
+    }, 2000);
+  });
 };
 
 const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {

@@ -55,6 +55,10 @@ const initializeEventListeners = () => {
 
   document.getElementById('close-level-select-button').addEventListener('click', () => hideModal('level-select-modal'));
   document.getElementById('close-info-modal-button').addEventListener('click', () => hideModal('info-modal'));
+
+  document.getElementById('reset-button').addEventListener('click', () => {
+    resetPuzzlePositions(puzzlePieces, renderPuzzleScoped);
+  });
 };
 
 window.onload = async () => {

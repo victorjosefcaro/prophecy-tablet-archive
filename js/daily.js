@@ -72,6 +72,10 @@ Play here: ${shareUrl}`;
             }, 2000);
         });
     });
+
+    document.getElementById('reset-button').addEventListener('click', () => {
+        resetPuzzlePositions(puzzlePieces, renderPuzzleScoped);
+    });
 };
 
 const updatePerformanceComparison = (userTimeMs, userMoves, stats) => {

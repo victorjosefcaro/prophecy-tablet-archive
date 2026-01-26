@@ -65,6 +65,9 @@ p {
   --primary-text-color: var(--text-light-color);
   --secondary-text-color: var(--text-dark-color);
   --piece-hover-color: var(--text-light-color);
+
+  --success-color: #4ade80;
+  --error-color: #f87171;
 }
 
 html[data-theme="mydei"] {
@@ -218,6 +221,9 @@ html[data-theme="cyrene"] {
   --primary-text-color: var(--text-dark-color);
   --secondary-text-color: var(--text-light-color);
   --piece-hover-color: var(--text-dark-color);
+
+  --success-color: #16a34a;
+  --error-color: #dc2626;
 }
 
 body {
@@ -354,14 +360,25 @@ body.no-scroll {
   padding: 2rem;
 }
 
+.canvas-group,
+.canvas-container {
+  width: min(60vh, 60vw);
+  height: min(60vh, 60vw);
+}
+
+.canvas-group {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .canvas-container {
   position: relative;
   border-radius: 50%;
   border: min(2vh, 2vw) solid var(--container-border-color);
   overflow: hidden;
   background-color: var(--container-bg-color);
-  width: min(60vh, 60vw);
-  height: min(60vh, 60vw);
 }
 
 canvas {
@@ -424,6 +441,30 @@ canvas {
 
 .button:disabled {
   filter: brightness(0.4);
+}
+
+.reset-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  border: transparent;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.reset-button:hover {
+  background-color: var(--background-hover-color);
+}
+
+.reset-button i {
+  font-size: 1.2rem;
 }
 
 .modal {
@@ -657,6 +698,7 @@ canvas {
     gap: 0.5rem;
   }
 
+  .canvas-group,
   .canvas-container {
     width: min(75vh, 75vw);
     height: min(75vh, 75vw);
@@ -1205,11 +1247,9 @@ canvas {
   color: var(--accent-color);
 }
 
-.share-card-btn.copied {
-  opacity: 1;
-  color: #4ade80;
-  /* Success green */
-}
+
+
+
 
 .share-btn-text {
   font-size: 0.9rem;
@@ -1526,11 +1566,11 @@ kbd {
 }
 
 .comparison-value.better {
-  color: #4ade80;
+  color: var(--success-color);
 }
 
 .comparison-value.worse {
-  color: #f87171;
+  color: var(--error-color);
 }
 
 .comparison-value.same {
@@ -1615,4 +1655,3 @@ kbd {
     max-width: 280px;
   }
 }
-
