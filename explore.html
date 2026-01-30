@@ -1,211 +1,221 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prophecy Tablet</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
-    <script src="js/theme-loader.js" defer></script>
-    <script src="js/api.js" defer></script>
-    <script src="js/puzzle-core.js" defer></script>
-    <script src="js/puzzle-gameplay.js" defer></script>
-    <script src="js/explore.js" defer></script>
-    <script src="js/theme.js" defer></script>
-    <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prophecy Tablet</title>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml," />
+  <script src="js/api.js" defer></script>
+  <script src="js/puzzle-core.js" defer></script>
+  <script src="js/puzzle-gameplay.js" defer></script>
+  <script src="js/explore.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
 </head>
 
 <body>
-    <header class="top-navbar">
-        <a href="index.html" class="navbar-brand">
-            <div>
-                <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
-                    aria-label="Prophecy Tablet Logo">
-                    <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
-                    <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
-                    <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor"
-                        shape-rendering="crispEdges" />
-                </svg>
-                <span class="navbar-title">Prophecy Tablet</span>
-            </div>
-        </a>
-        <nav class="navbar-links">
-            <a href="index.html"><span data-hover="Daily">Daily</span></a>
-            <a href="explore.html" class="active"><span data-hover="Explore">Explore</span></a>
-            <a href="create.html"><span data-hover="Create">Create</span></a>
-            <a href="archive.html"><span data-hover="Archive">Archive</span></a>
-        </nav>
-        <div class="navbar-controls">
-            <div class="theme-selector-container">
-                <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
-                    <i class="fa-solid fa-palette"></i>
-                </button>
-                <div id="theme-dropdown" class="theme-dropdown">
-                    <div class="theme-dropdown-column">
-                        <div class="theme-column-header">Dark</div>
-                        <button class="theme-option" data-theme="default">Default</button>
-                        <button class="theme-option" data-theme="mydei">Mydei</button>
-                        <button class="theme-option" data-theme="dhpt">DHPT</button>
-                        <button class="theme-option" data-theme="anaxa">Anaxa</button>
-                        <button class="theme-option" data-theme="cerydra">Cerydra</button>
-                        <button class="theme-option" data-theme="hysilens">Hysilens</button>
-                        <button class="theme-option" data-theme="cipher">Cipher</button>
-                        <button class="theme-option" data-theme="evernight">Evernight</button>
-                        <button class="theme-option" data-theme="hyacine">Hyacine</button>
-                    </div>
-                    <div class="theme-dropdown-column">
-                        <div class="theme-column-header">Light</div>
-                        <button class="theme-option" data-theme="tribbie">Tribbie</button>
-                        <button class="theme-option" data-theme="aglaea">Aglaea</button>
-                        <button class="theme-option" data-theme="phainon">Phainon</button>
-                        <button class="theme-option" data-theme="castorice">Castorice</button>
-                        <button class="theme-option" data-theme="cyrene">Cyrene</button>
-                    </div>
-                </div>
-            </div>
-            <button id="info-button" class="icon-button" aria-label="Information">
-                <i class="fa-solid fa-circle-info"></i>
-            </button>
+  <header class="top-navbar">
+    <a href="index.html" class="navbar-brand">
+      <div>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
+          aria-label="Prophecy Tablet Logo">
+          <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor" shape-rendering="crispEdges" />
+        </svg>
+        <span class="navbar-title">Prophecy Tablet</span>
+      </div>
+    </a>
+    <nav class="navbar-links">
+      <a href="index.html"><span data-hover="Daily">Daily</span></a>
+      <a href="explore.html" class="active"><span data-hover="Explore">Explore</span></a>
+      <a href="create.html"><span data-hover="Create">Create</span></a>
+      <a href="archive.html"><span data-hover="Archive">Archive</span></a>
+    </nav>
+    <div class="navbar-controls">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <div id="theme-dropdown" class="theme-dropdown">
+          <div class="theme-dropdown-column">
+            <div class="theme-column-header">Dark</div>
+            <button class="theme-option" data-theme="default">Default</button>
+            <button class="theme-option" data-theme="mydei">Mydei</button>
+            <button class="theme-option" data-theme="dhpt">DHPT</button>
+            <button class="theme-option" data-theme="anaxa">Anaxa</button>
+            <button class="theme-option" data-theme="cerydra">Cerydra</button>
+            <button class="theme-option" data-theme="hysilens">Hysilens</button>
+            <button class="theme-option" data-theme="cipher">Cipher</button>
+            <button class="theme-option" data-theme="evernight">Evernight</button>
+            <button class="theme-option" data-theme="hyacine">Hyacine</button>
+          </div>
+          <div class="theme-dropdown-column">
+            <div class="theme-column-header">Light</div>
+            <button class="theme-option" data-theme="tribbie">Tribbie</button>
+            <button class="theme-option" data-theme="aglaea">Aglaea</button>
+            <button class="theme-option" data-theme="phainon">Phainon</button>
+            <button class="theme-option" data-theme="castorice">Castorice</button>
+            <button class="theme-option" data-theme="cyrene">Cyrene</button>
+          </div>
         </div>
-    </header>
+      </div>
+      <button id="info-button" class="icon-button" aria-label="Information">
+        <i class="fa-solid fa-circle-info"></i>
+      </button>
+    </div>
+  </header>
 
-    <main class="main-content">
-        <!-- Grid View -->
-        <div id="explore-grid-view">
-            <div class="explore-controls">
-                <div class="search-box">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" id="search-input" placeholder="Search">
-                </div>
-                <div class="filter-controls">
-                    <div class="custom-select">
-                        <select id="sort-field">
-                            <option value="date">Date</option>
-                            <option value="rating" selected>Rating</option>
-                            <option value="playCount">Play Count</option>
-                            <option value="avgTime">Avg Time</option>
-                            <option value="avgMoves">Avg Moves</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                    <div class="custom-select">
-                        <select id="sort-order">
-                            <option value="desc">High to Low</option>
-                            <option value="asc">Low to High</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                    <div class="custom-select">
-                        <select id="time-select">
-                            <option value="all">All Time</option>
-                            <option value="today">Today</option>
-                            <option value="week" selected>This Week</option>
-                            <option value="month">This Month</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                    <div class="custom-select">
-                        <select id="played-filter">
-                            <option value="all">All Puzzles</option>
-                            <option value="unplayed">Unplayed</option>
-                            <option value="played">Played</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                </div>
-            </div>
-            <div id="loading-indicator" class="loading-indicator">
-                <div class="spinner"></div>
-                <p></p>
-            </div>
-            <div id="explore-grid" class="explore-grid">
-                <!-- Puzzles will be loaded here by explore.js -->
-            </div>
-            <p id="no-puzzles-message" class="no-puzzles-message" style="display: none;">No puzzles found.</p>
+  <main class="main-content">
+    <!-- Grid View -->
+    <div id="explore-grid-view">
+      <div class="explore-controls">
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="search-input" placeholder="Search" />
         </div>
-
-        <!-- Gameplay View (hidden by default) -->
-        <div id="explore-gameplay-view" class="main-content" style="display: none;">
-            <div class="canvas-container" id="reference-container-wrapper">
-                <canvas id="reference-canvas"></canvas>
-            </div>
-
-            <div class="canvas-group">
-                <div class="canvas-container" id="puzzle-container-wrapper">
-                    <canvas id="puzzle-canvas"></canvas>
-                </div>
-                <button id="reset-button" class="reset-button" title="Reset Puzzle">
-                    <i class="fa-solid fa-rotate-right"></i>
-                </button>
-            </div>
-
-            <div class="puzzle-info">
-                <p class="puzzle-group-name" id="explore-puzzle-name"></p>
-                <span class="puzzle-counter" id="explore-puzzle-author"></span>
-                <div class="puzzle-info-buttons">
-                    <button id="back-to-grid-button" class="button primary-button">Back to Explore</button>
-                </div>
-            </div>
+        <div class="filter-controls">
+          <div class="custom-select">
+            <select id="sort-field">
+              <option value="date">Date</option>
+              <option value="rating" selected>Rating</option>
+              <option value="playCount">Play Count</option>
+              <option value="avgTime">Avg Time</option>
+              <option value="avgMoves">Avg Moves</option>
+            </select>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="custom-select">
+            <select id="sort-order">
+              <option value="desc">High to Low</option>
+              <option value="asc">Low to High</option>
+            </select>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="custom-select">
+            <select id="time-select">
+              <option value="all">All Time</option>
+              <option value="today">Today</option>
+              <option value="week" selected>This Week</option>
+              <option value="month">This Month</option>
+            </select>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="custom-select">
+            <select id="played-filter">
+              <option value="all">All Puzzles</option>
+              <option value="unplayed">Unplayed</option>
+              <option value="played">Played</option>
+            </select>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
         </div>
-    </main>
-
-    <!-- Completion Modal -->
-    <div class="modal" id="completion-modal">
-        <div class="modal-content">
-            <p class="modal-header">Puzzle Complete</p>
-            <div class="modal-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Time</span>
-                    <span id="time-taken" class="stat-value"></span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Moves</span>
-                    <span id="moves-made" class="stat-value"></span>
-                </div>
-            </div>
-            <div id="performance-comparison" class="performance-comparison" style="display: none;">
-                <div class="comparison-heading">vs Average</div>
-                <div class="comparison-items">
-                    <div class="comparison-item">
-                        <span id="time-diff" class="comparison-value"></span>
-                        <span class="comparison-label">Time</span>
-                    </div>
-                    <div class="comparison-item">
-                        <span id="moves-diff" class="comparison-value"></span>
-                        <span class="comparison-label">Moves</span>
-                    </div>
-                </div>
-            </div>
-            <div id="completion-vote-section" class="completion-vote-section">
-                <p>Rate this puzzle</p>
-                <div class="star-rating" id="completion-star-rating">
-                    <i class="fa-regular fa-star" data-rating="1"></i>
-                    <i class="fa-regular fa-star" data-rating="2"></i>
-                    <i class="fa-regular fa-star" data-rating="3"></i>
-                    <i class="fa-regular fa-star" data-rating="4"></i>
-                    <i class="fa-regular fa-star" data-rating="5"></i>
-                </div>
-            </div>
-            <div class="modal-buttons">
-                <button id="share-completion-button" class="button secondary-button">Share</button>
-                <button id="back-to-explore-button" class="button primary-button">Explore</button>
-            </div>
-        </div>
+      </div>
+      <div id="loading-indicator" class="loading-indicator">
+        <div class="spinner"></div>
+        <p></p>
+      </div>
+      <div id="explore-grid" class="explore-grid">
+        <!-- Puzzles will be loaded here by explore.js -->
+      </div>
+      <p id="no-puzzles-message" class="no-puzzles-message" style="display: none">
+        No puzzles found.
+      </p>
     </div>
 
-    <div class="modal" id="info-modal">
-        <div class="modal-content">
-            <div class="info">
-                <p>A fan-made project inspired by the Prophecy Tablet puzzles in <em>Honkai: Star Rail</em>.</p>
-                <p>Drag pieces to match the target shape. When pieces overlap, the intersecting area toggles between
-                    visible and invisible (odd = visible, even = invisible).</p>
-                <p>Match the shape perfectly to solve the puzzle. Have fun!</p>
-            </div>
-            <button id="close-info-modal-button" class="button primary-button">Close</button>
-        </div>
-    </div>
+    <!-- Gameplay View (hidden by default) -->
+    <div id="explore-gameplay-view" class="main-content" style="display: none">
+      <div class="canvas-container" id="reference-container-wrapper">
+        <canvas id="reference-canvas"></canvas>
+      </div>
 
+      <div class="canvas-group">
+        <div class="canvas-container" id="puzzle-container-wrapper">
+          <canvas id="puzzle-canvas"></canvas>
+        </div>
+        <button id="reset-button" class="reset-button" title="Reset Puzzle">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
+
+      <div class="puzzle-info">
+        <p class="puzzle-group-name" id="explore-puzzle-name"></p>
+        <span class="puzzle-counter" id="explore-puzzle-author"></span>
+        <div class="puzzle-info-buttons">
+          <button id="back-to-grid-button" class="button primary-button">Back to Explore</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Completion Modal -->
+  <div class="modal" id="completion-modal">
+    <div class="modal-content">
+      <p class="modal-header">Puzzle Complete</p>
+      <div class="modal-stats">
+        <div class="stat-item">
+          <span class="stat-label">Time</span>
+          <span id="time-taken" class="stat-value"></span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Moves</span>
+          <span id="moves-made" class="stat-value"></span>
+        </div>
+      </div>
+      <div id="performance-comparison" class="performance-comparison" style="display: none">
+        <div class="comparison-heading">vs Average</div>
+        <div class="comparison-items">
+          <div class="comparison-item">
+            <span id="time-diff" class="comparison-value"></span>
+            <span class="comparison-label">Time</span>
+          </div>
+          <div class="comparison-item">
+            <span id="moves-diff" class="comparison-value"></span>
+            <span class="comparison-label">Moves</span>
+          </div>
+        </div>
+      </div>
+      <div id="completion-vote-section" class="completion-vote-section">
+        <p>Rate this puzzle</p>
+        <div class="star-rating" id="completion-star-rating">
+          <i class="fa-regular fa-star" data-rating="1"></i>
+          <i class="fa-regular fa-star" data-rating="2"></i>
+          <i class="fa-regular fa-star" data-rating="3"></i>
+          <i class="fa-regular fa-star" data-rating="4"></i>
+          <i class="fa-regular fa-star" data-rating="5"></i>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button id="share-completion-button" class="button secondary-button">Share</button>
+        <button id="back-to-explore-button" class="button primary-button">Explore</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="info-modal">
+    <div class="modal-content">
+      <div class="info">
+        <p>
+          A fan-made project inspired by the Prophecy Tablet puzzles in
+          <em>Honkai: Star Rail</em>.
+        </p>
+        <p>
+          Drag pieces to match the target shape. When pieces overlap, the intersecting area
+          toggles between visible and invisible (odd = visible, even = invisible).
+        </p>
+        <p>Match the shape perfectly to solve the puzzle. Have fun!</p>
+      </div>
+      <button id="close-info-modal-button" class="button primary-button">Close</button>
+    </div>
+  </div>
 </body>
 
 </html>

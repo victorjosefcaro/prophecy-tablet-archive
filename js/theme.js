@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (themeOptions.length > 0) {
-    themeOptions.forEach(option => {
+    themeOptions.forEach((option) => {
       let previewTimer;
       const selectedTheme = option.dataset.theme;
 
@@ -123,7 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Skip if a theme was just selected
     if (themeJustSelected) return;
 
-    if (themeDropdown && themeSelectorbutton && !themeSelectorbutton.contains(event.target) && !themeDropdown.contains(event.target)) {
+    if (
+      themeDropdown &&
+      themeSelectorbutton &&
+      !themeSelectorbutton.contains(event.target) &&
+      !themeDropdown.contains(event.target)
+    ) {
       if (themeDropdown.classList.contains('show')) {
         themeDropdown.classList.remove('show');
 

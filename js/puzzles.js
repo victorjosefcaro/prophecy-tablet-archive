@@ -1,750 +1,2838 @@
 const puzzleGroups = [
-  { name: "Strife Ruins Castrum Kremnos", puzzles: [0, 1, 2, 3] },
-  { name: "Abyss of Fate Janusopolis", puzzles: [4, 5, 6, 7, 8, 9] },
-  { name: "Bloodbathed Battlefront Castrum Kremnos", puzzles: [10, 11, 12, 13] },
-  { name: "Murmuring Woods Grove of Epiphany", puzzles: [14, 15, 16, 17] },
-  { name: "Sanctum of Prophecy Janusopolis", puzzles: [18, 19, 20] },
-  { name: "Demigod Council Dawncloud", puzzles: [21, 22] },
-  { name: "Dragonbone City Styxia", puzzles: [23, 24, 25, 26, 27] },
-  { name: "Fortress of Dome Eye of Twilight", puzzles: [28, 29] },
-  { name: "Cloudedge Bastion Ruins", puzzles: [30, 31, 32, 33] },
-  { name: "Lightless Chapel Dawncloud", puzzles: [34] },
-  { name: "Fallen Twilight City Okhema", puzzles: [35] },
-  { name: "Aedes Elysiae", puzzles: [36, 37] },
-  { name: "Warbling Shores Styxia", puzzles: [38] },
-  { name: "Radiant Scarwood Grove of Epiphany", puzzles: [39] },
-  { name: "Universal Matrix Great Tomb of the Nameless Titan", puzzles: [40] },
+  { name: 'Strife Ruins Castrum Kremnos', puzzles: [0, 1, 2, 3] },
+  { name: 'Abyss of Fate Janusopolis', puzzles: [4, 5, 6, 7, 8, 9] },
+  { name: 'Bloodbathed Battlefront Castrum Kremnos', puzzles: [10, 11, 12, 13] },
+  { name: 'Murmuring Woods Grove of Epiphany', puzzles: [14, 15, 16, 17] },
+  { name: 'Sanctum of Prophecy Janusopolis', puzzles: [18, 19, 20] },
+  { name: 'Demigod Council Dawncloud', puzzles: [21, 22] },
+  { name: 'Dragonbone City Styxia', puzzles: [23, 24, 25, 26, 27] },
+  { name: 'Fortress of Dome Eye of Twilight', puzzles: [28, 29] },
+  { name: 'Cloudedge Bastion Ruins', puzzles: [30, 31, 32, 33] },
+  { name: 'Lightless Chapel Dawncloud', puzzles: [34] },
+  { name: 'Fallen Twilight City Okhema', puzzles: [35] },
+  { name: 'Aedes Elysiae', puzzles: [36, 37] },
+  { name: 'Warbling Shores Styxia', puzzles: [38] },
+  { name: 'Radiant Scarwood Grove of Epiphany', puzzles: [39] },
+  { name: 'Universal Matrix Great Tomb of the Nameless Titan', puzzles: [40] },
   { name: "Nightmare's Echo Great Tomb of the Nameless Titan", puzzles: [41] },
-  { name: "Memortis Shore Ruins of Time", puzzles: [42] }
+  { name: 'Memortis Shore Ruins of Time', puzzles: [42] },
 ];
 
-const puzzles = [{
-  // Strife Ruins Castrum Kremnos
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/square.svg', startCol: 10, startRow: 7, shape: 'square', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 4, startRow: 4, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 2, startRow: 10, shape: 'triangle', rotation: 0, size: 0 },
-  ],
-  solutions: [
-    [
-      { src: 'pieces/square.svg', col: 6, row: 6, shape: 'square', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 4, row: 8, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 8, row: 8, shape: 'triangle', rotation: 0, size: 0 },
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 10, shape: 'triangle', rotation: 270, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 5, startRow: 3, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 10, startRow: 4, shape: 'right-triangle', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 1, startRow: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-  ],
-  solutions: [
-    [
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 7, shape: 'right-triangle', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 7, shape: 'right-triangle', rotation: 270, size: 0 },
-    ]
-  ]
-}, {
-  // 3
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 4, startRow: 2, shape: 'right-triangle', rotation: 90, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 7, startRow: 4, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 1, startRow: 7, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 11, startRow: 9, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 4, startRow: 10, shape: 'triangle', rotation: 270, size: 0 },
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 7, shape: 'triangle', rotation: 270, size: 0 },
-    ]
-  ]
-}, {
-  // 4
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 1, startRow: 6, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 11, startRow: 4, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 9, startRow: 7, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 5, startRow: 2, shape: 'diamond', rotation: 0, size: 1 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 6, row: 8, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 5, row: 4, shape: 'diamond', rotation: 0, size: 1 }
-    ]
-  ]
-}, {
-  // Abyss of Fate Janusopolis
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/isosceles-triangle.svg', startCol: 7, startRow: 9, shape: 'triangle', rotation: 0, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 2, startRow: 6, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 9, startRow: 2, shape: 'triangle', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 5, shape: 'triangle', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 5, shape: 'triangle', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 2, startRow: 3, shape: 'right-triangle', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 11, startRow: 8, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 9, startRow: 3, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 7, startRow: 7, shape: 'triangle', rotation: 180, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 8, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 8, shape: 'triangle', rotation: 180, size: 0 }
-    ]
-  ]
-}, {
-  // 3
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 1, startRow: 5, shape: 'right-triangle', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 10, startRow: 4, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 6, startRow: 4, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 11, shape: 'triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 4, row: 5, shape: 'right-triangle', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 8, row: 5, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 3, row: 6, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 9, row: 6, shape: 'triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // 4
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 3, startRow: 3, shape: 'right-triangle', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 6, startRow: 11, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 5, startRow: 10, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 11, startRow: 4, shape: 'triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 7, shape: 'triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // 5
-  puzzlePiecesData: [
-    { src: 'pieces/square.svg', startCol: 3, startRow: 8, shape: 'square', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 6, startRow: 3, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 8, shape: 'triangle', rotation: 270, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 4, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 2, startRow: 4, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 9, startRow: 12, shape: 'triangle', rotation: 90, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/square.svg', col: 6, row: 6, shape: 'square', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 9, shape: 'triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 8, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 8, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 5, shape: 'triangle', rotation: 90, size: 0 }
-    ]
-  ]
-}, {
-  // 6
-  puzzlePiecesData: [
-    { src: 'pieces/square.svg', startCol: 10, startRow: 8, shape: 'square', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 6, startRow: 7, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 1, startRow: 9, shape: 'triangle', rotation: 270, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 2, startRow: 2, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 5, startRow: 11, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 9, startRow: 3, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/square.svg', col: 6, row: 6, shape: 'square', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 3, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 9, row: 7, shape: 'triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // Bloodbathed Battlefront Castrum Kremnos
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/isosceles-triangle.svg', startCol: 1, startRow: 6, shape: 'triangle', rotation: 180, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 7, startRow: 9, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 9, startRow: 3, shape: 'triangle', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 7, shape: 'triangle', rotation: 180, size: 1 },
-      { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 5, shape: 'triangle', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 7, startRow: 3, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 2, startRow: 4, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 4, startRow: 8, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 10, startRow: 7, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 3
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 10, startRow: 5, shape: 'right-triangle', rotation: 90, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 1, startRow: 5, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 4, startRow: 9, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 10, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 5, startRow: 4, shape: 'triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 9, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 3, row: 7, shape: 'triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // 4
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 7, startRow: 6, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 2, startRow: 11, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 5, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 4, startRow: 3, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 3, startRow: 8, shape: 'triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 8, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 8, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // Murmuring Woods Grove of Epiphany
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/isosceles-triangle.svg', startCol: 7, startRow: 9, shape: 'triangle', rotation: 90, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 5, startRow: 4, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 3, startRow: 9, shape: 'triangle', rotation: 90, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 90, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 6, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 8, shape: 'triangle', rotation: 90, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 4, startRow: 10, shape: 'right-triangle', rotation: 90, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 9, startRow: 4, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 2, startRow: 5, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 5, startRow: 1, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 9, startRow: 9, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 3
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 8, startRow: 2, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 3, startRow: 9, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 2, startRow: 5, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 5, startRow: 12, shape: 'triangle', rotation: 270, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 11, startRow: 10, shape: 'triangle', rotation: 90, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 7, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 9, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 11, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 90, size: 0 }
-    ]
-  ]
-}, {
-  // 4
-  puzzlePiecesData: [
-    { src: 'pieces/isosceles-triangle.svg', startCol: 9, startRow: 7, shape: 'triangle', rotation: 180, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 7, startRow: 3, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 5, startRow: 10, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 8, shape: 'triangle', rotation: 180, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 6, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 7, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // Sanctum of Prophecy Janusopolis
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 6, startRow: 8, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 4, startRow: 4, shape: 'right-triangle', rotation: 90, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 11, startRow: 8, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 1, startRow: 9, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 9, startRow: 3, shape: 'right-triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 5, row: 5, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 7, row: 5, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 7, row: 5, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 7, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 5, row: 7, shape: 'right-triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 1, startRow: 8, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 6, startRow: 6, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 11, startRow: 4, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 9, startRow: 9, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 2, startRow: 3, shape: 'triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 6, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 8, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 8, shape: 'triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // 3
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 4, startRow: 1, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 8, startRow: 9, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 10, startRow: 3, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 3, startRow: 8, shape: 'right-triangle', rotation: 90, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 11, startRow: 8, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 8, row: 6, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 8, row: 4, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 4, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 4, row: 6, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // Demigod Council Dawncloud
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 1, startRow: 2, shape: 'trapezoid-left', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 6, startRow: 9, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 11, startRow: 5, shape: 'trapezoid-right', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 9, startRow: 2, shape: 'trapezoid-left', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 4, row: 4, shape: 'trapezoid-left', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 8, row: 4, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 4, row: 6, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 8, row: 6, shape: 'trapezoid-left', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 3, startRow: 9, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 10, startRow: 4, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 10, startRow: 10, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 3, startRow: 3, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 8, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // Dragonbone City Styxia
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 9, startRow: 3, shape: 'right-triangle', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 3, startRow: 6, shape: 'right-triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 9, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 3, startRow: 11, shape: 'triangle', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 7, row: 5, shape: 'right-triangle', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 6, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 7, shape: 'triangle', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/square.svg', startCol: 7, startRow: 2, shape: 'square', rotation: 0, size: 0 },
-    { src: 'pieces/square.svg', startCol: 9, startRow: 9, shape: 'square', rotation: 0, size: 0 },
-    { src: 'pieces/square.svg', startCol: 2, startRow: 6, shape: 'square', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/square.svg', col: 5, row: 5, shape: 'square', rotation: 0, size: 0 },
-      { src: 'pieces/square.svg', col: 5, row: 7, shape: 'square', rotation: 0, size: 0 },
-      { src: 'pieces/square.svg', col: 7, row: 7, shape: 'square', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 3
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 10, startRow: 3, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 7, startRow: 8, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 3, startRow: 3, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 1, startRow: 8, shape: 'diamond', rotation: 0, size: 1 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 8, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 }
-    ]
-  ]
-}, {
-  // 4
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 1, startRow: 4, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 5, startRow: 1, shape: 'trapezoid-right', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 6, startRow: 6, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 9, startRow: 8, shape: 'trapezoid-left', rotation: 180, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 7, row: 4, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 5, row: 4, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 7, row: 6, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 5, row: 6, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ]
-  ]
-}, {
-  // 5
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 1, startRow: 3, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 8, startRow: 8, shape: 'trapezoid-right', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 10, startRow: 3, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 5, startRow: 2, shape: 'trapezoid-left', rotation: 180, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 8, row: 4, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 4, row: 4, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 8, row: 6, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 4, row: 6, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ]
-  ]
-}, {
-  // Fortress of Dome Eye of Twilight
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 4, startRow: 2, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 9, startRow: 11, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 10, startRow: 5, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 2, startRow: 10, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 10, startRow: 3, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 9, startRow: 9, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 0, startRow: 7, shape: 'trapezoid-right', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 5, startRow: 4, shape: 'trapezoid-left', rotation: 180, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 5, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 8, row: 5, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 5, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 4, row: 5, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ]
-  ]
-}, {
-  // Cloudedge Bastion Ruins
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 9, startRow: 9, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 4, startRow: 8, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 10, startRow: 3, shape: 'trapezoid-right', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 2, startRow: 1, shape: 'trapezoid-left', rotation: 180, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 7, row: 5, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 7, row: 3, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 5, row: 7, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 5, row: 5, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 2, startRow: 6, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 7, startRow: 8, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 8, startRow: 5, shape: 'trapezoid-right', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 4, startRow: 0, shape: 'trapezoid-left', rotation: 180, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 2, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 8, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 2, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 8, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ]
-  ]
-}, {
-  // 3
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 6, startRow: 1, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 8, startRow: 7, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 3, startRow: 8, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 11, startRow: 9, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 4, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 4, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 4
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 9, startRow: 3, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 2, startRow: 4, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 7, startRow: 8, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 10, startRow: 10, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // Lightless Chapel Dawncloud
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-left.svg', startCol: 5, startRow: 9, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 11, startRow: 7, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-right.svg', startCol: 2, startRow: 3, shape: 'trapezoid-right', rotation: 0, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 7, startRow: 2, shape: 'trapezoid-left', rotation: 180, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 5, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 7, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-right.svg', col: 6, row: 3, shape: 'trapezoid-right', rotation: 0, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 6, row: 5, shape: 'trapezoid-left', rotation: 180, size: 0 }
-    ]
-  ]
-}, {
-  // Fallen Twilight City Okhema
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 6, startRow: 2, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 10, startRow: 6, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 6, startRow: 10, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 2, startRow: 4, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // Aedes Elysiae
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 6, startRow: 9, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/diamond.svg', startCol: 8, startRow: 2, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 11, startRow: 8, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 2, startRow: 9, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/diamond.svg', col: 4, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 8, row: 5, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // 2
-  puzzlePiecesData: [
-    { src: 'pieces/trapezoid-right.svg', startCol: 5, startRow: 1, shape: 'trapezoid-right', rotation: 180, size: 0 },
-    { src: 'pieces/trapezoid-left.svg', startCol: 11, startRow: 8, shape: 'trapezoid-left', rotation: 0, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 10, startRow: 4, shape: 'right-triangle', rotation: 90, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 3, startRow: 10, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 1, startRow: 5, shape: 'diamond', rotation: 0, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/trapezoid-right.svg', col: 7, row: 5, shape: 'trapezoid-right', rotation: 180, size: 0 },
-      { src: 'pieces/trapezoid-left.svg', col: 5, row: 9, shape: 'trapezoid-left', rotation: 0, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 5, row: 11, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 5, row: 7, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 7, row: 7, shape: 'diamond', rotation: 0, size: 0 }
-    ]
-  ]
-}, {
-  // Warbling Shores Styxia
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 8, startRow: 6, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 8, startRow: 3, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 2, startRow: 4, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 4, startRow: 10, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 6, startRow: 12, shape: 'triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 5, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 7, row: 8, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 5, row: 6, shape: 'triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // Radiant Scarwood Grove of Epiphany
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/right-triangle.svg', startCol: 4, startRow: 9, shape: 'right-triangle', rotation: 90, size: 0 },
-    { src: 'pieces/right-triangle.svg', startCol: 1, startRow: 4, shape: 'right-triangle', rotation: 270, size: 0 },
-    { src: 'pieces/diamond.svg', startCol: 7, startRow: 1, shape: 'diamond', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 7, startRow: 12, shape: 'triangle', rotation: 270, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 11, startRow: 6, shape: 'triangle', rotation: 90, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 90, size: 0 },
-      { src: 'pieces/right-triangle.svg', col: 6, row: 6, shape: 'right-triangle', rotation: 270, size: 0 },
-      { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 270, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 8, row: 7, shape: 'triangle', rotation: 90, size: 0 }
-    ]
-  ]
-}, {
-  // Universal Matrix Great Tomb of the Nameless Titan
-  // 1
-  puzzlePiecesData: [
-    { src: 'pieces/diamond.svg', startCol: 5, startRow: 2, shape: 'diamond', rotation: 0, size: 1 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 8, startRow: 13, shape: 'triangle', rotation: 180, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 3, startRow: 9, shape: 'triangle', rotation: 0, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 1, startRow: 5, shape: 'triangle', rotation: 90, size: 0 },
-    { src: 'pieces/isosceles-triangle.svg', startCol: 10, startRow: 6, shape: 'triangle', rotation: 270, size: 0 }
-  ],
-  solutions: [
-    [
-      { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 9, shape: 'triangle', rotation: 180, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 0, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 8, row: 7, shape: 'triangle', rotation: 90, size: 0 },
-      { src: 'pieces/isosceles-triangle.svg', col: 6, row: 7, shape: 'triangle', rotation: 270, size: 0 }
-    ]
-  ]
-}, {
-  // Nightmare's Echo Great Tomb of the Nameless Titan
-  // 1
-  puzzlePiecesData: [
-    { src: "pieces/diamond.svg", startCol: 8, startRow: 10, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 2, startRow: 2, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 7, startRow: 2, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 10, startRow: 5, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 2, startRow: 7, shape: "diamond", rotation: 0, size: 1 }
-  ],
-  solutions: [
-    [
-      { src: "pieces/diamond.svg", col: 6, row: 4, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 5, row: 6, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 6, row: 8, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 7, row: 6, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 5, row: 5, shape: "diamond", rotation: 0, size: 1 }
-    ]
-  ]
-}, {
-  // Memortis Shore Ruins of Time
-  // 1
-  puzzlePiecesData: [
-    { src: "pieces/diamond.svg", startCol: 5, startRow: 10, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 10, startRow: 2, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 2, startRow: 6, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 5, startRow: 2, shape: "diamond", rotation: 0, size: 0 },
-    { src: "pieces/diamond.svg", startCol: 7, startRow: 6, shape: "diamond", rotation: 0, size: 1 }
-  ],
-  solutions: [
-    [
-      { src: "pieces/diamond.svg", col: 4, row: 5, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 8, row: 5, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 6, row: 7, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 6, row: 4, shape: "diamond", rotation: 0, size: 0 },
-      { src: "pieces/diamond.svg", col: 5, row: 4, shape: "diamond", rotation: 0, size: 1 }
-    ]
-  ]
-}];
+const puzzles = [
+  {
+    // Strife Ruins Castrum Kremnos
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/square.svg',
+        startCol: 10,
+        startRow: 7,
+        shape: 'square',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 4,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 2,
+        startRow: 10,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/square.svg', col: 6, row: 6, shape: 'square', rotation: 0, size: 0 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 4,
+          row: 8,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 8,
+          row: 8,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 10,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 5,
+        startRow: 3,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 10,
+        startRow: 4,
+        shape: 'right-triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 1,
+        startRow: 6,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 6,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 6,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'right-triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 3
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 4,
+        startRow: 2,
+        shape: 'right-triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 7,
+        startRow: 4,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 1,
+        startRow: 7,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 11,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 4,
+        startRow: 10,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 7,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 4
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 1,
+        startRow: 6,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 11,
+        startRow: 4,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 9,
+        startRow: 7,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 5,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 6, row: 8, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 7, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 4, shape: 'diamond', rotation: 0, size: 1 },
+      ],
+    ],
+  },
+  {
+    // Abyss of Fate Janusopolis
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 7,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 2,
+        startRow: 6,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 9,
+        startRow: 2,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 5,
+          shape: 'triangle',
+          rotation: 0,
+          size: 1,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 5,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 2,
+        startRow: 3,
+        shape: 'right-triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 11,
+        startRow: 8,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 9,
+        startRow: 3,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 7,
+        startRow: 7,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 8,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 8,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 3
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 1,
+        startRow: 5,
+        shape: 'right-triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 10,
+        startRow: 4,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 6,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 11,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 4,
+          row: 5,
+          shape: 'right-triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 8,
+          row: 5,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 3,
+          row: 6,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 9,
+          row: 6,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 4
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 3,
+        startRow: 3,
+        shape: 'right-triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 6,
+        startRow: 11,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 5,
+        startRow: 10,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 11,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 7,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 5
+    puzzlePiecesData: [
+      { src: 'pieces/square.svg', startCol: 3, startRow: 8, shape: 'square', rotation: 0, size: 0 },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 6,
+        startRow: 3,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 8,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 2,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 9,
+        startRow: 12,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/square.svg', col: 6, row: 6, shape: 'square', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 9,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 8,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 8,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 5,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 6
+    puzzlePiecesData: [
+      {
+        src: 'pieces/square.svg',
+        startCol: 10,
+        startRow: 8,
+        shape: 'square',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 6,
+        startRow: 7,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 1,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 5,
+        startRow: 11,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 9,
+        startRow: 3,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/square.svg', col: 6, row: 6, shape: 'square', rotation: 0, size: 0 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 3,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 9,
+          row: 7,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // Bloodbathed Battlefront Castrum Kremnos
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 1,
+        startRow: 6,
+        shape: 'triangle',
+        rotation: 180,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 9,
+        startRow: 3,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 7,
+          shape: 'triangle',
+          rotation: 180,
+          size: 1,
+        },
+        { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 5,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 3,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 4,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 4,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 7,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 7, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // 3
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 10,
+        startRow: 5,
+        shape: 'right-triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 1,
+        startRow: 5,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 4,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 10,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 5,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 9,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 3,
+          row: 7,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 4
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 6,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 2,
+        startRow: 11,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 5,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 4,
+        startRow: 3,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 3,
+        startRow: 8,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 6,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 8,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 8,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // Murmuring Woods Grove of Epiphany
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 7,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 90,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 5,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 3,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 1,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 8,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 4,
+        startRow: 10,
+        shape: 'right-triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 9,
+        startRow: 4,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 5,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 5,
+        startRow: 1,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 9,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // 3
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 8,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 3,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 2,
+        startRow: 5,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 5,
+        startRow: 12,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 11,
+        startRow: 10,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 7, shape: 'diamond', rotation: 0, size: 1 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 9,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 11,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 6,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 6,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 4
+    puzzlePiecesData: [
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 9,
+        startRow: 7,
+        shape: 'triangle',
+        rotation: 180,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 7,
+        startRow: 3,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 5,
+        startRow: 10,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 8,
+          shape: 'triangle',
+          rotation: 180,
+          size: 1,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 6, row: 7, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // Sanctum of Prophecy Janusopolis
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 6,
+        startRow: 8,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 4,
+        startRow: 4,
+        shape: 'right-triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 11,
+        startRow: 8,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 1,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 9,
+        startRow: 3,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 5,
+          row: 5,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 7,
+          row: 5,
+          shape: 'right-triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 7,
+          row: 5,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 7, row: 7, shape: 'diamond', rotation: 0, size: 0 },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 5,
+          row: 7,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 1,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 6,
+        startRow: 6,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 11,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 9,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 2,
+        startRow: 3,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 6,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 6,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 8,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 8,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 3
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 4,
+        startRow: 1,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 8,
+        startRow: 9,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 10,
+        startRow: 3,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 3,
+        startRow: 8,
+        shape: 'right-triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 11,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 8,
+          row: 6,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 8,
+          row: 4,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 4,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 4,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 90,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // Demigod Council Dawncloud
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 1,
+        startRow: 2,
+        shape: 'trapezoid-left',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 6,
+        startRow: 9,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 11,
+        startRow: 5,
+        shape: 'trapezoid-right',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 9,
+        startRow: 2,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 4,
+          row: 4,
+          shape: 'trapezoid-left',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 8,
+          row: 4,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 4,
+          row: 6,
+          shape: 'trapezoid-right',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 8,
+          row: 6,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 3,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 4,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 10,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 3,
+        startRow: 3,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 1 },
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 7, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 8, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // Dragonbone City Styxia
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 9,
+        startRow: 3,
+        shape: 'right-triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 3,
+        startRow: 6,
+        shape: 'right-triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 3,
+        startRow: 11,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 7,
+          row: 5,
+          shape: 'right-triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 7,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      { src: 'pieces/square.svg', startCol: 7, startRow: 2, shape: 'square', rotation: 0, size: 0 },
+      { src: 'pieces/square.svg', startCol: 9, startRow: 9, shape: 'square', rotation: 0, size: 0 },
+      { src: 'pieces/square.svg', startCol: 2, startRow: 6, shape: 'square', rotation: 0, size: 0 },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/square.svg', col: 5, row: 5, shape: 'square', rotation: 0, size: 0 },
+        { src: 'pieces/square.svg', col: 5, row: 7, shape: 'square', rotation: 0, size: 0 },
+        { src: 'pieces/square.svg', col: 7, row: 7, shape: 'square', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // 3
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 3,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 3,
+        startRow: 3,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 1,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 8, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+      ],
+    ],
+  },
+  {
+    // 4
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 1,
+        startRow: 4,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 5,
+        startRow: 1,
+        shape: 'trapezoid-right',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 6,
+        startRow: 6,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 9,
+        startRow: 8,
+        shape: 'trapezoid-left',
+        rotation: 180,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 7,
+          row: 4,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 5,
+          row: 4,
+          shape: 'trapezoid-right',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 7,
+          row: 6,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 5,
+          row: 6,
+          shape: 'trapezoid-left',
+          rotation: 180,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 5
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 1,
+        startRow: 3,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 8,
+        startRow: 8,
+        shape: 'trapezoid-right',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 10,
+        startRow: 3,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 5,
+        startRow: 2,
+        shape: 'trapezoid-left',
+        rotation: 180,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 8,
+          row: 4,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 4,
+          row: 4,
+          shape: 'trapezoid-right',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 8,
+          row: 6,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 4,
+          row: 6,
+          shape: 'trapezoid-left',
+          rotation: 180,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // Fortress of Dome Eye of Twilight
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 4,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 9,
+        startRow: 11,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 5,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 10,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 1 },
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 7, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 10,
+        startRow: 3,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 9,
+        startRow: 9,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 0,
+        startRow: 7,
+        shape: 'trapezoid-right',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 5,
+        startRow: 4,
+        shape: 'trapezoid-left',
+        rotation: 180,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 6,
+          row: 5,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 8,
+          row: 5,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 6,
+          row: 5,
+          shape: 'trapezoid-right',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 4,
+          row: 5,
+          shape: 'trapezoid-left',
+          rotation: 180,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // Cloudedge Bastion Ruins
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 9,
+        startRow: 9,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 4,
+        startRow: 8,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 10,
+        startRow: 3,
+        shape: 'trapezoid-right',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 2,
+        startRow: 1,
+        shape: 'trapezoid-left',
+        rotation: 180,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 7,
+          row: 5,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 7,
+          row: 3,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 5,
+          row: 7,
+          shape: 'trapezoid-right',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 5,
+          row: 5,
+          shape: 'trapezoid-left',
+          rotation: 180,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 2,
+        startRow: 6,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 7,
+        startRow: 8,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 8,
+        startRow: 5,
+        shape: 'trapezoid-right',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 4,
+        startRow: 0,
+        shape: 'trapezoid-left',
+        rotation: 180,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 6,
+          row: 2,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 6,
+          row: 8,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 6,
+          row: 2,
+          shape: 'trapezoid-right',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 6,
+          row: 8,
+          shape: 'trapezoid-left',
+          rotation: 180,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // 3
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 6,
+        startRow: 1,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 8,
+        startRow: 7,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 3,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 11,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 4, shape: 'diamond', rotation: 0, size: 1 },
+        { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 7, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 4, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // 4
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 9,
+        startRow: 3,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 4,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 10,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        { src: 'pieces/diamond.svg', col: 6, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // Lightless Chapel Dawncloud
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 5,
+        startRow: 9,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 11,
+        startRow: 7,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 2,
+        startRow: 3,
+        shape: 'trapezoid-right',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 7,
+        startRow: 2,
+        shape: 'trapezoid-left',
+        rotation: 180,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 6,
+          row: 5,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 6,
+          row: 7,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 6,
+          row: 3,
+          shape: 'trapezoid-right',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 6,
+          row: 5,
+          shape: 'trapezoid-left',
+          rotation: 180,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // Fallen Twilight City Okhema
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 6,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 6,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 6,
+        startRow: 10,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 4,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 4, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 8, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // Aedes Elysiae
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 6,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 8,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 11,
+        startRow: 8,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 9,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        { src: 'pieces/diamond.svg', col: 4, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 8, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // 2
+    puzzlePiecesData: [
+      {
+        src: 'pieces/trapezoid-right.svg',
+        startCol: 5,
+        startRow: 1,
+        shape: 'trapezoid-right',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/trapezoid-left.svg',
+        startCol: 11,
+        startRow: 8,
+        shape: 'trapezoid-left',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 10,
+        startRow: 4,
+        shape: 'right-triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 3,
+        startRow: 10,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 1,
+        startRow: 5,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/trapezoid-right.svg',
+          col: 7,
+          row: 5,
+          shape: 'trapezoid-right',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/trapezoid-left.svg',
+          col: 5,
+          row: 9,
+          shape: 'trapezoid-left',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 5,
+          row: 11,
+          shape: 'right-triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 5,
+          row: 7,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 7, row: 7, shape: 'diamond', rotation: 0, size: 0 },
+      ],
+    ],
+  },
+  {
+    // Warbling Shores Styxia
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 8,
+        startRow: 6,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 8,
+        startRow: 3,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 2,
+        startRow: 4,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 4,
+        startRow: 10,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 6,
+        startRow: 12,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 5,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 7,
+          row: 8,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 5,
+          row: 6,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // Radiant Scarwood Grove of Epiphany
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 4,
+        startRow: 9,
+        shape: 'right-triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/right-triangle.svg',
+        startCol: 1,
+        startRow: 4,
+        shape: 'right-triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 1,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 7,
+        startRow: 12,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 11,
+        startRow: 6,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/right-triangle.svg',
+          col: 6,
+          row: 6,
+          shape: 'right-triangle',
+          rotation: 270,
+          size: 0,
+        },
+        { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 8,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // Universal Matrix Great Tomb of the Nameless Titan
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 5,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 8,
+        startRow: 13,
+        shape: 'triangle',
+        rotation: 180,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 3,
+        startRow: 9,
+        shape: 'triangle',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 1,
+        startRow: 5,
+        shape: 'triangle',
+        rotation: 90,
+        size: 0,
+      },
+      {
+        src: 'pieces/isosceles-triangle.svg',
+        startCol: 10,
+        startRow: 6,
+        shape: 'triangle',
+        rotation: 270,
+        size: 0,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 9,
+          shape: 'triangle',
+          rotation: 180,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'triangle',
+          rotation: 0,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 8,
+          row: 7,
+          shape: 'triangle',
+          rotation: 90,
+          size: 0,
+        },
+        {
+          src: 'pieces/isosceles-triangle.svg',
+          col: 6,
+          row: 7,
+          shape: 'triangle',
+          rotation: 270,
+          size: 0,
+        },
+      ],
+    ],
+  },
+  {
+    // Nightmare's Echo Great Tomb of the Nameless Titan
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 8,
+        startRow: 10,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 5,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 7,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 6, row: 4, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 8, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 7, row: 6, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 5, shape: 'diamond', rotation: 0, size: 1 },
+      ],
+    ],
+  },
+  {
+    // Memortis Shore Ruins of Time
+    // 1
+    puzzlePiecesData: [
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 5,
+        startRow: 10,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 10,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 2,
+        startRow: 6,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 5,
+        startRow: 2,
+        shape: 'diamond',
+        rotation: 0,
+        size: 0,
+      },
+      {
+        src: 'pieces/diamond.svg',
+        startCol: 7,
+        startRow: 6,
+        shape: 'diamond',
+        rotation: 0,
+        size: 1,
+      },
+    ],
+    solutions: [
+      [
+        { src: 'pieces/diamond.svg', col: 4, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 8, row: 5, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 7, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 6, row: 4, shape: 'diamond', rotation: 0, size: 0 },
+        { src: 'pieces/diamond.svg', col: 5, row: 4, shape: 'diamond', rotation: 0, size: 1 },
+      ],
+    ],
+  },
+];

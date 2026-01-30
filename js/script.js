@@ -25,8 +25,12 @@ const renderAll = () => {
 };
 
 const initializeEventListeners = () => {
-  puzzleCanvas.addEventListener('pointerdown', (e) => handlePointerDown(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved));
-  puzzleCanvas.addEventListener('pointermove', (e) => handleHover(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved));
+  puzzleCanvas.addEventListener('pointerdown', (e) =>
+    handlePointerDown(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved)
+  );
+  puzzleCanvas.addEventListener('pointermove', (e) =>
+    handleHover(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved)
+  );
   puzzleCanvas.addEventListener('pointerleave', () => {
     if (hoveredPiece) {
       hoveredPiece = null;
@@ -40,7 +44,9 @@ const initializeEventListeners = () => {
     if (e.target.id === 'completion-modal') hideModal('completion-modal');
   });
 
-  document.getElementById('select-level-button').addEventListener('click', () => showModal('level-select-modal'));
+  document
+    .getElementById('select-level-button')
+    .addEventListener('click', () => showModal('level-select-modal'));
   document.getElementById('level-select-modal').addEventListener('click', (e) => {
     if (e.target.id === 'level-select-modal') hideModal('level-select-modal');
   });
@@ -53,8 +59,12 @@ const initializeEventListeners = () => {
     if (e.target.id === 'info-modal') hideModal('info-modal');
   });
 
-  document.getElementById('close-level-select-button').addEventListener('click', () => hideModal('level-select-modal'));
-  document.getElementById('close-info-modal-button').addEventListener('click', () => hideModal('info-modal'));
+  document
+    .getElementById('close-level-select-button')
+    .addEventListener('click', () => hideModal('level-select-modal'));
+  document
+    .getElementById('close-info-modal-button')
+    .addEventListener('click', () => hideModal('info-modal'));
 
   document.getElementById('reset-button').addEventListener('click', () => {
     resetPuzzlePositions(puzzlePieces, renderPuzzleScoped);
@@ -85,7 +95,7 @@ const loadArchivePuzzles = async () => {
 
   // Filter out today's puzzle - it should be played on the main page, not archive
   const today = new Date().toISOString().split('T')[0];
-  puzzles = puzzles.filter(p => p.scheduledDate !== today);
+  puzzles = puzzles.filter((p) => p.scheduledDate !== today);
 
   if (puzzles.length === 0) {
     loadingIndicator.classList.add('hidden');
@@ -104,19 +114,23 @@ const loadArchivePuzzles = async () => {
 };
 
 const preloadImages = async (puzzlesToLoad) => {
-  const allPieceUrls = [...new Set(puzzlesToLoad.flatMap(p => {
-    const data = p.puzzleData;
-    return [
-      ...data.puzzlePiecesData.map(pd => pd.src),
-      ...data.solutions[0].map(s => s.src)
-    ];
-  }))];
+  const allPieceUrls = [
+    ...new Set(
+      puzzlesToLoad.flatMap((p) => {
+        const data = p.puzzleData;
+        return [
+          ...data.puzzlePiecesData.map((pd) => pd.src),
+          ...data.solutions[0].map((s) => s.src),
+        ];
+      })
+    ),
+  ];
 
   try {
     const loadedImages = await Promise.all(allPieceUrls.map(loadImage));
     imageMap = Object.fromEntries(allPieceUrls.map((url, i) => [url, loadedImages[i]]));
   } catch (error) {
-    console.error("Failed to preload images:", error);
+    console.error('Failed to preload images:', error);
   }
 };
 
@@ -145,15 +159,15 @@ const loadPuzzle = async (index) => {
     ...data,
     col: data.startCol,
     row: data.startRow,
-    img: imageMap[data.src]
+    img: imageMap[data.src],
   }));
-  puzzlePieces.forEach(p => updatePiecePixelDimensions(p, puzzleCanvas));
+  puzzlePieces.forEach((p) => updatePiecePixelDimensions(p, puzzleCanvas));
 
-  referencePieces = solutionForReference.map(data => ({
+  referencePieces = solutionForReference.map((data) => ({
     ...data,
-    img: imageMap[data.src]
+    img: imageMap[data.src],
   }));
-  referencePieces.forEach(p => updatePiecePixelDimensions(p, referenceCanvas));
+  referencePieces.forEach((p) => updatePiecePixelDimensions(p, referenceCanvas));
 
   updatePuzzleCounter();
   updateNavButtons();
@@ -188,7 +202,7 @@ const updatePuzzleCounter = () => {
   const date = new Date(puzzle.scheduledDate + 'T00:00:00').toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
-    year: 'numeric'
+    year: 'numeric',
   });
 
   groupNameEl.textContent = `Daily Puzzle #${puzzle.dailyNumber}`;
@@ -196,8 +210,9 @@ const updatePuzzleCounter = () => {
 };
 
 const updateNavButtons = () => {
-  document.getElementById('prev-puzzle-button').disabled = (currentPuzzleIndex === 0);
-  document.getElementById('next-puzzle-button-nav').disabled = (currentPuzzleIndex === puzzles.length - 1);
+  document.getElementById('prev-puzzle-button').disabled = currentPuzzleIndex === 0;
+  document.getElementById('next-puzzle-button-nav').disabled =
+    currentPuzzleIndex === puzzles.length - 1;
 };
 
 const goToPreviousPuzzle = () => {
@@ -231,7 +246,7 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
   tempPreviewCtx.imageSmoothingEnabled = false;
   tempPreviewCtx.globalCompositeOperation = 'xor';
 
-  puzzlePieces.forEach(data => {
+  puzzlePieces.forEach((data) => {
     const piece = { ...data, img: imageMap[data.src] };
     updatePiecePixelDimensions(piece, canvas);
     drawImageTransformed(tempPreviewCtx, piece);
@@ -263,7 +278,7 @@ const populateLevelSelector = () => {
   // But if we want newest first in the grid, we could reverse them.
   // Actually, oldest first is fine for an archive if that's how it's fetched.
 
-  Object.keys(groups).forEach(monthYear => {
+  Object.keys(groups).forEach((monthYear) => {
     const groupContainer = document.createElement('div');
     groupContainer.className = 'level-group';
 
@@ -292,7 +307,7 @@ const populateLevelSelector = () => {
       const puzzleDate = new Date(puzzle.scheduledDate + 'T00:00:00');
       dateLabel.textContent = puzzleDate.toLocaleDateString('en-US', {
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
       });
 
       drawPuzzlePreview(canvas, solutionPieces, imageMap);
@@ -316,7 +331,7 @@ const populateLevelSelector = () => {
 };
 
 const updateActiveLevelInSelector = () => {
-  document.querySelectorAll('.level-select-preview').forEach(el => {
+  document.querySelectorAll('.level-select-preview').forEach((el) => {
     el.classList.remove('active');
   });
   const current = document.getElementById(`level-preview-${currentPuzzleIndex}`);

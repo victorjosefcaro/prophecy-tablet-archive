@@ -12,15 +12,15 @@ let puzzleCanvas, puzzleCtx, referenceCanvas, referenceCtx, tempCanvas, tempCtx;
 
 const processPuzzleData = (pieceData) => {
   const baseSizes = {
-    'square': { w: 2, h: 2 },
-    'triangle': { w: 2, h: 1 },
+    square: { w: 2, h: 2 },
+    triangle: { w: 2, h: 1 },
     'right-triangle': { w: 2, h: 2 },
-    'diamond': { w: 2, h: 2 },
+    diamond: { w: 2, h: 2 },
     'trapezoid-left': { w: 2, h: 3 },
     'trapezoid-right': { w: 2, h: 3 },
   };
 
-  return pieceData.map(p => {
+  return pieceData.map((p) => {
     const base = baseSizes[p.shape];
     if (!base) {
       console.warn(`Unknown shape: ${p.shape}`);
@@ -61,7 +61,7 @@ const initializeCoreCanvases = (pCanvas, rCanvas) => {
   tempCanvas = document.createElement('canvas');
   tempCtx = tempCanvas.getContext('2d');
 
-  [puzzleCtx, referenceCtx, tempCtx].forEach(ctx => {
+  [puzzleCtx, referenceCtx, tempCtx].forEach((ctx) => {
     ctx.imageSmoothingEnabled = false;
   });
 };
@@ -87,11 +87,11 @@ const resizeCanvases = (pieces = []) => {
   tempCanvas.width = adjustedPuzzleSize * dpr;
   tempCanvas.height = adjustedPuzzleSize * dpr;
 
-  [puzzleCtx, referenceCtx, tempCtx].forEach(ctx => {
+  [puzzleCtx, referenceCtx, tempCtx].forEach((ctx) => {
     ctx.imageSmoothingEnabled = false;
   });
 
-  pieces.forEach(piece => updatePiecePixelDimensions(piece, puzzleCanvas));
+  pieces.forEach((piece) => updatePiecePixelDimensions(piece, puzzleCanvas));
 };
 
 const updatePiecePixelDimensions = (piece, canvas) => {
@@ -141,17 +141,11 @@ const drawImageTransformed = (ctx, piece) => {
     y -= cellHeight * 0.5;
   }
 
-  const angleInRad = (piece.rotation || 0) * Math.PI / 180;
+  const angleInRad = ((piece.rotation || 0) * Math.PI) / 180;
   ctx.save();
   ctx.translate(x + piece.width / 2, y + piece.height / 2);
   ctx.rotate(angleInRad);
-  ctx.drawImage(
-    piece.img,
-    -piece.width / 2,
-    -piece.height / 2,
-    piece.width,
-    piece.height
-  );
+  ctx.drawImage(piece.img, -piece.width / 2, -piece.height / 2, piece.width, piece.height);
   ctx.restore();
 };
 
@@ -171,7 +165,7 @@ const addPiecePathToContext = (ctx, piece) => {
     y -= cellHeight * 0.5;
   }
 
-  const angleInRad = (piece.rotation || 0) * Math.PI / 180;
+  const angleInRad = ((piece.rotation || 0) * Math.PI) / 180;
   ctx.save();
   ctx.translate(x + piece.width / 2, y + piece.height / 2);
   ctx.rotate(angleInRad);
@@ -231,7 +225,7 @@ const renderReference = (referencePieces) => {
   tempRefCtx.globalCompositeOperation = 'source-over';
   tempRefCtx.fillStyle = 'black';
   tempRefCtx.beginPath();
-  referencePieces.forEach(piece => {
+  referencePieces.forEach((piece) => {
     updatePiecePixelDimensions(piece, referenceCanvas);
     addPiecePathToContext(tempRefCtx, piece);
   });
@@ -264,7 +258,7 @@ const renderPuzzle = (puzzlePieces, pieceOpacity = 1.0, showGuide = true) => {
   tempCtx.fillStyle = 'black';
 
   tempCtx.beginPath();
-  puzzlePieces.forEach(piece => {
+  puzzlePieces.forEach((piece) => {
     addPiecePathToContext(tempCtx, piece);
   });
 
@@ -304,7 +298,7 @@ const drawBorder = (piece, color, ctx = puzzleCtx) => {
     y -= cellHeight * 0.5;
   }
 
-  const angleInRad = (piece.rotation || 0) * Math.PI / 180;
+  const angleInRad = ((piece.rotation || 0) * Math.PI) / 180;
   ctx.save();
   ctx.strokeStyle = color;
   ctx.lineWidth = 3 * (window.devicePixelRatio || 1);
@@ -352,7 +346,7 @@ const drawBorder = (piece, color, ctx = puzzleCtx) => {
 };
 
 const isPointInPiece = (_ctx, piece, mouseX, mouseY) => {
-  const angleInRad = (piece.rotation || 0) * Math.PI / 180;
+  const angleInRad = ((piece.rotation || 0) * Math.PI) / 180;
 
   // Create a local temporary canvas if tempCtx isn't available (e.g., in editor)
   let ctx;
@@ -409,7 +403,7 @@ const isPointInPiece = (_ctx, piece, mouseX, mouseY) => {
   const isInside = ctx.isPointInPath(mouseX, mouseY);
   ctx.restore();
   return isInside;
-}
+};
 
 const getMousePos = (e) => {
   const rect = puzzleCanvas.getBoundingClientRect();
@@ -428,29 +422,62 @@ const getRotatedBoundingBoxInPixels = (piece) => {
 
   switch (piece.shape) {
     case 'square':
-      vertices = [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]];
+      vertices = [
+        [-w / 2, -h / 2],
+        [w / 2, -h / 2],
+        [w / 2, h / 2],
+        [-w / 2, h / 2],
+      ];
       break;
     case 'right-triangle':
-      vertices = [[-w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]];
+      vertices = [
+        [-w / 2, -h / 2],
+        [w / 2, h / 2],
+        [-w / 2, h / 2],
+      ];
       break;
     case 'triangle':
-      vertices = [[0, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]];
+      vertices = [
+        [0, -h / 2],
+        [w / 2, h / 2],
+        [-w / 2, h / 2],
+      ];
       break;
     case 'diamond':
-      vertices = [[0, -h / 2], [w / 2, 0], [0, h / 2], [-w / 2, 0]];
+      vertices = [
+        [0, -h / 2],
+        [w / 2, 0],
+        [0, h / 2],
+        [-w / 2, 0],
+      ];
       break;
     case 'trapezoid-left':
-      vertices = [[-w / 2, -h / 6], [0, -h / 2], [w / 2, -h / 6], [-w / 2, h / 2]];
+      vertices = [
+        [-w / 2, -h / 6],
+        [0, -h / 2],
+        [w / 2, -h / 6],
+        [-w / 2, h / 2],
+      ];
       break;
     case 'trapezoid-right':
-      vertices = [[-w / 2, -h / 6], [0, -h / 2], [w / 2, -h / 6], [w / 2, h / 2]];
+      vertices = [
+        [-w / 2, -h / 6],
+        [0, -h / 2],
+        [w / 2, -h / 6],
+        [w / 2, h / 2],
+      ];
       break;
     default:
-      vertices = [[-w / 2, -h / 2], [w / 2, -h / 2], [w / 2, h / 2], [-w / 2, h / 2]];
+      vertices = [
+        [-w / 2, -h / 2],
+        [w / 2, -h / 2],
+        [w / 2, h / 2],
+        [-w / 2, h / 2],
+      ];
       break;
   }
 
-  const angleRad = (piece.rotation || 0) * Math.PI / 180;
+  const angleRad = ((piece.rotation || 0) * Math.PI) / 180;
   const cosA = Math.cos(angleRad);
   const sinA = Math.sin(angleRad);
 
@@ -460,8 +487,8 @@ const getRotatedBoundingBoxInPixels = (piece) => {
     return [xPrime, yPrime];
   });
 
-  const xs = rotatedVertices.map(v => v[0]);
-  const ys = rotatedVertices.map(v => v[1]);
+  const xs = rotatedVertices.map((v) => v[0]);
+  const ys = rotatedVertices.map((v) => v[1]);
   const minX = Math.min(...xs);
   const maxX = Math.max(...xs);
   const minY = Math.min(...ys);
@@ -471,7 +498,7 @@ const getRotatedBoundingBoxInPixels = (piece) => {
     offsetX: minX,
     offsetY: minY,
     width: maxX - minX,
-    height: maxY - minY
+    height: maxY - minY,
   };
 };
 
@@ -517,7 +544,7 @@ const renderPiecesToMask = (pieces, canvas) => {
 
   maskCtx.fillStyle = 'white';
   maskCtx.beginPath();
-  pieces.forEach(piece => {
+  pieces.forEach((piece) => {
     updatePiecePixelDimensions(piece, canvas);
     addPiecePathToContext(maskCtx, piece);
   });

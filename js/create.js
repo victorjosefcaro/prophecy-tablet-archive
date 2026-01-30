@@ -14,8 +14,8 @@ let deleteAllAnimationTimer = null; // Timer to delay the start of the delete an
 let isPublishModalOpen = false;
 
 // --- Undo / Redo History ---
-let undoStack = [];
-let redoStack = [];
+const undoStack = [];
+const redoStack = [];
 const MAX_HISTORY = 50;
 
 // --- Canvas & DOM Elements ---
@@ -32,7 +32,7 @@ const PIECE_TYPES = [
   { src: 'pieces/right-triangle.svg', gridWidth: 2, gridHeight: 2, shape: 'right-triangle' },
   { src: 'pieces/diamond.svg', gridWidth: 2, gridHeight: 2, shape: 'diamond' },
   { src: 'pieces/trapezoid-left.svg', gridWidth: 2, gridHeight: 3, shape: 'trapezoid-left' },
-  { src: 'pieces/trapezoid-right.svg', gridWidth: 2, gridHeight: 3, shape: 'trapezoid-right' }
+  { src: 'pieces/trapezoid-right.svg', gridWidth: 2, gridHeight: 3, shape: 'trapezoid-right' },
 ];
 let imageMap = {};
 let paletteItems = []; // To store palette info for re-rendering
@@ -40,13 +40,13 @@ let paletteItems = []; // To store palette info for re-rendering
 // --- Initialization ---
 const initializeEditor = async () => {
   try {
-    const allUrls = PIECE_TYPES.map(p => p.src);
+    const allUrls = PIECE_TYPES.map((p) => p.src);
     // Use 'loadImage' from puzzle-core.js
     const loadedImages = await Promise.all(allUrls.map(loadImage));
     imageMap = Object.fromEntries(allUrls.map((url, i) => [url, loadedImages[i]]));
     document.getElementById('loading-indicator').classList.add('hidden');
   } catch {
-    console.error("Failed to load piece images for the editor.");
+    console.error('Failed to load piece images for the editor.');
     document.getElementById('loading-indicator').classList.add('hidden');
     return;
   }
@@ -59,7 +59,7 @@ const initializeEditor = async () => {
 
   // Use 'initializeCoreCanvases' from puzzle-core.js (even though we have 2)
   // This helps set up smoothing. We will manage them manually.
-  [solutionCtx, startCtx].forEach(ctx => {
+  [solutionCtx, startCtx].forEach((ctx) => {
     ctx.imageSmoothingEnabled = false;
   });
 
@@ -67,7 +67,9 @@ const initializeEditor = async () => {
   setupEventListeners();
   resizeEditorCanvases();
 
-  deleteProgressFill = document.getElementById('delete-button').querySelector('.delete-progress-fill');
+  deleteProgressFill = document
+    .getElementById('delete-button')
+    .querySelector('.delete-progress-fill');
 
   // Initial save for undo baseline
   saveState();
@@ -78,7 +80,7 @@ const initializeEditor = async () => {
 
 const resizeEditorCanvases = () => {
   const dpr = window.devicePixelRatio;
-  [solutionCanvas, startCanvas].forEach(canvas => {
+  [solutionCanvas, startCanvas].forEach((canvas) => {
     const rect = canvas.parentElement.getBoundingClientRect();
     const size = Math.floor(rect.width / GRID_COLS) * GRID_COLS;
     canvas.width = size * dpr;
@@ -88,8 +90,8 @@ const resizeEditorCanvases = () => {
   });
 
   // Update pixel coords for all pieces
-  [...solutionPieces, ...startPieces].forEach(p => {
-    const canvas = (p.canvasType === 'solution') ? solutionCanvas : startCanvas;
+  [...solutionPieces, ...startPieces].forEach((p) => {
+    const canvas = p.canvasType === 'solution' ? solutionCanvas : startCanvas;
     updatePiecePixelDimensions(p, canvas); // From puzzle-core.js
   });
 };
@@ -112,10 +114,12 @@ const renderPaletteItemPiece = (ctx, pieceType, img, color) => {
   const aspectRatio = pieceType.gridWidth / pieceType.gridHeight;
   let renderWidth, renderHeight;
 
-  if (aspectRatio >= 1) { // Wider than or equal height
+  if (aspectRatio >= 1) {
+    // Wider than or equal height
     renderWidth = maxDim;
     renderHeight = maxDim / aspectRatio;
-  } else { // Taller than wide
+  } else {
+    // Taller than wide
     renderHeight = maxDim;
     renderWidth = maxDim * aspectRatio;
   }
@@ -129,7 +133,7 @@ const renderPaletteItemPiece = (ctx, pieceType, img, color) => {
     y: size / 2,
     width: renderWidth, // The actual width to draw
     height: renderHeight,
-    rotation: 0 // Palette pieces are never rotated
+    rotation: 0, // Palette pieces are never rotated
   };
 
   // Use a temporary canvas for tinting to avoid interfering with ctx state
@@ -146,9 +150,15 @@ const renderPaletteItemPiece = (ctx, pieceType, img, color) => {
   // Translate to the center point (which is already pieceToRender.x/y)
   tempPaletteCtx.translate(pieceToRender.x, pieceToRender.y);
   // Rotation is 0, but we keep the structure
-  tempPaletteCtx.rotate(pieceToRender.rotation * Math.PI / 180);
+  tempPaletteCtx.rotate((pieceToRender.rotation * Math.PI) / 180);
   // Draw the image centered on the translation point
-  tempPaletteCtx.drawImage(pieceToRender.img, -pieceToRender.width / 2, -pieceToRender.height / 2, pieceToRender.width, pieceToRender.height);
+  tempPaletteCtx.drawImage(
+    pieceToRender.img,
+    -pieceToRender.width / 2,
+    -pieceToRender.height / 2,
+    pieceToRender.width,
+    pieceToRender.height
+  );
   tempPaletteCtx.restore();
 
   // Tint the image on the temporary canvas
@@ -206,7 +216,7 @@ const populatePalette = () => {
 /** Rerenders the palette items with the current theme color. */
 const rerenderPalette = () => {
   const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
-  paletteItems.forEach(item => {
+  paletteItems.forEach((item) => {
     // Pass the stored context, type, image, and color
     renderPaletteItemPiece(item.ctx, item.type, imageMap[item.type.src], color);
   });
@@ -230,7 +240,7 @@ const addPiece = (type) => {
     col: 6,
     row: 6,
     rotation: 0,
-    canvasType: 'solution'
+    canvasType: 'solution',
   };
   updatePiecePixelDimensions(newSolutionPiece, solutionCanvas); // From puzzle-core.js
   solutionPieces.push(newSolutionPiece);
@@ -241,7 +251,7 @@ const addPiece = (type) => {
     // Place the start piece within a 4-unit radius of the solution piece
     col: newSolutionPiece.col + (Math.floor(Math.random() * 9) - 4), // Random offset from -4 to 4
     row: newSolutionPiece.row + (Math.floor(Math.random() * 9) - 4), // Random offset from -4 to 4
-    canvasType: 'start'
+    canvasType: 'start',
   };
   updatePiecePixelDimensions(newStartPiece, startCanvas); // From puzzle-core.js
   startPieces.push(newStartPiece);
@@ -261,11 +271,11 @@ const addPiece = (type) => {
 const deleteSelectedPieces = () => {
   if (selectedPieces.size === 0) return;
 
-  selectedPieces.forEach(piece => {
-    const indexInRef = solutionPieces.findIndex(p => p.id === piece.id);
+  selectedPieces.forEach((piece) => {
+    const indexInRef = solutionPieces.findIndex((p) => p.id === piece.id);
     if (indexInRef > -1) solutionPieces.splice(indexInRef, 1);
 
-    const indexInStart = startPieces.findIndex(p => p.id === piece.id);
+    const indexInStart = startPieces.findIndex((p) => p.id === piece.id);
     if (indexInStart > -1) startPieces.splice(indexInStart, 1);
   });
 
@@ -302,7 +312,7 @@ const syncPieceProperties = (sourcePiece) => {
   // Only sync if we are editing the SOLUTION piece
   if (activeCanvas !== 'solution') return;
 
-  const twinPiece = startPieces.find(p => p.id === sourcePiece.id);
+  const twinPiece = startPieces.find((p) => p.id === sourcePiece.id);
   if (twinPiece) {
     twinPiece.rotation = sourcePiece.rotation;
     twinPiece.gridWidth = sourcePiece.gridWidth;
@@ -318,7 +328,7 @@ const updatePaletteState = () => {
   const isLimitReached = pieceCount >= 10;
   const paletteDivs = paletteContainer.querySelectorAll('.palette-item');
 
-  paletteDivs.forEach(item => {
+  paletteDivs.forEach((item) => {
     if (isLimitReached) {
       item.classList.add('disabled');
     } else {
@@ -343,14 +353,15 @@ const updatePaletteState = () => {
 /** Captures current puzzle state into the undo stack. */
 const saveState = () => {
   // Deep clone pieces, but ignore the 'img' property (we relink it on restore)
-  const clonePieces = (pieces) => pieces.map(p => {
-    const { img, ...rest } = p;
-    return { ...rest };
-  });
+  const clonePieces = (pieces) =>
+    pieces.map((p) => {
+      const { img, ...rest } = p;
+      return { ...rest };
+    });
 
   const state = {
     solution: clonePieces(solutionPieces),
-    start: clonePieces(startPieces)
+    start: clonePieces(startPieces),
   };
 
   // Don't save if it's identical to the last state
@@ -365,10 +376,11 @@ const saveState = () => {
 };
 
 const restoreState = (state) => {
-  const relinkPieces = (piecesData) => piecesData.map(p => ({
-    ...p,
-    img: imageMap[p.src]
-  }));
+  const relinkPieces = (piecesData) =>
+    piecesData.map((p) => ({
+      ...p,
+      img: imageMap[p.src],
+    }));
 
   solutionPieces.length = 0;
   solutionPieces.push(...relinkPieces(state.solution));
@@ -377,8 +389,8 @@ const restoreState = (state) => {
   startPieces.push(...relinkPieces(state.start));
 
   // Update pixel dimensions for all restored pieces
-  solutionPieces.forEach(p => updatePiecePixelDimensions(p, solutionCanvas));
-  startPieces.forEach(p => updatePiecePixelDimensions(p, startCanvas));
+  solutionPieces.forEach((p) => updatePiecePixelDimensions(p, solutionCanvas));
+  startPieces.forEach((p) => updatePiecePixelDimensions(p, startCanvas));
 
   // Clear selection after restore to avoid stale references
   selectedPieces.clear();
@@ -450,12 +462,12 @@ const renderCanvas = (ctx, pieces) => {
   // Use a temporary canvas to draw all pieces with XOR
   const tempRenderCanvas = document.createElement('canvas');
   const tempRenderCtx = tempRenderCanvas.getContext('2d');
-  tempRenderCanvas.width = ctx.canvas.width;   // Match target canvas size exactly
+  tempRenderCanvas.width = ctx.canvas.width; // Match target canvas size exactly
   tempRenderCanvas.height = ctx.canvas.height;
   tempRenderCtx.imageSmoothingEnabled = false;
   tempRenderCtx.globalCompositeOperation = 'xor'; // Use XOR for combining pieces
 
-  pieces.forEach(piece => {
+  pieces.forEach((piece) => {
     // Ensure pixel coords are up-to-date BEFORE drawing
     updatePiecePixelDimensions(piece, ctx.canvas);
     // Draw piece onto the temporary canvas
@@ -473,22 +485,31 @@ const renderCanvas = (ctx, pieces) => {
   // ---------------------------------
 
   // Draw border on selected pieces, if they are on this canvas
-  const currentCanvasType = (ctx === solutionCtx ? 'solution' : 'start');
+  const currentCanvasType = ctx === solutionCtx ? 'solution' : 'start';
   if (activeCanvas === currentCanvasType) {
-    selectedPieces.forEach(piece => {
+    selectedPieces.forEach((piece) => {
       // Use 'drawBorder' from puzzle-core.js, passing the correct context
-      drawBorder(piece, getComputedStyle(document.body).getPropertyValue('--piece-hover-color').trim(), ctx);
+      drawBorder(
+        piece,
+        getComputedStyle(document.body).getPropertyValue('--piece-hover-color').trim(),
+        ctx
+      );
     });
   }
 
   // Draw hover border on hovered piece (only on solution canvas, and if not already selected)
   if (ctx === solutionCtx && hoveredPiece && !selectedPieces.has(hoveredPiece)) {
-    drawBorder(hoveredPiece, getComputedStyle(document.body).getPropertyValue('--piece-hover-color').trim(), ctx);
+    drawBorder(
+      hoveredPiece,
+      getComputedStyle(document.body).getPropertyValue('--piece-hover-color').trim(),
+      ctx
+    );
   }
 
   // Draw selection box if it exists and we're rendering the active canvas
   if (selectionBox) {
-    const activeBoxCanvas = (activeCanvas === 'solution' || (!activeCanvas && selectionBox)) ? solutionCanvas : startCanvas;
+    const activeBoxCanvas =
+      activeCanvas === 'solution' || (!activeCanvas && selectionBox) ? solutionCanvas : startCanvas;
     // We only draw the selection box on the canvas it started on (managed by event listener context, but here we check ctx)
     if (ctx.canvas === activeBoxCanvas || (!activeCanvas && ctx === solutionCtx)) {
       ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent-color');
@@ -552,7 +573,7 @@ const setupEventListeners = () => {
   document.getElementById('rotate-button').addEventListener('click', (e) => {
     if (selectedPieces.size > 0 && !document.getElementById('rotate-button').disabled) {
       const rotationAmount = e.shiftKey ? -90 : 90;
-      selectedPieces.forEach(p => {
+      selectedPieces.forEach((p) => {
         p.rotation = (p.rotation + rotationAmount + 360) % 360;
         if (activeCanvas === 'solution') syncPieceProperties(p);
       });
@@ -606,7 +627,7 @@ const setupEventListeners = () => {
   };
   const closeHelpModal = () => {
     helpModal.classList.remove('show');
-    setTimeout(() => helpModal.style.display = 'none', 300);
+    setTimeout(() => (helpModal.style.display = 'none'), 300);
   };
   document.getElementById('help-button').addEventListener('click', openHelpModal);
   document.getElementById('close-help-button').addEventListener('click', closeHelpModal);
@@ -627,7 +648,7 @@ const setupEventListeners = () => {
 
     const closeInfoModal = () => {
       infoModal.classList.remove('show');
-      setTimeout(() => infoModal.style.display = 'none', 300);
+      setTimeout(() => (infoModal.style.display = 'none'), 300);
     };
 
     infoButton.addEventListener('click', openInfoModal);
@@ -682,10 +703,10 @@ const handlePointerDown = (e, canvasName) => {
 
     // Prepare for multi-drag
     const dragData = new Map();
-    selectedPieces.forEach(p => {
+    selectedPieces.forEach((p) => {
       dragData.set(p, {
         offsetX: mouseX - p.x,
-        offsetY: mouseY - p.y
+        offsetY: mouseY - p.y,
       });
     });
 
@@ -693,12 +714,12 @@ const handlePointerDown = (e, canvasName) => {
       const currentMouseX = (moveEvent.clientX - rect.left) * scaleX;
       const currentMouseY = (moveEvent.clientY - rect.top) * scaleY;
 
-      selectedPieces.forEach(p => {
+      selectedPieces.forEach((p) => {
         const data = dragData.get(p);
         if (!data) return;
 
-        let targetX = currentMouseX - data.offsetX;
-        let targetY = currentMouseY - data.offsetY;
+        const targetX = currentMouseX - data.offsetX;
+        const targetY = currentMouseY - data.offsetY;
 
         // Bounding box for clamping
         const bbox = getRotatedBoundingBoxInPixels(p);
@@ -734,7 +755,6 @@ const handlePointerDown = (e, canvasName) => {
 
     window.addEventListener('pointermove', pointerMove);
     window.addEventListener('pointerup', pointerUp, { once: true });
-
   } else {
     // Selection box logic
     if (!isCtrl) {
@@ -759,7 +779,7 @@ const handlePointerDown = (e, canvasName) => {
 
       if (!isCtrl) selectedPieces.clear();
 
-      pieces.forEach(p => {
+      pieces.forEach((p) => {
         const pCenterX = p.x + p.width / 2;
         const pCenterY = p.y + p.height / 2;
         if (pCenterX >= minX && pCenterX <= maxX && pCenterY >= minY && pCenterY <= maxY) {
@@ -817,10 +837,11 @@ const selectPiece = (piece, canvasName, multiSelect = false) => {
 const togglePieceSize = () => {
   if (selectedPieces.size === 0 || activeCanvas !== 'solution') return;
 
-  selectedPieces.forEach(p => {
-    const originalPiece = PIECE_TYPES.find(pt => pt.shape === p.shape);
+  selectedPieces.forEach((p) => {
+    const originalPiece = PIECE_TYPES.find((pt) => pt.shape === p.shape);
     if (originalPiece) {
-      const isDefault = p.gridWidth === originalPiece.gridWidth && p.gridHeight === originalPiece.gridHeight;
+      const isDefault =
+        p.gridWidth === originalPiece.gridWidth && p.gridHeight === originalPiece.gridHeight;
       if (isDefault) {
         p.gridWidth = originalPiece.gridWidth * 1.5;
         p.gridHeight = originalPiece.gridHeight * 1.5;
@@ -957,7 +978,7 @@ const handleKeyPress = (e) => {
   const cellWidth = canvas.width / GRID_COLS;
   const cellHeight = canvas.height / GRID_ROWS;
 
-  selectedPieces.forEach(p => {
+  selectedPieces.forEach((p) => {
     if (doRotate) {
       p.rotation = (p.rotation + rotationAmount + 360) % 360;
     } else {
@@ -1021,12 +1042,16 @@ const updateControls = () => {
   if (pieceSelectedCount > 0 && isSolutionCanvas) {
     // For simplicity, we base the icon on the first selected piece
     const firstPiece = selectedPieces.values().next().value;
-    const originalPiece = PIECE_TYPES.find(p => p.shape === firstPiece.shape);
+    const originalPiece = PIECE_TYPES.find((p) => p.shape === firstPiece.shape);
     if (originalPiece) {
       const icon = sizeBtn.querySelector('i');
-      const isDefaultSize = firstPiece.gridWidth === originalPiece.gridWidth && firstPiece.gridHeight === originalPiece.gridHeight;
+      const isDefaultSize =
+        firstPiece.gridWidth === originalPiece.gridWidth &&
+        firstPiece.gridHeight === originalPiece.gridHeight;
       // Change icon based on size state
-      icon.className = isDefaultSize ? 'fa-solid fa-expand-arrows-alt' : 'fa-solid fa-compress-arrows-alt';
+      icon.className = isDefaultSize
+        ? 'fa-solid fa-expand-arrows-alt'
+        : 'fa-solid fa-compress-arrows-alt';
       sizeBtn.title = isDefaultSize ? 'Make pieces 1.5x larger' : 'Set to default size';
     }
   } else {
@@ -1096,7 +1121,7 @@ const closePublishModal = () => {
 
 const publishPuzzle = async () => {
   if (solutionPieces.length < 3) {
-    console.error("Cannot publish a puzzle with fewer than 3 pieces.");
+    console.error('Cannot publish a puzzle with fewer than 3 pieces.');
     return;
   }
 
@@ -1109,10 +1134,26 @@ const publishPuzzle = async () => {
 
   // Format piece data for API
   const puzzleData = {
-    puzzlePiecesData: startPieces.map(p => ({ src: p.src, startCol: p.col, startRow: p.row, gridWidth: p.gridWidth, gridHeight: p.gridHeight, shape: p.shape, rotation: p.rotation })),
+    puzzlePiecesData: startPieces.map((p) => ({
+      src: p.src,
+      startCol: p.col,
+      startRow: p.row,
+      gridWidth: p.gridWidth,
+      gridHeight: p.gridHeight,
+      shape: p.shape,
+      rotation: p.rotation,
+    })),
     solutions: [
-      solutionPieces.map(p => ({ src: p.src, col: p.col, row: p.row, gridWidth: p.gridWidth, gridHeight: p.gridHeight, shape: p.shape, rotation: p.rotation }))
-    ]
+      solutionPieces.map((p) => ({
+        src: p.src,
+        col: p.col,
+        row: p.row,
+        gridWidth: p.gridWidth,
+        gridHeight: p.gridHeight,
+        shape: p.shape,
+        rotation: p.rotation,
+      })),
+    ],
   };
 
   try {
@@ -1140,7 +1181,6 @@ const publishPuzzle = async () => {
     }
   }
 };
-
 
 // --- Start Editor ---
 window.onload = initializeEditor;

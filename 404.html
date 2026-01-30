@@ -1,13 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prophecy Tablet</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
-  <script src="js/theme-loader.js" defer></script>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml," />
   <script src="js/theme.js" defer></script>
   <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
 </head>
@@ -63,16 +68,13 @@
   </header>
 
   <main class="error-container">
-    <img src="assets/images/404.webp" alt="404 Not Found" class="error-image">
+    <img src="assets/images/404.webp" alt="404 Not Found" class="error-image" />
     <h1 class="error-title">404</h1>
-    <p class="error-message">
-      Page not found
-    </p>
+    <p class="error-message">Page not found</p>
     <div class="error-actions">
       <a href="index.html" class="button primary-button">Return Home</a>
     </div>
   </main>
-
 </body>
 
 </html>

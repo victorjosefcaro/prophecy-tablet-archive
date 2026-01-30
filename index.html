@@ -1,15 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="Play the Daily Prophecy Tablet puzzle from Honkai: Star Rail's Amphoreus region. A new puzzle every day!">
+    content="Play the Daily Prophecy Tablet puzzle from Honkai: Star Rail's Amphoreus region. A new puzzle every day!" />
   <title>Prophecy Tablet</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
-  <script src="js/theme-loader.js" defer></script>
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
   <script src="js/api.js" defer></script>
   <script src="js/puzzle-core.js" defer></script>
   <script src="js/puzzle-gameplay.js" defer></script>
@@ -72,7 +76,7 @@
   </header>
 
   <main class="main-content">
-    <div id="daily-puzzle-container" style="display: none;">
+    <div id="daily-puzzle-container" style="display: none">
       <div class="canvas-container" id="reference-container-wrapper">
         <canvas id="reference-canvas"></canvas>
       </div>
@@ -95,7 +99,7 @@
       </div>
     </div>
 
-    <div id="no-daily-message" style="display: none; text-align: center;">
+    <div id="no-daily-message" style="display: none; text-align: center">
       <h2>No Daily Puzzle Today</h2>
       <p>Check back later or explore the <a href="explore.html">community puzzles</a>!</p>
     </div>
@@ -119,7 +123,7 @@
           <span id="moves-made" class="stat-value"></span>
         </div>
       </div>
-      <div id="performance-comparison" class="performance-comparison" style="display: none;">
+      <div id="performance-comparison" class="performance-comparison" style="display: none">
         <div class="comparison-heading">vs Average</div>
         <div class="comparison-items">
           <div class="comparison-item">
@@ -137,9 +141,7 @@
         <span id="countdown-timer" class="stat-value">--:--:--</span>
       </div>
       <div class="modal-buttons">
-        <button id="share-button" class="button secondary-button">
-          Share
-        </button>
+        <button id="share-button" class="button secondary-button">Share</button>
         <a href="explore.html" class="button primary-button">Explore</a>
       </div>
     </div>
@@ -148,15 +150,19 @@
   <div class="modal" id="info-modal">
     <div class="modal-content">
       <div class="info">
-        <p>A fan-made project inspired by the Prophecy Tablet puzzles in <em>Honkai: Star Rail</em>.</p>
-        <p>Drag pieces to match the target shape. When pieces overlap, the intersecting area toggles between
-          visible and invisible (odd = visible, even = invisible).</p>
+        <p>
+          A fan-made project inspired by the Prophecy Tablet puzzles in
+          <em>Honkai: Star Rail</em>.
+        </p>
+        <p>
+          Drag pieces to match the target shape. When pieces overlap, the intersecting area
+          toggles between visible and invisible (odd = visible, even = invisible).
+        </p>
         <p>Match the shape perfectly to solve the puzzle. Have fun!</p>
       </div>
       <button id="close-info-modal-button" class="button primary-button">Close</button>
     </div>
   </div>
-
 </body>
 
 </html>

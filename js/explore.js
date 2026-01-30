@@ -85,8 +85,8 @@ window.onload = async () => {
 
   // Also check path for domain/explore/CODE format
   if (!puzzleId) {
-    const pathParts = window.location.pathname.split('/').filter(p => p);
-    const exploreIdx = pathParts.findIndex(p => p.startsWith('explore'));
+    const pathParts = window.location.pathname.split('/').filter((p) => p);
+    const exploreIdx = pathParts.findIndex((p) => p.startsWith('explore'));
     if (exploreIdx !== -1 && pathParts.length > exploreIdx + 1) {
       puzzleId = pathParts[exploreIdx + 1];
     }
@@ -94,7 +94,7 @@ window.onload = async () => {
 
   if (puzzleId) {
     // First check if it's already in the loaded list
-    let puzzle = userPuzzles.find(p => p.id === puzzleId);
+    let puzzle = userPuzzles.find((p) => p.id === puzzleId);
     if (puzzle) {
       openGameplayView(puzzle);
     } else {
@@ -114,7 +114,9 @@ const setupEventListeners = () => {
   document.getElementById('back-to-grid-button').addEventListener('click', showGridView);
 
   // Modal buttons
-  document.getElementById('share-completion-button').addEventListener('click', shareCurrentPuzzleLink);
+  document
+    .getElementById('share-completion-button')
+    .addEventListener('click', shareCurrentPuzzleLink);
   document.getElementById('back-to-explore-button').addEventListener('click', showGridView);
 
   // Info modal
@@ -130,7 +132,7 @@ const setupEventListeners = () => {
 
     const closeInfoModal = () => {
       infoModal.classList.remove('show');
-      setTimeout(() => infoModal.style.display = 'none', 300);
+      setTimeout(() => (infoModal.style.display = 'none'), 300);
     };
 
     infoButton.addEventListener('click', openInfoModal);
@@ -157,7 +159,7 @@ const setupEventListeners = () => {
   const completionStars = document.getElementById('completion-star-rating');
   if (completionStars) {
     const stars = completionStars.querySelectorAll('i');
-    stars.forEach(star => {
+    stars.forEach((star) => {
       star.addEventListener('click', () => {
         const rating = parseInt(star.getAttribute('data-rating'));
         handleCompletionRating(rating);
@@ -185,7 +187,7 @@ const loadPuzzlesFromAPI = async () => {
 
   const options = {
     search: searchInput.value,
-    timeRange: timeSelect.value
+    timeRange: timeSelect.value,
   };
 
   userPuzzles = await fetchPuzzles(options);
@@ -195,14 +197,16 @@ const loadPuzzlesFromAPI = async () => {
   const order = sortOrder.value;
 
   const getAvg = (puzzle, type) => {
-    if (!puzzle.completionCount || puzzle.completionCount === 0) return order === 'asc' ? Infinity : -Infinity;
+    if (!puzzle.completionCount || puzzle.completionCount === 0)
+      return order === 'asc' ? Infinity : -Infinity;
     return type === 'time'
       ? puzzle.totalTimeMs / puzzle.completionCount
       : puzzle.totalMoves / puzzle.completionCount;
   };
 
   const getRating = (puzzle) => {
-    if (!puzzle.ratingCount || puzzle.ratingCount === 0) return order === 'asc' ? Infinity : -Infinity;
+    if (!puzzle.ratingCount || puzzle.ratingCount === 0)
+      return order === 'asc' ? Infinity : -Infinity;
     return (puzzle.ratingSum || 0) / puzzle.ratingCount;
   };
 
@@ -211,7 +215,7 @@ const loadPuzzlesFromAPI = async () => {
     rating: (a, b) => getRating(b) - getRating(a),
     playCount: (a, b) => b.playCount - a.playCount,
     avgTime: (a, b) => getAvg(b, 'time') - getAvg(a, 'time'),
-    avgMoves: (a, b) => getAvg(b, 'moves') - getAvg(a, 'moves')
+    avgMoves: (a, b) => getAvg(b, 'moves') - getAvg(a, 'moves'),
   };
 
   userPuzzles.sort(sortFunctions[field] || sortFunctions.date);
@@ -230,28 +234,32 @@ const filterByPlayed = () => {
 
   let filtered = userPuzzles;
   if (filter === 'played') {
-    filtered = userPuzzles.filter(p => playedSet.has(p.id));
+    filtered = userPuzzles.filter((p) => playedSet.has(p.id));
   } else if (filter === 'unplayed') {
-    filtered = userPuzzles.filter(p => !playedSet.has(p.id));
+    filtered = userPuzzles.filter((p) => !playedSet.has(p.id));
   }
 
   populateExploreGrid(filtered);
 };
 
 const preloadImages = async (puzzles) => {
-  const allPieceUrls = [...new Set(puzzles.flatMap(p => {
-    const data = p.puzzleData;
-    return [
-      ...data.puzzlePiecesData.map(pd => pd.src),
-      ...data.solutions[0].map(s => s.src)
-    ];
-  }))];
+  const allPieceUrls = [
+    ...new Set(
+      puzzles.flatMap((p) => {
+        const data = p.puzzleData;
+        return [
+          ...data.puzzlePiecesData.map((pd) => pd.src),
+          ...data.solutions[0].map((s) => s.src),
+        ];
+      })
+    ),
+  ];
 
   try {
     const loadedImages = await Promise.all(allPieceUrls.map(loadImage));
     imageMap = Object.fromEntries(allPieceUrls.map((url, i) => [url, loadedImages[i]]));
   } catch (error) {
-    console.error("Failed to preload images:", error);
+    console.error('Failed to preload images:', error);
   }
 };
 
@@ -328,7 +336,8 @@ const populateExploreGrid = async (puzzles) => {
 
     const shareBtn = document.createElement('button');
     shareBtn.className = 'share-card-btn';
-    shareBtn.innerHTML = '<i class="fa-solid fa-share"></i> <span class="share-btn-text">Share</span>';
+    shareBtn.innerHTML =
+      '<i class="fa-solid fa-share"></i> <span class="share-btn-text">Share</span>';
     shareBtn.title = 'Share puzzle';
     shareBtn.setAttribute('aria-label', 'Share puzzle');
     shareBtn.onclick = (e) => {
@@ -364,7 +373,7 @@ const populateExploreGrid = async (puzzles) => {
   });
 
   requestAnimationFrame(() => {
-    previewsToDraw.forEach(drawFn => drawFn());
+    previewsToDraw.forEach((drawFn) => drawFn());
   });
 };
 
@@ -374,7 +383,7 @@ const handleCompletionRating = (rating) => {
   const puzzleId = currentPuzzle.id;
   const currentRating = getUserRating(puzzleId);
 
-  // If clicking the same rating, remove it? 
+  // If clicking the same rating, remove it?
   // Most star systems don't allow 0 stars by clicking the same star.
   // But we can allow it if we want. Let's say clicking the same star clears it.
   const newRating = currentRating === rating ? null : rating;
@@ -401,13 +410,13 @@ const handleCompletionRating = (rating) => {
   updateCompletionVoteButtons();
 
   // Fire API call
-  ratePuzzle(puzzleId, newRating, currentRating).catch(error => {
+  ratePuzzle(puzzleId, newRating, currentRating).catch((error) => {
     console.error('Rating failed:', error);
   });
 };
 
 const highlightStars = (stars, rating) => {
-  stars.forEach(star => {
+  stars.forEach((star) => {
     const starRating = parseInt(star.getAttribute('data-rating'));
     if (starRating <= rating) {
       star.classList.replace('fa-regular', 'fa-solid');
@@ -427,7 +436,7 @@ const updateCompletionVoteButtons = () => {
   if (completionStars) {
     const stars = completionStars.querySelectorAll('i');
     highlightStars(stars, userRating || 0);
-    stars.forEach(star => {
+    stars.forEach((star) => {
       star.classList.toggle('voted', !!userRating);
     });
   }
@@ -465,12 +474,14 @@ const updatePerformanceComparison = (userTimeMs, userMoves) => {
 
   // Time comparison (lower is better)
   timeDiffEl.textContent = formatTimeDiff(timeDiff);
-  timeDiffEl.className = 'comparison-value ' + (timeDiff < -500 ? 'better' : timeDiff > 500 ? 'worse' : 'same');
+  timeDiffEl.className =
+    'comparison-value ' + (timeDiff < -500 ? 'better' : timeDiff > 500 ? 'worse' : 'same');
 
   // Moves comparison (lower is better)
   const movesDiffSign = movesDiff > 0 ? '+' : '';
   movesDiffEl.textContent = `${movesDiffSign}${Math.round(movesDiff)}`;
-  movesDiffEl.className = 'comparison-value ' + (movesDiff < -1 ? 'better' : movesDiff > 1 ? 'worse' : 'same');
+  movesDiffEl.className =
+    'comparison-value ' + (movesDiff < -1 ? 'better' : movesDiff > 1 ? 'worse' : 'same');
 
   comparisonSection.style.display = 'block';
 };
@@ -509,7 +520,8 @@ const showGridView = () => {
   document.body.classList.remove('no-scroll');
 
   if (puzzleCtx) puzzleCtx.clearRect(0, 0, puzzleCanvas.width, puzzleCanvas.height);
-  if (referenceCtx) referenceCtx.clearRect(0, 0, referenceCtx.canvas.width, referenceCtx.canvas.height);
+  if (referenceCtx)
+    referenceCtx.clearRect(0, 0, referenceCtx.canvas.width, referenceCtx.canvas.height);
   hideModal('completion-modal');
 
   // Clear URL parameter or path code
@@ -520,8 +532,12 @@ const showGridView = () => {
 
   // Handle path cleanup if it ends with a code (e.g. /explore/nwlbx)
   let path = url.pathname;
-  const pathParts = path.split('/').filter(p => p);
-  if (pathParts.length > 0 && pathParts[pathParts.length - 2] && pathParts[pathParts.length - 2].startsWith('explore')) {
+  const pathParts = path.split('/').filter((p) => p);
+  if (
+    pathParts.length > 0 &&
+    pathParts[pathParts.length - 2] &&
+    pathParts[pathParts.length - 2].startsWith('explore')
+  ) {
     path = '/' + pathParts.slice(0, -1).join('/');
   }
 
@@ -541,24 +557,28 @@ const loadPuzzle = (puzzle) => {
 
   const solutionForReference = puzzleData.solutions[0];
 
-  puzzlePieces = puzzleData.puzzlePiecesData.map(data => ({
+  puzzlePieces = puzzleData.puzzlePiecesData.map((data) => ({
     ...data,
     col: data.startCol,
     row: data.startRow,
-    img: imageMap[data.src]
+    img: imageMap[data.src],
   }));
 
-  referencePieces = solutionForReference.map(data => ({
+  referencePieces = solutionForReference.map((data) => ({
     ...data,
-    img: imageMap[data.src]
+    img: imageMap[data.src],
   }));
 
   resizeCanvases([...puzzlePieces, ...referencePieces]);
   renderReference(referencePieces);
   renderPuzzleScoped();
 
-  puzzleCanvas.addEventListener('pointerdown', (e) => handlePointerDown(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved));
-  puzzleCanvas.addEventListener('pointermove', (e) => handleHover(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved));
+  puzzleCanvas.addEventListener('pointerdown', (e) =>
+    handlePointerDown(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved)
+  );
+  puzzleCanvas.addEventListener('pointermove', (e) =>
+    handleHover(e, puzzlePieces, renderPuzzleScoped, isPuzzleSolved)
+  );
 };
 
 const resetCurrentPuzzle = () => {
@@ -583,7 +603,11 @@ const shareCurrentPuzzleLink = (e) => {
   const movesDiffEl = document.getElementById('moves-diff');
 
   let vsAverage = '';
-  if (timeDiffEl && timeDiffEl.textContent && document.getElementById('performance-comparison').style.display !== 'none') {
+  if (
+    timeDiffEl &&
+    timeDiffEl.textContent &&
+    document.getElementById('performance-comparison').style.display !== 'none'
+  ) {
     vsAverage = `\nvs Average:\n- Time: ${timeDiffEl.textContent}\n- Moves: ${movesDiffEl.textContent}`;
   }
 
@@ -623,7 +647,7 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
   tempPreviewCtx.imageSmoothingEnabled = false;
   tempPreviewCtx.globalCompositeOperation = 'xor';
 
-  puzzlePieces.forEach(data => {
+  puzzlePieces.forEach((data) => {
     const piece = { ...data, img: imageMap[data.src] };
     updatePiecePixelDimensions(piece, canvas);
     drawImageTransformed(tempPreviewCtx, piece);
@@ -641,7 +665,7 @@ const rerenderExplorePreviews = () => {
   // Skip if grid view is hidden (user is in gameplay mode)
   if (gridView && gridView.style.display === 'none') return;
 
-  levelPreviews.forEach(preview => {
+  levelPreviews.forEach((preview) => {
     drawPuzzlePreview(preview.canvas, preview.puzzlePieces, preview.imageMap);
   });
 };

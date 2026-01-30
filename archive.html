@@ -1,159 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="A fan-made puzzle game of the Prophecy Tablet from Honkai: Star Rail. Arrange and overlap geometric pieces to solve puzzles and match the target shape.">
-    <title>Prophecy Tablet</title>
-    <meta name="description"
-        content="Play the Prophecy Tablet puzzles from Honkai: Star Rail's Amphoreus region directly in your browser.">
-    <meta property="og:title" content="Prophecy Tablet Archive">
-    <meta property="og:description"
-        content="A playable web version of the Prophecy Tablet puzzles from Honkai: Star Rail.">
-    <meta property="og:image" content="assets/images/Home.png">
-    <meta property="og:url" content="https://victorjosefcaro.github.io/prophecy-tablet-archive/">
-    <meta property="og:type" content="website">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme-loader.js" defer></script>
-    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
-    <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml,">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="A fan-made puzzle game of the Prophecy Tablet from Honkai: Star Rail. Arrange and overlap geometric pieces to solve puzzles and match the target shape." />
+  <title>Prophecy Tablet</title>
+  <meta name="description"
+    content="Play the Prophecy Tablet puzzles from Honkai: Star Rail's Amphoreus region directly in your browser." />
+  <meta property="og:title" content="Prophecy Tablet Archive" />
+  <meta property="og:description"
+    content="A playable web version of the Prophecy Tablet puzzles from Honkai: Star Rail." />
+  <meta property="og:image" content="assets/images/Home.png" />
+  <meta property="og:url" content="https://victorjosefcaro.github.io/prophecy-tablet-archive/" />
+  <meta property="og:type" content="website" />
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin />
+  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml," />
 
-    <script src="js/api.js" defer></script>
-    <script src="js/script.js" defer></script>
-    <script src="js/puzzle-core.js" defer></script>
-    <script src="js/puzzle-gameplay.js" defer></script>
-    <script src="js/theme.js" defer></script>
-    <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/script.js" defer></script>
+  <script src="js/puzzle-core.js" defer></script>
+  <script src="js/puzzle-gameplay.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
 </head>
 
 <body>
-    <header class="top-navbar">
-        <a href="index.html" class="navbar-brand">
-            <div>
-                <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
-                    aria-label="Prophecy Tablet Logo">
-                    <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
-                    <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
-                    <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor"
-                        shape-rendering="crispEdges" />
-                </svg>
-                <span class="navbar-title">Prophecy Tablet</span>
-            </div>
-        </a>
-        <nav class="navbar-links">
-            <a href="index.html"><span data-hover="Daily">Daily</span></a>
-            <a href="explore.html"><span data-hover="Explore">Explore</span></a>
-            <a href="create.html"><span data-hover="Create">Create</span></a>
-            <a href="archive.html" class="active"><span data-hover="Archive">Archive</span></a>
-        </nav>
-        <div class="navbar-controls">
-            <div class="theme-selector-container">
-                <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
-                    <i class="fa-solid fa-palette"></i>
-                </button>
-                <div id="theme-dropdown" class="theme-dropdown">
-                    <div class="theme-dropdown-column">
-                        <div class="theme-column-header">Dark</div>
-                        <button class="theme-option" data-theme="default">Default</button>
-                        <button class="theme-option" data-theme="mydei">Mydei</button>
-                        <button class="theme-option" data-theme="dhpt">DHPT</button>
-                        <button class="theme-option" data-theme="anaxa">Anaxa</button>
-                        <button class="theme-option" data-theme="cerydra">Cerydra</button>
-                        <button class="theme-option" data-theme="hysilens">Hysilens</button>
-                        <button class="theme-option" data-theme="cipher">Cipher</button>
-                        <button class="theme-option" data-theme="evernight">Evernight</button>
-                        <button class="theme-option" data-theme="hyacine">Hyacine</button>
-                    </div>
-                    <div class="theme-dropdown-column">
-                        <div class="theme-column-header">Light</div>
-                        <button class="theme-option" data-theme="tribbie">Tribbie</button>
-                        <button class="theme-option" data-theme="aglaea">Aglaea</button>
-                        <button class="theme-option" data-theme="phainon">Phainon</button>
-                        <button class="theme-option" data-theme="castorice">Castorice</button>
-                        <button class="theme-option" data-theme="cyrene">Cyrene</button>
-                    </div>
-                </div>
-            </div>
-            <button id="info-button" class="icon-button" aria-label="Information">
-                <i class="fa-solid fa-circle-info"></i>
-            </button>
+  <header class="top-navbar">
+    <a href="index.html" class="navbar-brand">
+      <div>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
+          aria-label="Prophecy Tablet Logo">
+          <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor" shape-rendering="crispEdges" />
+        </svg>
+        <span class="navbar-title">Prophecy Tablet</span>
+      </div>
+    </a>
+    <nav class="navbar-links">
+      <a href="index.html"><span data-hover="Daily">Daily</span></a>
+      <a href="explore.html"><span data-hover="Explore">Explore</span></a>
+      <a href="create.html"><span data-hover="Create">Create</span></a>
+      <a href="archive.html" class="active"><span data-hover="Archive">Archive</span></a>
+    </nav>
+    <div class="navbar-controls">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <div id="theme-dropdown" class="theme-dropdown">
+          <div class="theme-dropdown-column">
+            <div class="theme-column-header">Dark</div>
+            <button class="theme-option" data-theme="default">Default</button>
+            <button class="theme-option" data-theme="mydei">Mydei</button>
+            <button class="theme-option" data-theme="dhpt">DHPT</button>
+            <button class="theme-option" data-theme="anaxa">Anaxa</button>
+            <button class="theme-option" data-theme="cerydra">Cerydra</button>
+            <button class="theme-option" data-theme="hysilens">Hysilens</button>
+            <button class="theme-option" data-theme="cipher">Cipher</button>
+            <button class="theme-option" data-theme="evernight">Evernight</button>
+            <button class="theme-option" data-theme="hyacine">Hyacine</button>
+          </div>
+          <div class="theme-dropdown-column">
+            <div class="theme-column-header">Light</div>
+            <button class="theme-option" data-theme="tribbie">Tribbie</button>
+            <button class="theme-option" data-theme="aglaea">Aglaea</button>
+            <button class="theme-option" data-theme="phainon">Phainon</button>
+            <button class="theme-option" data-theme="castorice">Castorice</button>
+            <button class="theme-option" data-theme="cyrene">Cyrene</button>
+          </div>
         </div>
-    </header>
+      </div>
+      <button id="info-button" class="icon-button" aria-label="Information">
+        <i class="fa-solid fa-circle-info"></i>
+      </button>
+    </div>
+  </header>
 
-    <main class="main-content">
-        <div id="archive-content" style="display: none;">
-            <div class="canvas-container" id="reference-container-wrapper">
-                <canvas id="reference-canvas"></canvas>
-            </div>
+  <main class="main-content">
+    <div id="archive-content" style="display: none">
+      <div class="canvas-container" id="reference-container-wrapper">
+        <canvas id="reference-canvas"></canvas>
+      </div>
 
-            <div class="canvas-group">
-                <div class="canvas-container" id="puzzle-container-wrapper">
-                    <canvas id="puzzle-canvas"></canvas>
-                </div>
-                <button id="reset-button" class="reset-button" title="Reset Puzzle">
-                    <i class="fa-solid fa-rotate-right"></i>
-                </button>
-            </div>
-
-            <div class="puzzle-info">
-                <p class="puzzle-group-name" id="puzzle-group-name"></p>
-                <span class="puzzle-counter" id="puzzle-counter"></span>
-                <div class="puzzle-info-buttons">
-                    <button id="prev-puzzle-button" class="button primary-button">Prev</button>
-                    <button id="select-level-button" class="button primary-button">Select Puzzle</button>
-                    <button id="next-puzzle-button-nav" class="button primary-button">Next</button>
-                </div>
-            </div>
+      <div class="canvas-group">
+        <div class="canvas-container" id="puzzle-container-wrapper">
+          <canvas id="puzzle-canvas"></canvas>
         </div>
+        <button id="reset-button" class="reset-button" title="Reset Puzzle">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
 
-        <div class="loading-indicator" id="loading-indicator">
-            <div class="spinner"></div>
-            <p></p>
+      <div class="puzzle-info">
+        <p class="puzzle-group-name" id="puzzle-group-name"></p>
+        <span class="puzzle-counter" id="puzzle-counter"></span>
+        <div class="puzzle-info-buttons">
+          <button id="prev-puzzle-button" class="button primary-button">Prev</button>
+          <button id="select-level-button" class="button primary-button">Select Puzzle</button>
+          <button id="next-puzzle-button-nav" class="button primary-button">Next</button>
         </div>
-    </main>
-
-    <div class="modal" id="completion-modal">
-        <div class="modal-content">
-            <p class="modal-header">Puzzle Complete</p>
-            <div class="modal-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Time</span>
-                    <span id="time-taken" class="stat-value"></span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Moves</span>
-                    <span id="moves-made" class="stat-value"></span>
-                </div>
-            </div>
-            <div class="modal-buttons">
-                <button id="play-again-button" class="button secondary-button">Reset</button>
-                <button id="next-puzzle-button" class="button primary-button">Next</button>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <div class="modal" id="level-select-modal">
-        <div class="modal-content">
-            <p class="modal-header">Select Puzzle</p>
-            <div class="level-grid" id="level-grid"></div>
-            <button id="close-level-select-button" class="button primary-button">Close</button>
-        </div>
+    <div class="loading-indicator" id="loading-indicator">
+      <div class="spinner"></div>
+      <p></p>
     </div>
+  </main>
 
-    <div class="modal" id="info-modal">
-        <div class="modal-content">
-            <div class="info">
-                <p>A fan-made project inspired by the Prophecy Tablet puzzles in <em>Honkai: Star Rail</em>.</p>
-                <p>Drag pieces to match the target shape. When pieces overlap, the intersecting area toggles between
-                    visible and invisible (odd = visible, even = invisible).</p>
-                <p>Match the shape perfectly to solve the puzzle. Have fun!</p>
-            </div>
-            <button id="close-info-modal-button" class="button primary-button">Close</button>
+  <div class="modal" id="completion-modal">
+    <div class="modal-content">
+      <p class="modal-header">Puzzle Complete</p>
+      <div class="modal-stats">
+        <div class="stat-item">
+          <span class="stat-label">Time</span>
+          <span id="time-taken" class="stat-value"></span>
         </div>
+        <div class="stat-item">
+          <span class="stat-label">Moves</span>
+          <span id="moves-made" class="stat-value"></span>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button id="play-again-button" class="button secondary-button">Reset</button>
+        <button id="next-puzzle-button" class="button primary-button">Next</button>
+      </div>
     </div>
+  </div>
 
+  <div class="modal" id="level-select-modal">
+    <div class="modal-content">
+      <p class="modal-header">Select Puzzle</p>
+      <div class="level-grid" id="level-grid"></div>
+      <button id="close-level-select-button" class="button primary-button">Close</button>
+    </div>
+  </div>
+
+  <div class="modal" id="info-modal">
+    <div class="modal-content">
+      <div class="info">
+        <p>
+          A fan-made project inspired by the Prophecy Tablet puzzles in
+          <em>Honkai: Star Rail</em>.
+        </p>
+        <p>
+          Drag pieces to match the target shape. When pieces overlap, the intersecting area
+          toggles between visible and invisible (odd = visible, even = invisible).
+        </p>
+        <p>Match the shape perfectly to solve the puzzle. Have fun!</p>
+      </div>
+      <button id="close-info-modal-button" class="button primary-button">Close</button>
+    </div>
+  </div>
 </body>
 
 </html>

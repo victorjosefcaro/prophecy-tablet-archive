@@ -54,8 +54,8 @@ const handlePointerMove = (e) => {
   if (!activePiece) return;
   const { x: mouseX, y: mouseY } = getMousePos(e);
 
-  let newX = mouseX - dragOffsetX;
-  let newY = mouseY - dragOffsetY;
+  const newX = mouseX - dragOffsetX;
+  const newY = mouseY - dragOffsetY;
 
   const bbox = getRotatedBoundingBoxInPixels(activePiece);
 
@@ -127,7 +127,7 @@ const resetGameplayStats = () => {
 
 const resetPuzzlePositions = (puzzlePieces, renderFn) => {
   if (isPuzzleSolved || isSnapping) return;
-  puzzlePieces.forEach(piece => {
+  puzzlePieces.forEach((piece) => {
     piece.col = piece.startCol;
     piece.row = piece.startRow;
     updatePiecePixelDimensions(piece, puzzleCanvas);
@@ -174,7 +174,12 @@ const playCompletionAnimation = () => {
   const cellData = [];
   for (let r = 0; r < VISUAL_GRID_SIZE; r++) {
     for (let c = 0; c < VISUAL_GRID_SIZE; c++) {
-      const distance = Math.floor(Math.max(Math.abs(c - (VISUAL_GRID_SIZE / 2 - 0.5)), Math.abs(r - (VISUAL_GRID_SIZE / 2 - 0.5))));
+      const distance = Math.floor(
+        Math.max(
+          Math.abs(c - (VISUAL_GRID_SIZE / 2 - 0.5)),
+          Math.abs(r - (VISUAL_GRID_SIZE / 2 - 0.5))
+        )
+      );
       cellData.push({ r, c, distance });
     }
   }
@@ -183,10 +188,10 @@ const playCompletionAnimation = () => {
     if (!animationStartTime) animationStartTime = currentTime;
     const elapsedTime = currentTime - animationStartTime;
 
-    const fadeProgress = Math.max(0, 1 - (elapsedTime / fadeDuration));
+    const fadeProgress = Math.max(0, 1 - elapsedTime / fadeDuration);
     renderPuzzleScoped(fadeProgress, false);
 
-    cellData.forEach(cell => {
+    cellData.forEach((cell) => {
       let progress = 0;
       const fillStartTime = cell.distance * waveDelay;
       const fillEndTime = fillStartTime + fillDuration;
@@ -197,14 +202,14 @@ const playCompletionAnimation = () => {
       } else if (elapsedTime >= fillEndTime && elapsedTime < unfillStartTime) {
         progress = 1;
       } else if (elapsedTime >= unfillStartTime && elapsedTime < unfillEndTime) {
-        progress = 1 - ((elapsedTime - unfillStartTime) / fillDuration);
+        progress = 1 - (elapsedTime - unfillStartTime) / fillDuration;
       }
       progress = Math.max(0, Math.min(progress, 1));
       if (progress > 0) {
         const rectWidth = cellWidth * progress;
         const rectHeight = cellHeight * progress;
-        const rectX = (cell.c * cellWidth) + (cellWidth - rectWidth) / 2;
-        const rectY = (cell.r * cellHeight) + (cellHeight - rectHeight) / 2;
+        const rectX = cell.c * cellWidth + (cellWidth - rectWidth) / 2;
+        const rectY = cell.r * cellHeight + (cellHeight - rectHeight) / 2;
         puzzleCtx.fillStyle = animationColor;
         puzzleCtx.globalCompositeOperation = 'source-over';
         puzzleCtx.fillRect(rectX, rectY, rectWidth, rectHeight);
@@ -212,13 +217,13 @@ const playCompletionAnimation = () => {
     });
 
     const normalizedTime = elapsedTime / totalDuration;
-    const glowProgress = normalizedTime <= 0.5 ? (normalizedTime * 2) : ((1 - normalizedTime) * 2);
+    const glowProgress = normalizedTime <= 0.5 ? normalizedTime * 2 : (1 - normalizedTime) * 2;
 
     if (glowProgress > 0) {
       puzzleCtx.save();
       puzzleCtx.globalCompositeOperation = 'hard-light';
       puzzleCtx.strokeStyle = animationColor;
-      puzzleCtx.lineWidth = (1 * glowProgress) * window.devicePixelRatio;
+      puzzleCtx.lineWidth = 1 * glowProgress * window.devicePixelRatio;
       puzzleCtx.shadowColor = animationColor;
       puzzleCtx.shadowBlur = 16 * glowProgress;
 
@@ -266,7 +271,7 @@ const hideModal = (modalId) => {
   }, 400);
 };
 
-let showCompletionModal = async (timeInMs, moves, skipRecord = false) => {
+const showCompletionModal = async (timeInMs, moves, skipRecord = false) => {
   const timeSpan = document.getElementById('time-taken');
   const movesSpan = document.getElementById('moves-made');
   const currentMoves = moves !== undefined ? moves : moveCount;
@@ -281,7 +286,12 @@ let showCompletionModal = async (timeInMs, moves, skipRecord = false) => {
 
   let updatedStats = null;
   // Record completion stats for averages (if recordCompletion exists and we have a puzzle ID)
-  if (!skipRecord && typeof recordCompletion === 'function' && typeof currentPuzzle !== 'undefined' && currentPuzzle?.id) {
+  if (
+    !skipRecord &&
+    typeof recordCompletion === 'function' &&
+    typeof currentPuzzle !== 'undefined' &&
+    currentPuzzle?.id
+  ) {
     updatedStats = await recordCompletion(currentPuzzle.id, timeInMs, currentMoves);
   }
 
