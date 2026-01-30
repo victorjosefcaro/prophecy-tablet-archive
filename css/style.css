@@ -456,7 +456,7 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 5;
 }
 
 .reset-button:hover {
@@ -632,6 +632,12 @@ canvas {
 .level-select-preview.active .level-number {
   color: var(--accent-color);
   opacity: 1;
+}
+
+.level-date {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-top: -0.25rem;
 }
 
 #close-level-select-button {
@@ -967,6 +973,98 @@ canvas {
 
 #export-button:hover:not(:disabled) {
   background-color: var(--accent-hover-color);
+}
+
+.queue-card {
+  max-height: 300px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.queue-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  font-size: 0.85rem;
+}
+
+.queue-item.empty {
+  opacity: 0.5;
+}
+
+.queue-item.today {
+  border-left: 3px solid var(--accent-color);
+}
+
+.queue-date {
+  font-weight: 500;
+  color: var(--primary-text-color);
+}
+
+.queue-status {
+  color: var(--primary-text-color);
+  font-size: 0.8rem;
+  text-align: right;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queue-status.scheduled {
+  color: var(--accent-color);
+}
+
+.queue-loading {
+  color: var(--primary-text-color);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* Queue Previews */
+.queue-preview-container {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-color: var(--card-background-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.queue-preview-empty {
+  opacity: 0.3;
+}
+
+.queue-preview {
+  display: block;
+}
+
+.queue-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 0.1rem;
+}
+
+.queue-info .queue-status {
+  text-align: left;
+  max-width: 100%;
 }
 
 .publish-modal-layout {

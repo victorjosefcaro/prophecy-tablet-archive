@@ -97,10 +97,9 @@ const loadArchivePuzzles = async () => {
   await preloadImages(puzzles);
 
   loadingIndicator.classList.add('hidden');
+  loadPuzzle(0);
   archiveContent.style.display = 'contents';
   archiveContent.classList.add('fade-in');
-
-  loadPuzzle(0);
   populateLevelSelector();
 };
 
@@ -288,10 +287,19 @@ const populateLevelSelector = () => {
       label.className = 'level-number';
       label.textContent = `#${puzzle.dailyNumber}`;
 
+      const dateLabel = document.createElement('span');
+      dateLabel.className = 'level-date';
+      const puzzleDate = new Date(puzzle.scheduledDate + 'T00:00:00');
+      dateLabel.textContent = puzzleDate.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric'
+      });
+
       drawPuzzlePreview(canvas, solutionPieces, imageMap);
 
       previewContainer.appendChild(canvas);
       previewContainer.appendChild(label);
+      previewContainer.appendChild(dateLabel);
       previewContainer.onclick = () => {
         hideModal('level-select-modal');
         loadPuzzle(index);

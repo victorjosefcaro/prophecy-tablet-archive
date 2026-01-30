@@ -54,6 +54,30 @@ const fetchDailyPuzzle = async (date = null) => {
 };
 
 /**
+ * Fetches scheduled daily puzzles for the next N days
+ * @param {number} days - Number of days to look ahead (default: 14)
+ * @returns {Promise<Array>} Array of {date, puzzle} objects
+ */
+const fetchScheduledDailies = async (days = 14) => {
+    const results = [];
+    const today = new Date();
+
+    for (let i = 0; i < days; i++) {
+        const checkDate = new Date(today);
+        checkDate.setDate(today.getDate() + i);
+        const dateStr = checkDate.toISOString().split('T')[0];
+
+        const puzzle = await fetchDailyPuzzle(dateStr);
+        results.push({
+            date: dateStr,
+            puzzle: puzzle
+        });
+    }
+
+    return results;
+};
+
+/**
  * Fetches a single puzzle by ID
  * @param {string} puzzleId - The puzzle ID
  * @returns {Promise<Object|null>} Puzzle object or null if not found

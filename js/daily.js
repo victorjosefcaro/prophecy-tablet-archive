@@ -209,8 +209,8 @@ const loadDaily = async () => {
         loadingIndicator.classList.add('hidden');
 
         if (dailyPuzzle) {
-            puzzleContainer.style.display = 'contents';
             await setupDailyPuzzle(dailyPuzzle);
+            puzzleContainer.style.display = 'contents';
             recordPlay(dailyPuzzle.id);
 
             // If already completed, show modal automatically and display View Stats button
