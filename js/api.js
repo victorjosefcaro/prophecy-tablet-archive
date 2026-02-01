@@ -102,9 +102,10 @@ const fetchPuzzleById = async (puzzleId) => {
  * @param {string} authorName - Author name (default: Nameless)
  * @param {boolean} isDaily - Whether this is a daily puzzle
  * @param {string} scheduledDate - Date for the daily puzzle (YYYY-MM-DD)
+ * @param {string} adminSecret - Optional admin secret for daily puzzle creation
  * @returns {Promise<Object>} Created puzzle info
  */
-const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, scheduledDate) => {
+const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, scheduledDate, adminSecret = null) => {
   const payload = {
     puzzleData,
     puzzleName: puzzleName || 'Untitled Puzzle',
@@ -113,10 +114,16 @@ const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, schedul
     scheduledDate: scheduledDate || null,
   };
 
+  // Build headers - include admin secret if provided (for daily puzzles)
+  const headers = { 'Content-Type': 'application/json' };
+  if (adminSecret) {
+    headers['X-Admin-Secret'] = adminSecret;
+  }
+
   try {
     const response = await fetch(`${API_URL}/puzzles`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(payload),
     });
 
