@@ -213,11 +213,13 @@ html[data-theme='cyrene'] {
   --container-grid-color: oklch(0.99 0.22 303);
 }
 
-:is(html[data-theme='tribbie'],
+:is(
+  html[data-theme='tribbie'],
   html[data-theme='aglaea'],
   html[data-theme='phainon'],
   html[data-theme='castorice'],
-  html[data-theme='cyrene']) {
+  html[data-theme='cyrene']
+) {
   --primary-text-color: var(--text-dark-color);
   --secondary-text-color: var(--text-light-color);
   --piece-hover-color: var(--text-dark-color);
@@ -1370,11 +1372,11 @@ canvas {
   position: relative;
 }
 
-.checkbox-container:hover input~.checkmark {
+.checkbox-container:hover input ~ .checkmark {
   background-color: var(--background-hover-color);
 }
 
-.checkbox-container input:checked~.checkmark {
+.checkbox-container input:checked ~ .checkmark {
   background-color: var(--accent-color);
 }
 
@@ -1391,7 +1393,7 @@ canvas {
   transform: rotate(45deg);
 }
 
-.checkbox-container input:checked~.checkmark:after {
+.checkbox-container input:checked ~ .checkmark:after {
   display: block;
 }
 
@@ -1882,5 +1884,26 @@ kbd {
 
   ::-webkit-scrollbar {
     width: 4px;
+  }
+
+  /* Publish Modal Mobile Fix */
+  .publish-modal-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .publish-modal-left {
+    width: 100%;
+  }
+
+  .publish-modal-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #start-container-wrapper {
+    width: min(40vh, 60vw);
+    height: min(40vh, 60vw);
   }
 }
