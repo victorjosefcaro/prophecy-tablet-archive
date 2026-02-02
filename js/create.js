@@ -618,6 +618,8 @@ const setupEventListeners = () => {
   deleteBtn.addEventListener('pointerup', handleKeyUp); // Reuse keyup logic to cancel
   deleteBtn.addEventListener('pointerleave', handleKeyUp); // Reuse keyup logic to cancel
   document.getElementById('size-toggle-btn').addEventListener('click', togglePieceSize);
+  document.getElementById('undo-button').addEventListener('click', undo);
+  document.getElementById('redo-button').addEventListener('click', redo);
 
   // Help modal
   const helpModal = document.getElementById('help-modal');
@@ -725,8 +727,8 @@ const handlePointerDown = (e, canvasName) => {
         const bbox = getRotatedBoundingBoxInPixels(p);
         const centerX = targetX + p.width / 2;
         const centerY = targetY + p.height / 2;
-        const paddingX = ctx.canvas.width / VISUAL_GRID_SIZE;
-        const paddingY = ctx.canvas.height / VISUAL_GRID_SIZE;
+        const paddingX = 0;
+        const paddingY = 0;
 
         const minCenterX = -bbox.offsetX + paddingX;
         const maxCenterX = ctx.canvas.width - (bbox.width + bbox.offsetX) - paddingX;
@@ -991,8 +993,8 @@ const handleKeyPress = (e) => {
     const bbox = getRotatedBoundingBoxInPixels(p);
     const centerX = p.x + p.width / 2;
     const centerY = p.y + p.height / 2;
-    const paddingX = canvas.width / VISUAL_GRID_SIZE;
-    const paddingY = canvas.height / VISUAL_GRID_SIZE;
+    const paddingX = 0;
+    const paddingY = 0;
 
     const minCenterX = -bbox.offsetX + paddingX;
     const maxCenterX = canvas.width - (bbox.width + bbox.offsetX) - paddingX;

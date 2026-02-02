@@ -77,6 +77,9 @@ const configureCompletionModal = (timeMs, moves) => {
 
 // --- Initialization ---
 window.onload = async () => {
+  // Restore saved filter preferences from localStorage
+  restoreFilterPreferences();
+
   await loadPuzzlesFromAPI();
   setupEventListeners();
 
@@ -168,16 +171,54 @@ const setupEventListeners = () => {
     });
   }
 
-  // Filter controls
+  // Filter controls with localStorage persistence
   let searchTimeout;
   searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(loadPuzzlesFromAPI, 300);
   });
-  sortField.addEventListener('change', loadPuzzlesFromAPI);
-  sortOrder.addEventListener('change', loadPuzzlesFromAPI);
-  timeSelect.addEventListener('change', loadPuzzlesFromAPI);
-  playedFilter.addEventListener('change', filterByPlayed);
+  sortField.addEventListener('change', () => {
+    saveFilterPreferences();
+    loadPuzzlesFromAPI();
+  });
+  sortOrder.addEventListener('change', () => {
+    saveFilterPreferences();
+    loadPuzzlesFromAPI();
+  });
+  timeSelect.addEventListener('change', () => {
+    saveFilterPreferences();
+    loadPuzzlesFromAPI();
+  });
+  playedFilter.addEventListener('change', () => {
+    saveFilterPreferences();
+    filterByPlayed();
+  });
+};
+
+// --- Filter Preferences Persistence ---
+const saveFilterPreferences = () => {
+  const prefs = {
+    sortField: sortField.value,
+    sortOrder: sortOrder.value,
+    timeRange: timeSelect.value,
+    playedFilter: playedFilter.value,
+  };
+  localStorage.setItem('explorePreferences', JSON.stringify(prefs));
+};
+
+const restoreFilterPreferences = () => {
+  const saved = localStorage.getItem('explorePreferences');
+  if (!saved) return;
+
+  try {
+    const prefs = JSON.parse(saved);
+    if (prefs.sortField) sortField.value = prefs.sortField;
+    if (prefs.sortOrder) sortOrder.value = prefs.sortOrder;
+    if (prefs.timeRange) timeSelect.value = prefs.timeRange;
+    if (prefs.playedFilter) playedFilter.value = prefs.playedFilter;
+  } catch (e) {
+    console.warn('Failed to restore filter preferences:', e);
+  }
 };
 
 const loadPuzzlesFromAPI = async () => {

@@ -566,8 +566,6 @@ canvas {
   margin-top: 1rem;
 }
 
-/* Removed margin-top redundancy */
-
 .level-grid {
   display: flex;
   flex-direction: column;
@@ -721,7 +719,7 @@ canvas {
   }
 
   .button {
-    font-size: 0.8rem;
+    font-size: 1rem;
     padding: 4px 8px;
   }
 
@@ -761,10 +759,6 @@ canvas {
   .info p {
     font-size: 0.8rem;
     margin-bottom: 1rem;
-  }
-
-  .info p:last-child {
-    margin-bottom: 0;
   }
 
   ::-webkit-scrollbar {
@@ -911,11 +905,17 @@ canvas {
   pointer-events: none;
 }
 
-#controls-panel {
+#controls-panel,
+#controls-panel-secondary {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+}
+
+#controls-panel-secondary {
+  margin-top: 0.5rem;
 }
 
 .editor-button {
@@ -923,11 +923,19 @@ canvas {
   position: relative;
   color: var(--primary-text-color);
   border: none;
-  padding: 0.8rem;
+  padding: 0.6rem 0.8rem;
   border-radius: var(--border-radius);
   display: flex;
   align-items: center;
-  flex-grow: 1;
+  justify-content: center;
+  gap: 0.4rem;
+  flex: 1 1 calc(33.33% - 0.5rem);
+  min-width: 0;
+}
+
+.button-label {
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .editor-button:hover:not(:disabled) {
@@ -950,21 +958,19 @@ canvas {
   transition: width 0.9s linear;
 }
 
-#delete-button .keybind,
+#delete-button .button-label,
 #delete-button .fa-solid {
   z-index: 1;
 }
 
-#controls-panel button .fa-solid {
-  margin: 0 auto;
-  font-size: 1.1rem;
+#controls-panel button .fa-solid,
+#controls-panel-secondary button .fa-solid {
+  font-size: 1rem;
 }
 
 #export-button {
   background-color: var(--accent-color);
   color: var(--secondary-text-color);
-  font-size: 1.1rem;
-  margin-left: 0.5rem;
 }
 
 #export-button:disabled {
@@ -1126,6 +1132,7 @@ canvas {
   height: auto;
   display: block;
   aspect-ratio: 1 / 1;
+  touch-action: pan-y;
 }
 
 @media (max-width: 900px) {
@@ -1229,6 +1236,7 @@ canvas {
   -webkit-appearance: none;
   -moz-appearance: none;
   height: 36px;
+  min-width: 140px;
   box-sizing: border-box;
 }
 
@@ -1703,6 +1711,7 @@ kbd {
 .form-error {
   color: #ff5555;
   margin-top: 1rem;
+  padding-bottom: 1rem;
   font-size: 0.9rem;
   transition:
     opacity 0.3s ease,
