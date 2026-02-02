@@ -1,0 +1,18 @@
+version: 1
+frontend:
+  phases:
+    build:
+      commands:
+        - mkdir -p dist
+        - cp *.html dist/
+        - cp robots.txt sitemap.xml dist/
+        - cp -r css js assets pieces dist/
+        # Remove admin-only files from the public deployment
+        - rm -f dist/admin.html
+        - rm -f dist/js/admin.js
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths: []
