@@ -1,118 +1,97 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page Not Found - Prophecy Tablet</title>
-    <meta name="description" content="Page not found - Prophecy Tablet" />
-    <script>
-      (function () {
-        const savedTheme = localStorage.getItem('selectedTheme') || 'default';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-      })();
-    </script>
-    <link rel="stylesheet" href="css/style.css" />
-    <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml," />
-    <script src="js/theme.js" defer></script>
-    <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
-  </head>
 
-  <body>
-    <header class="top-navbar">
-      <button
-        id="mobile-menu-toggle"
-        class="icon-button mobile-menu-toggle"
-        aria-label="Toggle Menu"
-      >
-        <i class="fa-solid fa-bars"></i>
-      </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found - Prophecy Tablet</title>
+  <meta name="description" content="Page not found - Prophecy Tablet" />
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml," />
+  <script src="js/theme.js" defer></script>
+  <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
+</head>
 
-      <a href="index.html" class="navbar-brand">
-        <div>
-          <svg
-            viewBox="0 0 400 200"
-            xmlns="http://www.w3.org/2000/svg"
-            class="navbar-logo"
-            role="img"
-            aria-label="Prophecy Tablet Logo"
-          >
-            <polygon
-              points="0,200 100,100 100,200"
-              fill="currentColor"
-              shape-rendering="crispEdges"
-            />
-            <polygon
-              points="400,200 300,100 300,200"
-              fill="currentColor"
-              shape-rendering="crispEdges"
-            />
-            <polygon
-              points="100,0 300,0 300,100 200,200 100,100"
-              fill="currentColor"
-              shape-rendering="crispEdges"
-            />
-          </svg>
-          <span class="navbar-title">Prophecy Tablet</span>
-        </div>
-      </a>
+<body>
+  <header class="top-navbar">
+    <button id="mobile-menu-toggle" class="icon-button mobile-menu-toggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-      <div class="navbar-controls desktop-only">
-        <div class="theme-selector-container">
-          <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
-            <i class="fa-solid fa-palette"></i>
-          </button>
-        </div>
+    <a href="/" class="navbar-brand">
+      <div>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
+          aria-label="Prophecy Tablet Logo">
+          <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor" shape-rendering="crispEdges" />
+        </svg>
+        <span class="navbar-title">Prophecy Tablet</span>
       </div>
+    </a>
 
-      <div class="navbar-controls mobile-only">
-        <div class="theme-selector-container">
-          <button id="theme-selector-button-mobile" class="icon-button" aria-label="Select Theme">
-            <i class="fa-solid fa-palette"></i>
-          </button>
-        </div>
+    <div class="navbar-controls desktop-only">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
       </div>
+    </div>
 
-      <div id="theme-dropdown" class="theme-dropdown">
-        <div class="theme-dropdown-column">
-          <div class="theme-column-header">Dark</div>
-          <button class="theme-option" data-theme="default">Default</button>
-          <button class="theme-option" data-theme="mydei">Mydei</button>
-          <button class="theme-option" data-theme="dhpt">DHPT</button>
-          <button class="theme-option" data-theme="anaxa">Anaxa</button>
-          <button class="theme-option" data-theme="cerydra">Cerydra</button>
-          <button class="theme-option" data-theme="hysilens">Hysilens</button>
-          <button class="theme-option" data-theme="cipher">Cipher</button>
-          <button class="theme-option" data-theme="evernight">Evernight</button>
-          <button class="theme-option" data-theme="hyacine">Hyacine</button>
-        </div>
-        <div class="theme-dropdown-column">
-          <div class="theme-column-header">Light</div>
-          <button class="theme-option" data-theme="tribbie">Tribbie</button>
-          <button class="theme-option" data-theme="aglaea">Aglaea</button>
-          <button class="theme-option" data-theme="phainon">Phainon</button>
-          <button class="theme-option" data-theme="castorice">Castorice</button>
-          <button class="theme-option" data-theme="cyrene">Cyrene</button>
-        </div>
+    <div class="navbar-controls mobile-only">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button-mobile" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
       </div>
+    </div>
 
-      <nav class="navbar-links">
-        <a href="index.html"><span data-hover="Daily">Daily</span></a>
-        <a href="explore.html"><span data-hover="Explore">Explore</span></a>
-        <a href="create.html"><span data-hover="Create">Create</span></a>
-        <a href="archive.html"><span data-hover="Archive">Archive</span></a>
-        <a href="#" id="info-button-mobile" class="mobile-only"
-          ><span data-hover="Info">Info</span></a
-        >
-      </nav>
-    </header>
-
-    <main class="error-container">
-      <img src="assets/images/404.webp" alt="404 Not Found" class="error-image" />
-      <h1 class="error-title">404</h1>
-      <p class="error-message">Page not found</p>
-      <div class="error-actions">
-        <a href="index.html" class="button primary-button">Return Home</a>
+    <div id="theme-dropdown" class="theme-dropdown">
+      <div class="theme-dropdown-column">
+        <div class="theme-column-header">Dark</div>
+        <button class="theme-option" data-theme="default">Default</button>
+        <button class="theme-option" data-theme="mydei">Mydei</button>
+        <button class="theme-option" data-theme="dhpt">DHPT</button>
+        <button class="theme-option" data-theme="anaxa">Anaxa</button>
+        <button class="theme-option" data-theme="cerydra">Cerydra</button>
+        <button class="theme-option" data-theme="hysilens">Hysilens</button>
+        <button class="theme-option" data-theme="cipher">Cipher</button>
+        <button class="theme-option" data-theme="evernight">Evernight</button>
+        <button class="theme-option" data-theme="hyacine">Hyacine</button>
       </div>
-    </main>
-  </body>
+      <div class="theme-dropdown-column">
+        <div class="theme-column-header">Light</div>
+        <button class="theme-option" data-theme="tribbie">Tribbie</button>
+        <button class="theme-option" data-theme="aglaea">Aglaea</button>
+        <button class="theme-option" data-theme="phainon">Phainon</button>
+        <button class="theme-option" data-theme="castorice">Castorice</button>
+        <button class="theme-option" data-theme="cyrene">Cyrene</button>
+      </div>
+    </div>
+
+    <nav class="navbar-links">
+      <a href="/"><span data-hover="Daily">Daily</span></a>
+      <a href="/explore"><span data-hover="Explore">Explore</span></a>
+      <a href="/create"><span data-hover="Create">Create</span></a>
+      <a href="/archive"><span data-hover="Archive">Archive</span></a>
+      <a href="#" id="info-button-mobile" class="mobile-only"><span data-hover="Info">Info</span></a>
+    </nav>
+  </header>
+
+  <main class="error-container">
+    <img src="assets/images/404.webp" alt="404 Not Found" class="error-image" />
+    <h1 class="error-title">404</h1>
+    <p class="error-message">Page not found</p>
+    <div class="error-actions">
+      <a href="/" class="button primary-button">Return Home</a>
+    </div>
+  </main>
+</body>
+
 </html>

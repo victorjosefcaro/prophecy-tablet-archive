@@ -1,289 +1,253 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prophecy Tablet</title>
-    <meta
-      name="description"
-      content="Create and share your own Prophecy Tablet puzzles inspired by Honkai: Star Rail."
-    />
-    <meta property="og:title" content="Prophecy Tablet - Create Puzzles" />
-    <meta
-      property="og:description"
-      content="Create and share your own Prophecy Tablet puzzles inspired by Honkai: Star Rail."
-    />
-    <meta property="og:image" content="assets/images/og-image.png" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <script>
-      (function () {
-        const savedTheme = localStorage.getItem('selectedTheme') || 'default';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-      })();
-    </script>
-    <link rel="stylesheet" href="css/style.css" />
-    <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml," />
-    <script src="js/api.js" defer></script>
-    <script src="js/puzzle-core.js" defer></script>
-    <script src="js/create.js" defer></script>
-    <script src="js/theme.js" defer></script>
-    <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
-  </head>
 
-  <body>
-    <header class="top-navbar">
-      <button
-        id="mobile-menu-toggle"
-        class="icon-button mobile-menu-toggle"
-        aria-label="Toggle Menu"
-      >
-        <i class="fa-solid fa-bars"></i>
-      </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prophecy Tablet</title>
+  <meta name="description" content="Create and share your own Prophecy Tablet puzzles inspired by Honkai: Star Rail." />
+  <meta property="og:title" content="Prophecy Tablet - Create Puzzles" />
+  <meta property="og:description"
+    content="Create and share your own Prophecy Tablet puzzles inspired by Honkai: Star Rail." />
+  <meta property="og:image" content="assets/images/og-image.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('selectedTheme') || 'default';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link id="dynamic-favicon" rel="icon" href="data:image/svg+xml," />
+  <script src="js/api.js" defer></script>
+  <script src="js/puzzle-core.js" defer></script>
+  <script src="js/create.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="https://kit.fontawesome.com/c4e0b1b67d.js" crossorigin="anonymous" async></script>
+</head>
 
-      <a href="index.html" class="navbar-brand">
-        <div>
-          <svg
-            viewBox="0 0 400 200"
-            xmlns="http://www.w3.org/2000/svg"
-            class="navbar-logo"
-            role="img"
-            aria-label="Prophecy Tablet Logo"
-          >
-            <polygon
-              points="0,200 100,100 100,200"
-              fill="currentColor"
-              shape-rendering="crispEdges"
-            />
-            <polygon
-              points="400,200 300,100 300,200"
-              fill="currentColor"
-              shape-rendering="crispEdges"
-            />
-            <polygon
-              points="100,0 300,0 300,100 200,200 100,100"
-              fill="currentColor"
-              shape-rendering="crispEdges"
-            />
-          </svg>
-          <span class="navbar-title">Prophecy Tablet</span>
-        </div>
-      </a>
+<body>
+  <header class="top-navbar">
+    <button id="mobile-menu-toggle" class="icon-button mobile-menu-toggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-      <div class="navbar-controls desktop-only">
-        <div class="theme-selector-container">
-          <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
-            <i class="fa-solid fa-palette"></i>
-          </button>
-        </div>
-        <button id="info-button" class="icon-button" aria-label="Information">
-          <i class="fa-solid fa-circle-info"></i>
+    <a href="/" class="navbar-brand">
+      <div>
+        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" class="navbar-logo" role="img"
+          aria-label="Prophecy Tablet Logo">
+          <polygon points="0,200 100,100 100,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="400,200 300,100 300,200" fill="currentColor" shape-rendering="crispEdges" />
+          <polygon points="100,0 300,0 300,100 200,200 100,100" fill="currentColor" shape-rendering="crispEdges" />
+        </svg>
+        <span class="navbar-title">Prophecy Tablet</span>
+      </div>
+    </a>
+
+    <div class="navbar-controls desktop-only">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
         </button>
       </div>
+      <button id="info-button" class="icon-button" aria-label="Information">
+        <i class="fa-solid fa-circle-info"></i>
+      </button>
+    </div>
 
-      <div class="navbar-controls mobile-only">
-        <div class="theme-selector-container">
-          <button id="theme-selector-button-mobile" class="icon-button" aria-label="Select Theme">
-            <i class="fa-solid fa-palette"></i>
+    <div class="navbar-controls mobile-only">
+      <div class="theme-selector-container">
+        <button id="theme-selector-button-mobile" class="icon-button" aria-label="Select Theme">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="theme-dropdown" class="theme-dropdown">
+      <div class="theme-dropdown-column">
+        <div class="theme-column-header">Dark</div>
+        <button class="theme-option" data-theme="default">Default</button>
+        <button class="theme-option" data-theme="mydei">Mydei</button>
+        <button class="theme-option" data-theme="dhpt">DHPT</button>
+        <button class="theme-option" data-theme="anaxa">Anaxa</button>
+        <button class="theme-option" data-theme="cerydra">Cerydra</button>
+        <button class="theme-option" data-theme="hysilens">Hysilens</button>
+        <button class="theme-option" data-theme="cipher">Cipher</button>
+        <button class="theme-option" data-theme="evernight">Evernight</button>
+        <button class="theme-option" data-theme="hyacine">Hyacine</button>
+      </div>
+      <div class="theme-dropdown-column">
+        <div class="theme-column-header">Light</div>
+        <button class="theme-option" data-theme="tribbie">Tribbie</button>
+        <button class="theme-option" data-theme="aglaea">Aglaea</button>
+        <button class="theme-option" data-theme="phainon">Phainon</button>
+        <button class="theme-option" data-theme="castorice">Castorice</button>
+        <button class="theme-option" data-theme="cyrene">Cyrene</button>
+      </div>
+    </div>
+
+    <nav class="navbar-links">
+      <a href="/"><span data-hover="Daily">Daily</span></a>
+      <a href="/explore"><span data-hover="Explore">Explore</span></a>
+      <a href="/create" class="active"><span data-hover="Create">Create</span></a>
+      <a href="/archive"><span data-hover="Archive">Archive</span></a>
+      <a href="#" id="info-button-mobile" class="mobile-only"><span data-hover="Info">Info</span></a>
+    </nav>
+  </header>
+
+  <main class="main-content editor-layout">
+    <div class="editor-left-column">
+      <div class="editor-card palette-card">
+        <div class="card-header">
+          <h2>Palette</h2>
+          <span id="piece-counter" class="piece-counter">0 / 10</span>
+        </div>
+        <div id="piece-palette"></div>
+      </div>
+
+      <div class="editor-card controls-card">
+        <div class="card-header">
+          <h2>Controls</h2>
+          <button id="help-button" class="icon-button help-button" title="How to Use">
+            <i class="fa-solid fa-question"></i>
+          </button>
+        </div>
+        <div id="controls-panel">
+          <button id="size-toggle-btn" class="editor-button" title="Toggle Size (E)">
+            <i class="fa-solid fa-expand-arrows-alt"></i><span class="button-label">Size</span>
+          </button>
+          <button id="rotate-button" class="editor-button" title="Rotate (R) Hold Shift to Rotate Backwards">
+            <i class="fa-solid fa-rotate"></i><span class="button-label">Rotate</span>
+          </button>
+          <button id="delete-button" class="editor-button" title="Delete (T) Hold to Delete All">
+            <i class="fa-solid fa-trash-can"></i><span class="button-label">Delete</span>
+            <div class="delete-progress-fill"></div>
+          </button>
+        </div>
+        <div id="controls-panel-secondary">
+          <button id="undo-button" class="editor-button" title="Undo (Ctrl+Z)">
+            <i class="fa-solid fa-reply"></i><span class="button-label">Undo</span>
+          </button>
+          <button id="redo-button" class="editor-button" title="Redo (Ctrl+Y)">
+            <i class="fa-solid fa-share"></i><span class="button-label">Redo</span>
+          </button>
+          <button id="export-button" class="editor-button" title="Publish Puzzle">
+            <i class="fa-solid fa-floppy-disk"></i><span class="button-label">Publish</span>
           </button>
         </div>
       </div>
+    </div>
 
-      <div id="theme-dropdown" class="theme-dropdown">
-        <div class="theme-dropdown-column">
-          <div class="theme-column-header">Dark</div>
-          <button class="theme-option" data-theme="default">Default</button>
-          <button class="theme-option" data-theme="mydei">Mydei</button>
-          <button class="theme-option" data-theme="dhpt">DHPT</button>
-          <button class="theme-option" data-theme="anaxa">Anaxa</button>
-          <button class="theme-option" data-theme="cerydra">Cerydra</button>
-          <button class="theme-option" data-theme="hysilens">Hysilens</button>
-          <button class="theme-option" data-theme="cipher">Cipher</button>
-          <button class="theme-option" data-theme="evernight">Evernight</button>
-          <button class="theme-option" data-theme="hyacine">Hyacine</button>
-        </div>
-        <div class="theme-dropdown-column">
-          <div class="theme-column-header">Light</div>
-          <button class="theme-option" data-theme="tribbie">Tribbie</button>
-          <button class="theme-option" data-theme="aglaea">Aglaea</button>
-          <button class="theme-option" data-theme="phainon">Phainon</button>
-          <button class="theme-option" data-theme="castorice">Castorice</button>
-          <button class="theme-option" data-theme="cyrene">Cyrene</button>
-        </div>
+    <div class="editor-right-column">
+      <div class="canvas-container" id="solution-container-wrapper">
+        <canvas id="editor-canvas-solution"></canvas>
       </div>
+    </div>
+    <div class="loading-indicator" id="loading-indicator">
+      <div class="spinner"></div>
+      <p></p>
+    </div>
+  </main>
 
-      <nav class="navbar-links">
-        <a href="index.html"><span data-hover="Daily">Daily</span></a>
-        <a href="explore.html"><span data-hover="Explore">Explore</span></a>
-        <a href="create.html" class="active"><span data-hover="Create">Create</span></a>
-        <a href="archive.html"><span data-hover="Archive">Archive</span></a>
-        <a href="#" id="info-button-mobile" class="mobile-only"
-          ><span data-hover="Info">Info</span></a
-        >
-      </nav>
-    </header>
-
-    <main class="main-content editor-layout">
-      <div class="editor-left-column">
-        <div class="editor-card palette-card">
-          <div class="card-header">
-            <h2>Palette</h2>
-            <span id="piece-counter" class="piece-counter">0 / 10</span>
-          </div>
-          <div id="piece-palette"></div>
-        </div>
-
-        <div class="editor-card controls-card">
-          <div class="card-header">
-            <h2>Controls</h2>
-            <button id="help-button" class="icon-button help-button" title="How to Use">
-              <i class="fa-solid fa-question"></i>
-            </button>
-          </div>
-          <div id="controls-panel">
-            <button id="size-toggle-btn" class="editor-button" title="Toggle Size (E)">
-              <i class="fa-solid fa-expand-arrows-alt"></i><span class="button-label">Size</span>
-            </button>
-            <button
-              id="rotate-button"
-              class="editor-button"
-              title="Rotate (R) Hold Shift to Rotate Backwards"
-            >
-              <i class="fa-solid fa-rotate"></i><span class="button-label">Rotate</span>
-            </button>
-            <button id="delete-button" class="editor-button" title="Delete (T) Hold to Delete All">
-              <i class="fa-solid fa-trash-can"></i><span class="button-label">Delete</span>
-              <div class="delete-progress-fill"></div>
-            </button>
-          </div>
-          <div id="controls-panel-secondary">
-            <button id="undo-button" class="editor-button" title="Undo (Ctrl+Z)">
-              <i class="fa-solid fa-reply"></i><span class="button-label">Undo</span>
-            </button>
-            <button id="redo-button" class="editor-button" title="Redo (Ctrl+Y)">
-              <i class="fa-solid fa-share"></i><span class="button-label">Redo</span>
-            </button>
-            <button id="export-button" class="editor-button" title="Publish Puzzle">
-              <i class="fa-solid fa-floppy-disk"></i><span class="button-label">Publish</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="editor-right-column">
-        <div class="canvas-container" id="solution-container-wrapper">
-          <canvas id="editor-canvas-solution"></canvas>
-        </div>
-      </div>
-      <div class="loading-indicator" id="loading-indicator">
-        <div class="spinner"></div>
-        <p></p>
-      </div>
-    </main>
-
-    <!-- Publish Confirmation Modal -->
-    <div class="modal" id="publish-confirm-modal">
-      <div class="modal-content">
-        <div class="publish-modal-layout">
-          <div class="publish-modal-left">
-            <div class="publish-form">
-              <h2>Publish Puzzle</h2>
-              <div class="form-group">
-                <label for="puzzle-name-input">Puzzle Name</label>
-                <input
-                  type="text"
-                  id="puzzle-name-input"
-                  placeholder="Untitled Puzzle"
-                  maxlength="50"
-                />
-              </div>
-              <div class="form-group">
-                <label for="author-name-input">Your Name</label>
-                <input type="text" id="author-name-input" placeholder="Nameless" maxlength="30" />
-              </div>
-              <p class="publish-hint">Drag the pieces to adjust their starting positions.</p>
-              <div id="publish-error" class="form-error"></div>
+  <!-- Publish Confirmation Modal -->
+  <div class="modal" id="publish-confirm-modal">
+    <div class="modal-content">
+      <div class="publish-modal-layout">
+        <div class="publish-modal-left">
+          <div class="publish-form">
+            <h2>Publish Puzzle</h2>
+            <div class="form-group">
+              <label for="puzzle-name-input">Puzzle Name</label>
+              <input type="text" id="puzzle-name-input" placeholder="Untitled Puzzle" maxlength="50" />
             </div>
-            <div class="modal-buttons">
-              <button id="cancel-publish-button" class="button secondary-button">Cancel</button>
-              <button id="confirm-publish-button" class="button primary-button">Publish</button>
+            <div class="form-group">
+              <label for="author-name-input">Your Name</label>
+              <input type="text" id="author-name-input" placeholder="Nameless" maxlength="30" />
             </div>
+            <p class="publish-hint">Drag the pieces to adjust their starting positions.</p>
+            <div id="publish-error" class="form-error"></div>
           </div>
-          <div class="publish-modal-right">
-            <div class="canvas-container" id="start-container-wrapper">
-              <canvas id="editor-canvas-start"></canvas>
-            </div>
+          <div class="modal-buttons">
+            <button id="cancel-publish-button" class="button secondary-button">Cancel</button>
+            <button id="confirm-publish-button" class="button primary-button">Publish</button>
+          </div>
+        </div>
+        <div class="publish-modal-right">
+          <div class="canvas-container" id="start-container-wrapper">
+            <canvas id="editor-canvas-start"></canvas>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Help Modal -->
-    <div class="modal" id="help-modal">
-      <div class="modal-content help-modal-content">
-        <h2>How to Use</h2>
-        <div class="help-content">
-          <div class="help-section">
-            <h3>Creating Pieces</h3>
-            <p>
-              Click on a shape in the <strong>Palette</strong> to add it to the canvas, or use
-              number keys <kbd>1</kbd>-<kbd>6</kbd>.
-            </p>
-          </div>
-          <div class="help-section">
-            <h3>Editing Pieces</h3>
-            <ul>
-              <li>
-                <strong>Select:</strong> Click on a piece to select it. (Hold <kbd>Ctrl</kbd> to
-                select multiple pieces or drag by holding left click)
-              </li>
-              <li>
-                <strong>Move:</strong> Drag a piece or use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd
-                ><kbd>D</kbd>
-              </li>
-              <li>
-                <strong>Rotate:</strong> <kbd>R</kbd> (Hold <kbd>Shift</kbd> to rotate
-                counterclockwise)
-              </li>
-              <li><strong>Resize:</strong> <kbd>E</kbd></li>
-              <li><strong>Delete:</strong> <kbd>T</kbd> (Hold to delete all)</li>
-              <li><strong>Undo:</strong> <kbd>Ctrl</kbd>+<kbd>Z</kbd></li>
-              <li>
-                <strong>Redo:</strong> <kbd>Ctrl</kbd>+<kbd>Y</kbd> or
-                <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd>
-              </li>
-            </ul>
-          </div>
-          <div class="help-section">
-            <h3>Publishing</h3>
-            <p>
-              Once you have at least 3 pieces, click the
-              <i class="fa-solid fa-floppy-disk"></i> button to publish. You can adjust the starting
-              positions before confirming. You can place a maximum of 10 pieces.
-            </p>
-          </div>
-        </div>
-        <div class="modal-buttons">
-          <button id="close-help-button" class="button primary-button">Got it</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="info-modal">
-      <div class="modal-content">
-        <div class="info">
+  <!-- Help Modal -->
+  <div class="modal" id="help-modal">
+    <div class="modal-content help-modal-content">
+      <h2>How to Use</h2>
+      <div class="help-content">
+        <div class="help-section">
+          <h3>Creating Pieces</h3>
           <p>
-            A fan-made project inspired by the Prophecy Tablet puzzles in
-            <em>Honkai: Star Rail</em>.
+            Click on a shape in the <strong>Palette</strong> to add it to the canvas, or use
+            number keys <kbd>1</kbd>-<kbd>6</kbd>.
           </p>
-          <p>
-            Drag pieces to match the target shape. When pieces overlap, the intersecting area
-            toggles between visible and invisible (odd = visible, even = invisible).
-          </p>
-          <p>Match the shape perfectly to solve the puzzle. Have fun!</p>
         </div>
-        <button id="close-info-modal-button" class="button primary-button">Close</button>
+        <div class="help-section">
+          <h3>Editing Pieces</h3>
+          <ul>
+            <li>
+              <strong>Select:</strong> Click on a piece to select it. (Hold <kbd>Ctrl</kbd> to
+              select multiple pieces or drag by holding left click)
+            </li>
+            <li>
+              <strong>Move:</strong> Drag a piece or use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+            </li>
+            <li>
+              <strong>Rotate:</strong> <kbd>R</kbd> (Hold <kbd>Shift</kbd> to rotate
+              counterclockwise)
+            </li>
+            <li><strong>Resize:</strong> <kbd>E</kbd></li>
+            <li><strong>Delete:</strong> <kbd>T</kbd> (Hold to delete all)</li>
+            <li><strong>Undo:</strong> <kbd>Ctrl</kbd>+<kbd>Z</kbd></li>
+            <li>
+              <strong>Redo:</strong> <kbd>Ctrl</kbd>+<kbd>Y</kbd> or
+              <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd>
+            </li>
+          </ul>
+        </div>
+        <div class="help-section">
+          <h3>Publishing</h3>
+          <p>
+            Once you have at least 3 pieces, click the
+            <i class="fa-solid fa-floppy-disk"></i> button to publish. You can adjust the starting
+            positions before confirming. You can place a maximum of 10 pieces.
+          </p>
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button id="close-help-button" class="button primary-button">Got it</button>
       </div>
     </div>
-  </body>
+  </div>
+
+  <div class="modal" id="info-modal">
+    <div class="modal-content">
+      <div class="info">
+        <p>
+          A fan-made project inspired by the Prophecy Tablet puzzles in
+          <em>Honkai: Star Rail</em>.
+        </p>
+        <p>
+          Drag pieces to match the target shape. When pieces overlap, the intersecting area
+          toggles between visible and invisible (odd = visible, even = invisible).
+        </p>
+        <p>Match the shape perfectly to solve the puzzle. Have fun!</p>
+      </div>
+      <button id="close-info-modal-button" class="button primary-button">Close</button>
+    </div>
+  </div>
+</body>
+
 </html>
