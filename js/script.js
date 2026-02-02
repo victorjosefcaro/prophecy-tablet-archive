@@ -54,7 +54,9 @@ const initializeEventListeners = () => {
   document.getElementById('prev-puzzle-button').addEventListener('click', goToPreviousPuzzle);
   document.getElementById('next-puzzle-button-nav').addEventListener('click', goToNextPuzzle);
 
-  document.getElementById('info-button').addEventListener('click', () => showModal('info-modal'));
+  document.querySelectorAll('#info-button, #info-button-mobile').forEach((button) => {
+    button.addEventListener('click', () => showModal('info-modal'));
+  });
   document.getElementById('info-modal').addEventListener('click', (e) => {
     if (e.target.id === 'info-modal') hideModal('info-modal');
   });

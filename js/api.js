@@ -127,21 +127,15 @@ const createPuzzle = async (
     headers['X-Admin-Secret'] = adminSecret;
   }
 
-  try {
-    const response = await fetch(`${API_URL}/puzzles`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload),
-    });
+  const response = await fetch(`${API_URL}/puzzles`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
+  });
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Failed to create puzzle');
-    return data;
-  } catch (error) {
-    // We throw the error but don't log it here to avoid cluttering the console
-    // with expected validation errors.
-    throw error;
-  }
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Failed to create puzzle');
+  return data;
 };
 
 /**

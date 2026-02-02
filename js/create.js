@@ -638,11 +638,11 @@ const setupEventListeners = () => {
   });
 
   // Info modal
-  const infoButton = document.getElementById('info-button');
+  const infoButtons = document.querySelectorAll('#info-button, #info-button-mobile');
   const infoModal = document.getElementById('info-modal');
   const closeInfoButton = document.getElementById('close-info-modal-button');
 
-  if (infoButton && infoModal && closeInfoButton) {
+  if (infoButtons.length > 0 && infoModal && closeInfoButton) {
     const openInfoModal = () => {
       infoModal.style.display = 'flex';
       setTimeout(() => infoModal.classList.add('show'), 10);
@@ -653,7 +653,7 @@ const setupEventListeners = () => {
       setTimeout(() => (infoModal.style.display = 'none'), 300);
     };
 
-    infoButton.addEventListener('click', openInfoModal);
+    infoButtons.forEach((btn) => btn.addEventListener('click', openInfoModal));
     closeInfoButton.addEventListener('click', closeInfoModal);
     infoModal.addEventListener('click', (e) => {
       if (e.target === infoModal) closeInfoModal();
