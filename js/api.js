@@ -105,7 +105,14 @@ const fetchPuzzleById = async (puzzleId) => {
  * @param {string} adminSecret - Optional admin secret for daily puzzle creation
  * @returns {Promise<Object>} Created puzzle info
  */
-const createPuzzle = async (puzzleData, puzzleName, authorName, isDaily, scheduledDate, adminSecret = null) => {
+const createPuzzle = async (
+  puzzleData,
+  puzzleName,
+  authorName,
+  isDaily,
+  scheduledDate,
+  adminSecret = null
+) => {
   const payload = {
     puzzleData,
     puzzleName: puzzleName || 'Untitled Puzzle',

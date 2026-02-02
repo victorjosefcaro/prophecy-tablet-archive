@@ -1,0 +1,6 @@
+# Prophecy Tablet Archive
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://prophecytablet.com/sitemap.xml
