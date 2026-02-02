@@ -111,6 +111,22 @@ window.onload = async () => {
       // If not in list, fetch it specifically
       puzzle = await fetchPuzzleById(puzzleId);
       if (puzzle) {
+        // Security check: Block access to future scheduled daily puzzles
+        // even if the API returns them (double-check)
+        if (puzzle.isDaily && puzzle.scheduledDate) {
+          const today = new Date().toISOString().split('T')[0];
+          if (puzzle.scheduledDate > today) {
+            console.warn('Attempted to access future puzzle:', puzzle.id);
+            alert(`This puzzle is scheduled for ${puzzle.scheduledDate} and is not yet available.`);
+            showGridView();
+            // Clear the invalid ID from URL
+            const url = new URL(window.location.href);
+            url.searchParams.delete('puzzle');
+            window.history.replaceState({}, '', url.toString());
+            return;
+          }
+        }
+
         // We need to ensure we have images preloaded for this puzzle
         await preloadImages([puzzle]);
         openGameplayView(puzzle);
