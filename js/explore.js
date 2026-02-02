@@ -193,6 +193,12 @@ const setupEventListeners = () => {
     saveFilterPreferences();
     filterByPlayed();
   });
+
+  // Handle window resize for explore previews
+  window.addEventListener('resize', () => {
+    clearTimeout(window.exploreResizeTimeout);
+    window.exploreResizeTimeout = setTimeout(rerenderExplorePreviews, 100);
+  });
 };
 
 // --- Filter Preferences Persistence ---
@@ -682,9 +688,17 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.parentElement.getBoundingClientRect();
-  const size = Math.floor(rect.width / GRID_COLS) * GRID_COLS;
-  canvas.width = size * dpr;
-  canvas.height = size * dpr;
+
+  // Ensure we use integer dimensions for the canvas physical pixels
+  // and that the cell size is an integer multiple of physical pixels to avoid anti-aliasing gaps
+  const physicalCellSize = Math.floor((rect.width * dpr) / GRID_COLS);
+  canvas.width = physicalCellSize * GRID_COLS;
+  canvas.height = physicalCellSize * GRID_COLS;
+
+  // Keep the CSS size consistent
+  canvas.style.width = canvas.width / dpr + 'px';
+  canvas.style.height = canvas.height / dpr + 'px';
+
   ctx.imageSmoothingEnabled = false;
 
   const tempPreviewCanvas = document.createElement('canvas');
@@ -692,13 +706,19 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
   tempPreviewCanvas.height = canvas.height;
   const tempPreviewCtx = tempPreviewCanvas.getContext('2d');
   tempPreviewCtx.imageSmoothingEnabled = false;
-  tempPreviewCtx.globalCompositeOperation = 'xor';
 
+  // Use even-odd fill on vector paths to avoid anti-aliasing artifacts between pieces
+  // This matches the rendering logic in the main gameplay view
+  tempPreviewCtx.beginPath();
   puzzlePieces.forEach((data) => {
-    const piece = { ...data, img: imageMap[data.src] };
+    // Clone to avoid mutating the original piece data
+    const piece = { ...data };
     updatePiecePixelDimensions(piece, canvas);
-    drawImageTransformed(tempPreviewCtx, piece);
+    addPiecePathToContext(tempPreviewCtx, piece);
   });
+
+  tempPreviewCtx.fillStyle = 'black';
+  tempPreviewCtx.fill('evenodd');
 
   const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
   tempPreviewCtx.globalCompositeOperation = 'source-in';

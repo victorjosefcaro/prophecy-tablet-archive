@@ -230,36 +230,11 @@ const goToNextPuzzleFromModal = () => {
   goToNextPuzzle();
 };
 
-const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  const size = 120; // Slightly larger for better visibility
-  const adjustedSize = Math.floor(size / GRID_COLS) * GRID_COLS;
-  canvas.width = adjustedSize * dpr;
-  canvas.height = adjustedSize * dpr;
-  canvas.style.width = `${adjustedSize}px`;
-  canvas.style.height = `${adjustedSize}px`;
-  ctx.imageSmoothingEnabled = false;
-
-  const tempPreviewCanvas = document.createElement('canvas');
-  tempPreviewCanvas.width = canvas.width;
-  tempPreviewCanvas.height = canvas.height;
-  const tempPreviewCtx = tempPreviewCanvas.getContext('2d');
-  tempPreviewCtx.imageSmoothingEnabled = false;
-  tempPreviewCtx.globalCompositeOperation = 'xor';
-
-  puzzlePieces.forEach((data) => {
-    const piece = { ...data, img: imageMap[data.src] };
-    updatePiecePixelDimensions(piece, canvas);
-    drawImageTransformed(tempPreviewCtx, piece);
-  });
-
-  const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
-  tempPreviewCtx.globalCompositeOperation = 'source-in';
-  tempPreviewCtx.fillStyle = color;
-  tempPreviewCtx.fillRect(0, 0, tempPreviewCanvas.width, tempPreviewCanvas.height);
-
-  ctx.drawImage(tempPreviewCanvas, 0, 0);
+const formatStatsTime = (timeMs) => {
+  const seconds = Math.floor(timeMs / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}m ${remainingSeconds}s`;
 };
 
 const populateLevelSelector = () => {
@@ -299,7 +274,6 @@ const populateLevelSelector = () => {
       previewContainer.className = 'level-select-preview';
       previewContainer.id = `level-preview-${index}`;
 
-      const canvas = document.createElement('canvas');
       const label = document.createElement('span');
       label.className = 'level-number';
       label.textContent = `#${puzzle.dailyNumber}`;
@@ -312,11 +286,32 @@ const populateLevelSelector = () => {
         day: 'numeric',
       });
 
-      drawPuzzlePreview(canvas, solutionPieces, imageMap);
-
-      previewContainer.appendChild(canvas);
       previewContainer.appendChild(label);
       previewContainer.appendChild(dateLabel);
+
+      const stats = getDailyCompletion(puzzle.id);
+      if (stats) {
+        const statsContainer = document.createElement('div');
+        statsContainer.className = 'level-stats';
+
+        const timeLabel = document.createElement('span');
+        timeLabel.className = 'level-stat';
+        timeLabel.innerHTML = `<i class="fa-solid fa-clock"></i> ${formatStatsTime(stats.time)}`;
+
+        const movesLabel = document.createElement('span');
+        movesLabel.className = 'level-stat';
+        movesLabel.innerHTML = `<i class="fa-solid fa-shoe-prints"></i> ${stats.moves}`;
+
+        statsContainer.appendChild(timeLabel);
+        statsContainer.appendChild(movesLabel);
+        previewContainer.appendChild(statsContainer);
+      } else {
+        const statsContainer = document.createElement('div');
+        statsContainer.className = 'level-stats unplayed';
+        statsContainer.textContent = 'Not cleared';
+        previewContainer.appendChild(statsContainer);
+      }
+
       previewContainer.onclick = () => {
         hideModal('level-select-modal');
         loadPuzzle(index);
