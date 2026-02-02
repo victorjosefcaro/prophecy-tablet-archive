@@ -8,6 +8,7 @@ let referencePieces = [];
 let imageMap = {};
 let levelPreviews = [];
 let currentPuzzle = null;
+let isInitialLoad = true;
 
 // --- Helper Functions ---
 const formatDate = (timestamp) => {
@@ -180,9 +181,11 @@ const setupEventListeners = () => {
 };
 
 const loadPuzzlesFromAPI = async () => {
-  // Show loading indicator
-  loadingIndicator.classList.remove('hidden');
-  exploreGrid.style.display = 'none';
+  // Only show loading indicator on initial load
+  if (isInitialLoad) {
+    loadingIndicator.classList.remove('hidden');
+    exploreGrid.style.display = 'none';
+  }
   noPuzzlesMessage.style.display = 'none';
 
   const options = {
@@ -221,9 +224,12 @@ const loadPuzzlesFromAPI = async () => {
   userPuzzles.sort(sortFunctions[field] || sortFunctions.date);
   if (order === 'asc') userPuzzles.reverse();
 
-  // Hide loading indicator
-  loadingIndicator.classList.add('hidden');
-  exploreGrid.style.display = '';
+  // Hide loading indicator and mark initial load complete
+  if (isInitialLoad) {
+    loadingIndicator.classList.add('hidden');
+    exploreGrid.style.display = '';
+    isInitialLoad = false;
+  }
 
   filterByPlayed();
 };

@@ -1157,13 +1157,10 @@ const publishPuzzle = async () => {
   };
 
   try {
-    document.getElementById('loading-indicator').classList.remove('hidden');
     await createPuzzle(puzzleData, puzzleNameInput.value, authorNameInput.value);
-    document.getElementById('loading-indicator').classList.add('hidden');
     confirmBtn.innerHTML = 'Published';
     setTimeout(closePublishModal, 1500);
   } catch (error) {
-    document.getElementById('loading-indicator').classList.add('hidden');
     confirmBtn.innerHTML = 'Try Again';
     confirmBtn.disabled = false;
 
