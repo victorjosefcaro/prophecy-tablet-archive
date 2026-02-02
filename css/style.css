@@ -213,13 +213,11 @@ html[data-theme='cyrene'] {
   --container-grid-color: oklch(0.99 0.22 303);
 }
 
-:is(
-  html[data-theme='tribbie'],
+:is(html[data-theme='tribbie'],
   html[data-theme='aglaea'],
   html[data-theme='phainon'],
   html[data-theme='castorice'],
-  html[data-theme='cyrene']
-) {
+  html[data-theme='cyrene']) {
   --primary-text-color: var(--text-dark-color);
   --secondary-text-color: var(--text-light-color);
   --piece-hover-color: var(--text-dark-color);
@@ -650,21 +648,9 @@ canvas {
 .level-stats {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
+  gap: 0.1rem;
   margin-top: 1rem;
   width: 100%;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.level-stat {
-  font-size: 0.85rem;
-  opacity: 0.9;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-medium);
 }
 
 .level-stat i {
@@ -675,15 +661,8 @@ canvas {
   opacity: 0.8;
 }
 
-.level-select-preview:hover .level-number {
-  transform: scale(1.1);
-}
-
-.level-number {
-  transition: transform 0.2s ease;
-}
-
 .level-stats.unplayed {
+  align-items: center;
   opacity: 0.3;
   font-size: 0.8rem;
   font-style: italic;
@@ -888,7 +867,6 @@ canvas {
   border-radius: var(--border-radius);
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.4rem;
   flex: 1 1 calc(33.33% - 0.5rem);
   min-width: 0;
@@ -1392,11 +1370,11 @@ canvas {
   position: relative;
 }
 
-.checkbox-container:hover input ~ .checkmark {
+.checkbox-container:hover input~.checkmark {
   background-color: var(--background-hover-color);
 }
 
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked~.checkmark {
   background-color: var(--accent-color);
 }
 
@@ -1413,7 +1391,7 @@ canvas {
   transform: rotate(45deg);
 }
 
-.checkbox-container input:checked ~ .checkmark:after {
+.checkbox-container input:checked~.checkmark:after {
   display: block;
 }
 

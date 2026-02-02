@@ -181,12 +181,20 @@ const loadPuzzle = async (index) => {
   updateActiveLevelInSelector();
 };
 
-const configureCompletionModal = (timeMs, moves, stats) => {
+const configureCompletionModal = (timeMs, moves) => {
   const nextPuzzlebutton = document.getElementById('next-puzzle-button');
   if (currentPuzzleIndex < puzzles.length - 1) {
     nextPuzzlebutton.style.display = 'inline-block';
   } else {
     nextPuzzlebutton.style.display = 'none';
+  }
+
+  // Mark as completed in local storage (since archive is all daily puzzles)
+  if (currentPuzzle?.id) {
+    markDailyCompleted(currentPuzzle.id, timeMs, moves);
+
+    // Refresh the level selector to show the new stats
+    populateLevelSelector();
   }
 };
 
@@ -294,13 +302,13 @@ const populateLevelSelector = () => {
         const statsContainer = document.createElement('div');
         statsContainer.className = 'level-stats';
 
-        const timeLabel = document.createElement('span');
-        timeLabel.className = 'level-stat';
-        timeLabel.innerHTML = `<i class="fa-solid fa-clock"></i> ${formatStatsTime(stats.time)}`;
+        const timeLabel = document.createElement('div');
+        timeLabel.className = 'avg-inline';
+        timeLabel.innerHTML = `Best Time: <span class="avg-value">${formatStatsTime(stats.time)}</span>`;
 
-        const movesLabel = document.createElement('span');
-        movesLabel.className = 'level-stat';
-        movesLabel.innerHTML = `<i class="fa-solid fa-shoe-prints"></i> ${stats.moves}`;
+        const movesLabel = document.createElement('div');
+        movesLabel.className = 'avg-inline';
+        movesLabel.innerHTML = `Best Moves: <span class="avg-value">${stats.moves}</span>`;
 
         statsContainer.appendChild(timeLabel);
         statsContainer.appendChild(movesLabel);

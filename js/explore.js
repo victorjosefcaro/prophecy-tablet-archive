@@ -73,6 +73,12 @@ const configureCompletionModal = (timeMs, moves) => {
   if (timeMs !== undefined && moves !== undefined) {
     updatePerformanceComparison(timeMs, moves);
   }
+
+  // If this happens to be a daily puzzle (played via direct link in explore),
+  // also mark it as completed in the daily archive.
+  if (currentPuzzle?.isDaily && currentPuzzle?.id) {
+    markDailyCompleted(currentPuzzle.id, timeMs, moves);
+  }
 };
 
 // --- Initialization ---
