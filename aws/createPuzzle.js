@@ -27,7 +27,7 @@ const generateShortCode = () => {
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const TABLE_NAME = process.env.TABLE_NAME || 'prophecy-tablet-puzzles';
+const TABLE_NAME = 'prophecy-tablet-puzzles';
 
 // SECURITY: Set this as an environment variable in your Lambda configuration
 // Go to Lambda > Configuration > Environment variables > Add ADMIN_SECRET
@@ -39,7 +39,6 @@ export const handler = async (event) => {
         'https://prophecytablet.com',
         'https://www.prophecytablet.com',
         'http://localhost:8000',
-        'http://127.0.0.1:8000',
         'null' // This allows file:// requests (use with caution, but necessary for local HTML files)
     ];
 

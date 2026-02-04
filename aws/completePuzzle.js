@@ -8,7 +8,7 @@ import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const TABLE_NAME = process.env.TABLE_NAME || 'prophecy-tablet-puzzles';
+const TABLE_NAME = 'prophecy-tablet-puzzles';
 
 // SECURITY: Reasonable bounds for completion stats
 const MAX_TIME_MS = 3600000; // 1 hour max
@@ -17,8 +17,21 @@ const MAX_MOVES = 10000;     // Reasonable upper limit
 const MIN_MOVES = 1;         // At least 1 move required
 
 export const handler = async (event) => {
+    // CORS Configuration
+    const allowedOrigins = [
+        'https://prophecytablet.com',
+        'https://www.prophecytablet.com',
+    ];
+
+    const origin = event.headers.origin || event.headers.Origin;
+    let allowOrigin = 'https://prophecytablet.com'; // Default fallback
+
+    if (allowedOrigins.includes(origin)) {
+        allowOrigin = origin;
+    }
+
     const headers = {
-        'Access-Control-Allow-Origin': '*', // TODO: Replace with your actual domain
+        'Access-Control-Allow-Origin': allowOrigin,
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     };
