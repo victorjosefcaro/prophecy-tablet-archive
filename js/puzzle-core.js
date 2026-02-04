@@ -29,8 +29,8 @@ const processPuzzleData = (pieceData) => {
     const multiplier = p.size === 1 ? 1.5 : 1;
     return {
       ...p,
-      gridWidth: base.w * multiplier,
-      gridHeight: base.h * multiplier,
+      gridWidth: p.gridWidth || (base.w * multiplier),
+      gridHeight: p.gridHeight || (base.h * multiplier),
     };
   });
 };

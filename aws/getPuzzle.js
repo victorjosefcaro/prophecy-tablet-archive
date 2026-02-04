@@ -10,8 +10,21 @@ const docClient = DynamoDBDocumentClient.from(client);
 const TABLE_NAME = 'prophecy-tablet-puzzles';
 
 export const handler = async (event) => {
+    // CORS Configuration
+    const allowedOrigins = [
+        'https://prophecytablet.com',
+        'https://www.prophecytablet.com',
+    ];
+
+    const origin = event.headers.origin || event.headers.Origin;
+    let allowOrigin = 'https://prophecytablet.com'; // Default fallback
+
+    if (allowedOrigins.includes(origin)) {
+        allowOrigin = origin;
+    }
+
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': allowOrigin,
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     };
@@ -40,10 +53,25 @@ export const handler = async (event) => {
             };
         }
 
+        const puzzle = result.Item;
+
+        // Security Check: prevent access to future scheduled puzzles
+        // This ensures users can't guess IDs of unreleased dailies
+        if (puzzle.isDaily && puzzle.scheduledDate) {
+            const today = new Date().toISOString().split('T')[0];
+            if (puzzle.scheduledDate > today) {
+                return {
+                    statusCode: 403,
+                    headers,
+                    body: JSON.stringify({ error: 'This puzzle is not yet available.' })
+                };
+            }
+        }
+
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ puzzle: result.Item })
+            body: JSON.stringify({ puzzle })
         };
     } catch (error) {
         console.error('Error fetching puzzle:', error);

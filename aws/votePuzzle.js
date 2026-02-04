@@ -10,8 +10,21 @@ const docClient = DynamoDBDocumentClient.from(client);
 const TABLE_NAME = 'prophecy-tablet-puzzles';
 
 export const handler = async (event) => {
+    // CORS Configuration
+    const allowedOrigins = [
+        'https://prophecytablet.com',
+        'https://www.prophecytablet.com',
+    ];
+
+    const origin = event.headers.origin || event.headers.Origin;
+    let allowOrigin = 'https://prophecytablet.com'; // Default fallback
+
+    if (allowedOrigins.includes(origin)) {
+        allowOrigin = origin;
+    }
+
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': allowOrigin,
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     };
@@ -28,6 +41,24 @@ export const handler = async (event) => {
         // Ensure we are working with numbers or null
         const r = (rating !== null && rating !== undefined) ? Number(rating) : null;
         const pr = (previousRating !== null && previousRating !== undefined) ? Number(previousRating) : null;
+
+        // SECURITY: Validate rating is between 1 and 5 (or null to remove)
+        if (r !== null && (isNaN(r) || r < 1 || r > 5 || !Number.isInteger(r))) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Rating must be an integer between 1 and 5' })
+            };
+        }
+
+        // SECURITY: Validate previousRating is also valid if provided
+        if (pr !== null && (isNaN(pr) || pr < 1 || pr > 5 || !Number.isInteger(pr))) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Previous rating must be an integer between 1 and 5' })
+            };
+        }
 
         if (r === pr) {
             return { statusCode: 200, headers, body: JSON.stringify({ message: 'No change' }) };
