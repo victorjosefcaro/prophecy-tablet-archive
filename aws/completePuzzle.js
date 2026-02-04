@@ -8,11 +8,17 @@ import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const TABLE_NAME = 'prophecy-tablet-puzzles';
+const TABLE_NAME = process.env.TABLE_NAME || 'prophecy-tablet-puzzles';
+
+// SECURITY: Reasonable bounds for completion stats
+const MAX_TIME_MS = 3600000; // 1 hour max
+const MIN_TIME_MS = 100;     // 100ms min (allows fast solves, blocks 0/negative)
+const MAX_MOVES = 10000;     // Reasonable upper limit
+const MIN_MOVES = 1;         // At least 1 move required
 
 export const handler = async (event) => {
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*', // TODO: Replace with your actual domain
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     };
@@ -35,6 +41,24 @@ export const handler = async (event) => {
                 statusCode: 400,
                 headers,
                 body: JSON.stringify({ error: 'Invalid time or moves value' })
+            };
+        }
+
+        // SECURITY: Validate time is within reasonable bounds
+        if (time < MIN_TIME_MS || time > MAX_TIME_MS || !Number.isFinite(time)) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: `Time must be between ${MIN_TIME_MS}ms and ${MAX_TIME_MS}ms` })
+            };
+        }
+
+        // SECURITY: Validate moves is within reasonable bounds
+        if (moves < MIN_MOVES || moves > MAX_MOVES || !Number.isInteger(moves)) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: `Moves must be an integer between ${MIN_MOVES} and ${MAX_MOVES}` })
             };
         }
 

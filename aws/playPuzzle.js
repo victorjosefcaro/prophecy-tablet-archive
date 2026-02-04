@@ -7,7 +7,7 @@ import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const TABLE_NAME = 'prophecy-tablet-puzzles';
+const TABLE_NAME = process.env.TABLE_NAME || 'prophecy-tablet-puzzles';
 
 export const handler = async (event) => {
     const headers = {

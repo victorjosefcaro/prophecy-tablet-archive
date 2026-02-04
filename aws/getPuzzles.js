@@ -7,11 +7,27 @@ import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-const TABLE_NAME = 'prophecy-tablet-puzzles';
+const TABLE_NAME = process.env.TABLE_NAME || 'prophecy-tablet-puzzles';
 
 export const handler = async (event) => {
+    // CORS Configuration
+    const allowedOrigins = [
+        'https://prophecytablet.com',
+        'https://www.prophecytablet.com',
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
+        'null'
+    ];
+
+    const origin = event.headers.origin || event.headers.Origin;
+    let allowOrigin = 'https://prophecytablet.com'; // Default fallback
+
+    if (allowedOrigins.includes(origin)) {
+        allowOrigin = origin;
+    }
+
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': allowOrigin,
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     };
