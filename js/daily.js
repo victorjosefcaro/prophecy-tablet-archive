@@ -1,4 +1,3 @@
-// daily.js - Logic for the Daily Puzzle page
 let puzzlePieces = [];
 let referencePieces = [];
 let currentPuzzle = null;
@@ -63,7 +62,7 @@ const initializeEventListeners = () => {
       vsAverage = `\nvs Average:\n- Time: ${timeDiffEl.textContent}\n- Moves: ${movesDiffEl.textContent}`;
     }
 
-    const shareUrl = `https://prophecytablet.com`; // Placeholder URL
+    const shareUrl = `https://prophecytablet.com`;
     const shareText = `${puzzleName} - ${puzzleDate}
 Stats:
 - Time: ${timeTaken}
@@ -90,15 +89,12 @@ const updatePerformanceComparison = (userTimeMs, userMoves, stats) => {
   const comparisonSection = document.getElementById('performance-comparison');
   if (!comparisonSection || !stats) return;
 
-  // The API might return avgTimeMs directly, or we might be using the original puzzle object
   let avgTimeMs, avgMoves;
 
   if (stats.avgTimeMs !== undefined) {
-    // From completion API
     avgTimeMs = stats.avgTimeMs;
     avgMoves = stats.avgMoves;
   } else if (stats.completionCount > 0) {
-    // From initial puzzle data
     avgTimeMs = stats.totalTimeMs / stats.completionCount;
     avgMoves = stats.totalMoves / stats.completionCount;
   } else {
@@ -135,16 +131,13 @@ const updatePerformanceComparison = (userTimeMs, userMoves, stats) => {
 };
 
 const configureCompletionModal = (timeMs, moves, updatedStats) => {
-  // Update vs average section
   if (timeMs !== undefined && moves !== undefined) {
     updatePerformanceComparison(timeMs, moves, updatedStats || currentPuzzle);
   }
 
-  // Mark as completed in local storage
   if (currentPuzzle?.id) {
     markDailyCompleted(currentPuzzle.id, timeMs, moves);
 
-    // Show View Stats button now that it's completed
     const viewStatsButton = document.getElementById('view-stats-button');
     if (viewStatsButton) {
       viewStatsButton.classList.remove('hidden');
@@ -228,14 +221,12 @@ const loadDaily = async () => {
       puzzleContainer.style.display = 'contents';
       recordPlay(dailyPuzzle.id);
 
-      // If already completed, show modal automatically and display View Stats button
       const completion = getDailyCompletion(dailyPuzzle.id);
       if (completion) {
         isPuzzleSolved = true;
         hoveredPiece = null;
-        renderPuzzleScoped(); // Hide the pieces immediately
+        renderPuzzleScoped();
 
-        // Show View Stats button
         if (viewStatsButton) {
           viewStatsButton.classList.remove('hidden');
           viewStatsButton.onclick = () => {
@@ -245,7 +236,7 @@ const loadDaily = async () => {
 
         setTimeout(() => {
           showCompletionModal(completion.time, completion.moves, true);
-        }, 500); // Small delay to ensure everything is rendered
+        }, 500);
       }
     } else {
       puzzleContainer.style.display = 'none';
@@ -265,12 +256,12 @@ const startCountdown = () => {
   const update = () => {
     const now = new Date();
     const nextReset = new Date();
-    nextReset.setUTCHours(24, 0, 0, 0); // Next UTC Midnight
+    nextReset.setUTCHours(24, 0, 0, 0);
 
     const diff = nextReset - now;
     if (diff <= 0) {
       countdownEl.textContent = '00:00:00';
-      // Optional: reload the page or fetch new daily if it reached zero
+
       return;
     }
 

@@ -29,8 +29,8 @@ const processPuzzleData = (pieceData) => {
     const multiplier = p.size === 1 ? 1.5 : 1;
     return {
       ...p,
-      gridWidth: p.gridWidth || (base.w * multiplier),
-      gridHeight: p.gridHeight || (base.h * multiplier),
+      gridWidth: p.gridWidth || base.w * multiplier,
+      gridHeight: p.gridHeight || base.h * multiplier,
     };
   });
 };
@@ -348,7 +348,6 @@ const drawBorder = (piece, color, ctx = puzzleCtx) => {
 const isPointInPiece = (_ctx, piece, mouseX, mouseY) => {
   const angleInRad = ((piece.rotation || 0) * Math.PI) / 180;
 
-  // Create a local temporary canvas if tempCtx isn't available (e.g., in editor)
   let ctx;
   if (typeof tempCtx !== 'undefined' && tempCtx) {
     ctx = tempCtx;
@@ -360,7 +359,7 @@ const isPointInPiece = (_ctx, piece, mouseX, mouseY) => {
   }
 
   ctx.save();
-  ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset any existing transform
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.translate(piece.x + piece.width / 2, piece.y + piece.height / 2);
   ctx.rotate(angleInRad);
 
@@ -531,10 +530,6 @@ const animateSnap = (piece, targetX, targetY, onComplete) => {
   requestAnimationFrame(step);
 };
 
-/**
- * Renders pieces to a binary mask canvas for comparison.
- * Returns ImageData with white pixels where pieces are filled.
- */
 const renderPiecesToMask = (pieces, canvas) => {
   const maskCanvas = document.createElement('canvas');
   const maskCtx = maskCanvas.getContext('2d');
@@ -553,10 +548,6 @@ const renderPiecesToMask = (pieces, canvas) => {
   return maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
 };
 
-/**
- * Compares two ImageData masks pixel-by-pixel.
- * Returns true if the masks match within the given tolerance (for anti-aliasing).
- */
 const compareMasks = (mask1, mask2, tolerance = 0.005) => {
   const data1 = mask1.data;
   const data2 = mask2.data;
@@ -564,7 +555,6 @@ const compareMasks = (mask1, mask2, tolerance = 0.005) => {
   let mismatchCount = 0;
 
   for (let i = 0; i < data1.length; i += 4) {
-    // Check the red channel (since we use white fill, R=G=B)
     const filled1 = data1[i] > 128;
     const filled2 = data2[i] > 128;
     if (filled1 !== filled2) mismatchCount++;

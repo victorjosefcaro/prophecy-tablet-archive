@@ -1,31 +1,22 @@
-// --- create.js ---
-// Logic for the public-facing puzzle editor.
-// Relies on functions from puzzle-core.js
-
-// --- Editor State ---
 let selectedPieces = new Set();
-let activeCanvas = null; // 'solution' or 'start'
-let selectionBox = null; // For holding the click-and-drag selection rectangle { x1, y1, x2, y2 }
+let activeCanvas = null;
+let selectionBox = null;
 const solutionPieces = [];
 const startPieces = [];
-let deleteProgressFill = null; // Reference to the delete button's progress fill element
-let deleteAllTimer = null; // For holding T to delete all
-let deleteAllAnimationTimer = null; // Timer to delay the start of the delete animation
+let deleteProgressFill = null;
+let deleteAllTimer = null;
+let deleteAllAnimationTimer = null;
 let isPublishModalOpen = false;
 
-// --- Undo / Redo History ---
 const undoStack = [];
 const redoStack = [];
 const MAX_HISTORY = 50;
 
-// --- Canvas & DOM Elements ---
 let solutionCanvas, solutionCtx, startCanvas, startCtx;
 const paletteContainer = document.getElementById('piece-palette');
 const controlsPanel = document.getElementById('controls-panel');
 const exportbutton = document.getElementById('export-button');
 
-// --- Configuration ---
-// Note: GRID_COLS, GRID_ROWS, VISUAL_GRID_SIZE are in puzzle-core.js
 const PIECE_TYPES = [
   { src: 'pieces/square.svg', gridWidth: 2, gridHeight: 2, shape: 'square' },
   { src: 'pieces/isosceles-triangle.svg', gridWidth: 2, gridHeight: 1, shape: 'triangle' },
@@ -35,13 +26,12 @@ const PIECE_TYPES = [
   { src: 'pieces/trapezoid-right.svg', gridWidth: 2, gridHeight: 3, shape: 'trapezoid-right' },
 ];
 let imageMap = {};
-let paletteItems = []; // To store palette info for re-rendering
+let paletteItems = [];
 
-// --- Initialization ---
 const initializeEditor = async () => {
   try {
     const allUrls = PIECE_TYPES.map((p) => p.src);
-    // Use 'loadImage' from puzzle-core.js
+
     const loadedImages = await Promise.all(allUrls.map(loadImage));
     imageMap = Object.fromEntries(allUrls.map((url, i) => [url, loadedImages[i]]));
     document.getElementById('loading-indicator').classList.add('hidden');
@@ -51,14 +41,11 @@ const initializeEditor = async () => {
     return;
   }
 
-  // Get canvases
   solutionCanvas = document.getElementById('editor-canvas-solution');
   startCanvas = document.getElementById('editor-canvas-start');
   solutionCtx = solutionCanvas.getContext('2d');
   startCtx = startCanvas.getContext('2d');
 
-  // Use 'initializeCoreCanvases' from puzzle-core.js (even though we have 2)
-  // This helps set up smoothing. We will manage them manually.
   [solutionCtx, startCtx].forEach((ctx) => {
     ctx.imageSmoothingEnabled = false;
   });
@@ -71,10 +58,9 @@ const initializeEditor = async () => {
     .getElementById('delete-button')
     .querySelector('.delete-progress-fill');
 
-  // Initial save for undo baseline
   saveState();
 
-  updatePaletteState(); // Initialize piece counter
+  updatePaletteState();
   renderAll();
 };
 
@@ -89,69 +75,54 @@ const resizeEditorCanvases = () => {
     ctx.imageSmoothingEnabled = false;
   });
 
-  // Update pixel coords for all pieces
   [...solutionPieces, ...startPieces].forEach((p) => {
     const canvas = p.canvasType === 'solution' ? solutionCanvas : startCanvas;
-    updatePiecePixelDimensions(p, canvas); // From puzzle-core.js
+    updatePiecePixelDimensions(p, canvas);
   });
 };
 
-/**
- * Renders a single piece type centered onto a small palette canvas context.
- * @param {CanvasRenderingContext2D} ctx - The context of the palette item canvas.
- * @param {object} pieceType - The piece type definition from PIECE_TYPES.
- * @param {HTMLImageElement} img - The loaded image for the piece.
- * @param {string} color - The CSS color string for tinting.
- */
 const renderPaletteItemPiece = (ctx, pieceType, img, color) => {
   const dpr = window.devicePixelRatio || 1;
-  // Use the actual canvas size (set during populatePalette) divided by dpr
-  const size = ctx.canvas.width / dpr;
-  ctx.clearRect(0, 0, size, size); // Clear the palette canvas context (use scaled size)
 
-  // Calculate width/height preserving aspect ratio to fit within 'size' with padding
-  const maxDim = size; // Use 80% of the canvas size for the piece
+  const size = ctx.canvas.width / dpr;
+  ctx.clearRect(0, 0, size, size);
+
+  const maxDim = size;
   const aspectRatio = pieceType.gridWidth / pieceType.gridHeight;
   let renderWidth, renderHeight;
 
   if (aspectRatio >= 1) {
-    // Wider than or equal height
     renderWidth = maxDim;
     renderHeight = maxDim / aspectRatio;
   } else {
-    // Taller than wide
     renderHeight = maxDim;
     renderWidth = maxDim * aspectRatio;
   }
 
-  // Create a temporary piece object for rendering centered
   const pieceToRender = {
     ...pieceType,
     img: img,
-    // Set x/y to center of canvas, width/height to render size
+
     x: size / 2,
     y: size / 2,
-    width: renderWidth, // The actual width to draw
+    width: renderWidth,
     height: renderHeight,
-    rotation: 0, // Palette pieces are never rotated
+    rotation: 0,
   };
 
-  // Use a temporary canvas for tinting to avoid interfering with ctx state
   const tempPaletteCanvas = document.createElement('canvas');
   const tempPaletteCtx = tempPaletteCanvas.getContext('2d');
-  tempPaletteCanvas.width = ctx.canvas.width; // Match target canvas size * dpr
+  tempPaletteCanvas.width = ctx.canvas.width;
   tempPaletteCanvas.height = ctx.canvas.height;
-  tempPaletteCtx.scale(dpr, dpr); // Scale temp context same as target ctx
+  tempPaletteCtx.scale(dpr, dpr);
   tempPaletteCtx.imageSmoothingEnabled = false;
 
-  // --- Draw the centered piece image onto the temporary canvas ---
-  // This logic is now self-contained to avoid dependency on a modified drawImageTransformed
   tempPaletteCtx.save();
-  // Translate to the center point (which is already pieceToRender.x/y)
+
   tempPaletteCtx.translate(pieceToRender.x, pieceToRender.y);
-  // Rotation is 0, but we keep the structure
+
   tempPaletteCtx.rotate((pieceToRender.rotation * Math.PI) / 180);
-  // Draw the image centered on the translation point
+
   tempPaletteCtx.drawImage(
     pieceToRender.img,
     -pieceToRender.width / 2,
@@ -161,23 +132,20 @@ const renderPaletteItemPiece = (ctx, pieceType, img, color) => {
   );
   tempPaletteCtx.restore();
 
-  // Tint the image on the temporary canvas
   tempPaletteCtx.globalCompositeOperation = 'source-in';
   tempPaletteCtx.fillStyle = color;
-  tempPaletteCtx.fillRect(0, 0, size, size); // Fill the scaled area
+  tempPaletteCtx.fillRect(0, 0, size, size);
 
-  // Draw the tinted result from the temp canvas back to the original palette canvas context
-  ctx.drawImage(tempPaletteCanvas, 0, 0, size, size); // Draw image at scaled size
+  ctx.drawImage(tempPaletteCanvas, 0, 0, size, size);
 };
 
 const populatePalette = () => {
-  paletteContainer.innerHTML = ''; // Clear existing items
-  paletteItems = []; // Reset the array
+  paletteContainer.innerHTML = '';
+  paletteItems = [];
   PIECE_TYPES.forEach((type, index) => {
     const item = document.createElement('div');
     item.className = 'palette-item';
 
-    // Add the hotkey number to the corner
     const numberSpan = document.createElement('span');
     numberSpan.className = 'keybind';
     numberSpan.textContent = index + 1;
@@ -185,24 +153,20 @@ const populatePalette = () => {
 
     const canvas = document.createElement('canvas');
     item.appendChild(canvas);
-    const ctx = canvas.getContext('2d'); // Get context here
+    const ctx = canvas.getContext('2d');
 
-    // --- Setup canvas size and scaling once ---
     const dpr = window.devicePixelRatio || 1;
-    const cssSize = 50; // Or get from CSS if preferred: parseFloat(getComputedStyle(item).width);
+    const cssSize = 50;
     canvas.width = cssSize * dpr;
     canvas.height = cssSize * dpr;
     canvas.style.width = `${cssSize}px`;
     canvas.style.height = `${cssSize}px`;
-    ctx.scale(dpr, dpr); // Scale the context FOR DRAWING
-    // -----------------------------------------
+    ctx.scale(dpr, dpr);
 
-    // Store canvas, context, and type for re-rendering on theme change
     paletteItems.push({ canvas, ctx, type });
 
-    // Render the piece onto this small canvas using the new function
     renderPaletteItemPiece(
-      ctx, // Pass the scaled context
+      ctx,
       type,
       imageMap[type.src],
       getComputedStyle(document.body).getPropertyValue('--accent-color')
@@ -213,26 +177,20 @@ const populatePalette = () => {
   });
 };
 
-/** Rerenders the palette items with the current theme color. */
 const rerenderPalette = () => {
   const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
   paletteItems.forEach((item) => {
-    // Pass the stored context, type, image, and color
     renderPaletteItemPiece(item.ctx, item.type, imageMap[item.type.src], color);
   });
 };
 
-// --- Piece Management ---
 const addPiece = (type) => {
   if (solutionPieces.length >= 10) {
-    // Optional: Provide feedback to the user
-    // For example, flash the controls panel or show a temporary message.
     return;
   }
 
   const newId = Date.now() + Math.random();
 
-  // Add to solution canvas
   const newSolutionPiece = {
     ...type,
     id: newId,
@@ -242,29 +200,27 @@ const addPiece = (type) => {
     rotation: 0,
     canvasType: 'solution',
   };
-  updatePiecePixelDimensions(newSolutionPiece, solutionCanvas); // From puzzle-core.js
+  updatePiecePixelDimensions(newSolutionPiece, solutionCanvas);
   solutionPieces.push(newSolutionPiece);
 
-  // Add to start canvas
   const newStartPiece = {
     ...newSolutionPiece,
-    // Place the start piece within a 4-unit radius of the solution piece
-    col: newSolutionPiece.col + (Math.floor(Math.random() * 9) - 4), // Random offset from -4 to 4
-    row: newSolutionPiece.row + (Math.floor(Math.random() * 9) - 4), // Random offset from -4 to 4
+
+    col: newSolutionPiece.col + (Math.floor(Math.random() * 9) - 4),
+    row: newSolutionPiece.row + (Math.floor(Math.random() * 9) - 4),
     canvasType: 'start',
   };
-  updatePiecePixelDimensions(newStartPiece, startCanvas); // From puzzle-core.js
+  updatePiecePixelDimensions(newStartPiece, startCanvas);
   startPieces.push(newStartPiece);
 
-  saveState(); // Save state after adding
+  saveState();
 
-  // Select the new piece (and clear others)
   selectedPieces.clear();
   selectedPieces.add(newSolutionPiece);
   activeCanvas = 'solution';
 
   updateControls();
-  updatePaletteState(); // Update palette after adding
+  updatePaletteState();
   renderAll();
 };
 
@@ -279,37 +235,33 @@ const deleteSelectedPieces = () => {
     if (indexInStart > -1) startPieces.splice(indexInStart, 1);
   });
 
-  saveState(); // Save state after deleting
+  saveState();
 
   selectedPieces.clear();
   activeCanvas = null;
   updateControls();
-  updatePaletteState(); // Update palette after deleting
+  updatePaletteState();
   renderAll();
 };
 
-/** Deletes all pieces from both canvases. */
 const deleteAllPieces = () => {
   solutionPieces.length = 0;
   startPieces.length = 0;
 
-  selectedPieces.clear(); // Changed from selectedPiece = null;
+  selectedPieces.clear();
   activeCanvas = null;
 
   updateControls();
   updatePaletteState();
   if (deleteProgressFill) {
-    // Ensure progress bar resets if deleteAllPieces is called
-    deleteProgressFill.style.transition = 'none'; // Disable transition for instant reset
+    deleteProgressFill.style.transition = 'none';
     deleteProgressFill.style.width = '0%';
   }
-  saveState(); // Save state after delete all
+  saveState();
   renderAll();
 };
 
-/** Syncs rotation/size from solution piece to start piece */
 const syncPieceProperties = (sourcePiece) => {
-  // Only sync if we are editing the SOLUTION piece
   if (activeCanvas !== 'solution') return;
 
   const twinPiece = startPieces.find((p) => p.id === sourcePiece.id);
@@ -317,12 +269,11 @@ const syncPieceProperties = (sourcePiece) => {
     twinPiece.rotation = sourcePiece.rotation;
     twinPiece.gridWidth = sourcePiece.gridWidth;
     twinPiece.gridHeight = sourcePiece.gridHeight;
-    // Recalculate pixel size for its canvas
-    updatePiecePixelDimensions(twinPiece, startCanvas); // From puzzle-core.js
+
+    updatePiecePixelDimensions(twinPiece, startCanvas);
   }
 };
 
-/** Disables or enables the piece palette based on the piece count, and updates the counter. */
 const updatePaletteState = () => {
   const pieceCount = solutionPieces.length;
   const isLimitReached = pieceCount >= 10;
@@ -336,7 +287,6 @@ const updatePaletteState = () => {
     }
   });
 
-  // Update the piece counter
   const pieceCounter = document.getElementById('piece-counter');
   if (pieceCounter) {
     pieceCounter.textContent = `${pieceCount} / 10`;
@@ -348,11 +298,7 @@ const updatePaletteState = () => {
   }
 };
 
-// --- History Management ---
-
-/** Captures current puzzle state into the undo stack. */
 const saveState = () => {
-  // Deep clone pieces, but ignore the 'img' property (we relink it on restore)
   const clonePieces = (pieces) =>
     pieces.map((p) => {
       const { img, ...rest } = p;
@@ -364,7 +310,6 @@ const saveState = () => {
     start: clonePieces(startPieces),
   };
 
-  // Don't save if it's identical to the last state
   if (undoStack.length > 0) {
     const lastState = undoStack[undoStack.length - 1];
     if (JSON.stringify(lastState) === JSON.stringify(state)) return;
@@ -372,7 +317,7 @@ const saveState = () => {
 
   undoStack.push(state);
   if (undoStack.length > MAX_HISTORY) undoStack.shift();
-  redoStack.length = 0; // Clear redo stack on new action
+  redoStack.length = 0;
 };
 
 const restoreState = (state) => {
@@ -388,11 +333,9 @@ const restoreState = (state) => {
   startPieces.length = 0;
   startPieces.push(...relinkPieces(state.start));
 
-  // Update pixel dimensions for all restored pieces
   solutionPieces.forEach((p) => updatePiecePixelDimensions(p, solutionCanvas));
   startPieces.forEach((p) => updatePiecePixelDimensions(p, startCanvas));
 
-  // Clear selection after restore to avoid stale references
   selectedPieces.clear();
   activeCanvas = null;
 
@@ -402,7 +345,7 @@ const restoreState = (state) => {
 };
 
 const undo = () => {
-  if (undoStack.length <= 1) return; // Keep at least one baseline state
+  if (undoStack.length <= 1) return;
 
   const currentState = undoStack.pop();
   redoStack.push(currentState);
@@ -419,76 +362,59 @@ const redo = () => {
   restoreState(state);
 };
 
-// --- Rendering ---
-/** Global render function called by theme.js */
 const renderAll = () => {
   if (solutionCtx) renderCanvas(solutionCtx, solutionPieces);
   if (startCtx) renderCanvas(startCtx, startPieces);
-  // Also make rerenderPalette globally available for theme changes
-  // Note: This is a simple approach. A more robust solution might use custom events.
+
   window.rerenderPalette = rerenderPalette;
 };
 
 const renderCanvas = (ctx, pieces) => {
-  // Prevent drawing if the canvas has no size, which causes errors.
   if (ctx.canvas.width === 0 || ctx.canvas.height === 0) {
     return;
   }
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  drawGrid(ctx); // From puzzle-core.js
+  drawGrid(ctx);
 
-  // If we are rendering the start canvas AND the modal is open, draw the solution guide without any selection borders.
   if (ctx === startCtx && isPublishModalOpen) {
-    // Temporarily remove selection to render a clean guide image.
     const originalSelectedPieces = selectedPieces;
     const originalActiveCanvas = activeCanvas;
     selectedPieces = new Set();
     activeCanvas = null;
 
-    // Re-render the solution canvas to a temporary canvas without the border.
     renderCanvas(solutionCtx, solutionPieces);
 
-    // Now draw the clean solution canvas as the guide.
     ctx.globalAlpha = 0.4;
     ctx.drawImage(solutionCanvas, 0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.globalAlpha = 1.0;
 
-    // Restore the selection state so the main editor view remains correct.
     selectedPieces = originalSelectedPieces;
     activeCanvas = originalActiveCanvas;
   }
 
-  // --- Revert to XOR + Tint Logic ---
-  // Use a temporary canvas to draw all pieces with XOR
   const tempRenderCanvas = document.createElement('canvas');
   const tempRenderCtx = tempRenderCanvas.getContext('2d');
-  tempRenderCanvas.width = ctx.canvas.width; // Match target canvas size exactly
+  tempRenderCanvas.width = ctx.canvas.width;
   tempRenderCanvas.height = ctx.canvas.height;
   tempRenderCtx.imageSmoothingEnabled = false;
-  tempRenderCtx.globalCompositeOperation = 'xor'; // Use XOR for combining pieces
+  tempRenderCtx.globalCompositeOperation = 'xor';
 
   pieces.forEach((piece) => {
-    // Ensure pixel coords are up-to-date BEFORE drawing
     updatePiecePixelDimensions(piece, ctx.canvas);
-    // Draw piece onto the temporary canvas
-    drawImageTransformed(tempRenderCtx, piece); // From puzzle-core.js
+
+    drawImageTransformed(tempRenderCtx, piece);
   });
 
-  // Now tint the entire result on the temporary canvas
   const color = getComputedStyle(document.body).getPropertyValue('--accent-color');
-  tempRenderCtx.globalCompositeOperation = 'source-in'; // Use source-in for tinting
+  tempRenderCtx.globalCompositeOperation = 'source-in';
   tempRenderCtx.fillStyle = color;
   tempRenderCtx.fillRect(0, 0, tempRenderCanvas.width, tempRenderCanvas.height);
 
-  // Draw the final tinted result onto the main canvas
   ctx.drawImage(tempRenderCanvas, 0, 0);
-  // ---------------------------------
 
-  // Draw border on selected pieces, if they are on this canvas
   const currentCanvasType = ctx === solutionCtx ? 'solution' : 'start';
   if (activeCanvas === currentCanvasType) {
     selectedPieces.forEach((piece) => {
-      // Use 'drawBorder' from puzzle-core.js, passing the correct context
       drawBorder(
         piece,
         getComputedStyle(document.body).getPropertyValue('--piece-hover-color').trim(),
@@ -497,7 +423,6 @@ const renderCanvas = (ctx, pieces) => {
     });
   }
 
-  // Draw hover border on hovered piece (only on solution canvas, and if not already selected)
   if (ctx === solutionCtx && hoveredPiece && !selectedPieces.has(hoveredPiece)) {
     drawBorder(
       hoveredPiece,
@@ -506,11 +431,10 @@ const renderCanvas = (ctx, pieces) => {
     );
   }
 
-  // Draw selection box if it exists and we're rendering the active canvas
   if (selectionBox) {
     const activeBoxCanvas =
       activeCanvas === 'solution' || (!activeCanvas && selectionBox) ? solutionCanvas : startCanvas;
-    // We only draw the selection box on the canvas it started on (managed by event listener context, but here we check ctx)
+
     if (ctx.canvas === activeBoxCanvas || (!activeCanvas && ctx === solutionCtx)) {
       ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent-color');
       ctx.setLineDash([5, 5]);
@@ -525,7 +449,6 @@ const renderCanvas = (ctx, pieces) => {
   }
 };
 
-// --- Event Handlers & Interaction ---
 const setupEventListeners = () => {
   solutionCanvas.addEventListener('pointerdown', (e) => handlePointerDown(e, 'solution'));
   startCanvas.addEventListener('pointerdown', (e) => handlePointerDown(e, 'start'));
@@ -539,7 +462,6 @@ const setupEventListeners = () => {
     renderAll();
   });
 
-  // Hover detection for solution canvas
   solutionCanvas.addEventListener('pointermove', (e) => {
     const rect = solutionCanvas.getBoundingClientRect();
     const scaleX = solutionCanvas.width / rect.width;
@@ -569,7 +491,6 @@ const setupEventListeners = () => {
     }
   });
 
-  // --- Add Control Button Listeners ---
   document.getElementById('rotate-button').addEventListener('click', (e) => {
     if (selectedPieces.size > 0 && !document.getElementById('rotate-button').disabled) {
       const rotationAmount = e.shiftKey ? -90 : 90;
@@ -577,26 +498,22 @@ const setupEventListeners = () => {
         p.rotation = (p.rotation + rotationAmount + 360) % 360;
         if (activeCanvas === 'solution') syncPieceProperties(p);
       });
-      saveState(); // Save after rotation
+      saveState();
       renderAll();
     }
   });
 
   const deleteBtn = document.getElementById('delete-button');
   deleteBtn.addEventListener('click', () => {
-    // Only run single delete if a long-press timer isn't active and a piece is selected
     if (!deleteAllTimer && selectedPieces.size > 0) {
       deleteSelectedPieces();
     }
   });
 
   const startDeleteAll = () => {
-    // Do nothing if there are no pieces on the canvas
     if (solutionPieces.length === 0) return;
 
-    // Set a timer to start the animation after a short delay
     deleteAllAnimationTimer = setTimeout(() => {
-      // Start visual progress animation
       if (deleteProgressFill) {
         deleteProgressFill.style.transition = 'none';
         deleteProgressFill.style.width = '0%';
@@ -604,24 +521,23 @@ const setupEventListeners = () => {
         deleteProgressFill.style.transition = 'width 0.9s linear';
         deleteProgressFill.style.width = '100%';
       }
-    }, 200); // 200ms delay
+    }, 200);
 
     deleteAllTimer = setTimeout(() => {
       deleteAllPieces();
       deleteAllTimer = null;
       clearTimeout(deleteAllAnimationTimer);
       deleteAllAnimationTimer = null;
-    }, 1200); // Total hold time: 200ms delay + 1000ms for action
+    }, 1200);
   };
 
   deleteBtn.addEventListener('pointerdown', startDeleteAll);
-  deleteBtn.addEventListener('pointerup', handleKeyUp); // Reuse keyup logic to cancel
-  deleteBtn.addEventListener('pointerleave', handleKeyUp); // Reuse keyup logic to cancel
+  deleteBtn.addEventListener('pointerup', handleKeyUp);
+  deleteBtn.addEventListener('pointerleave', handleKeyUp);
   document.getElementById('size-toggle-btn').addEventListener('click', togglePieceSize);
   document.getElementById('undo-button').addEventListener('click', undo);
   document.getElementById('redo-button').addEventListener('click', redo);
 
-  // Help modal
   const helpModal = document.getElementById('help-modal');
   const openHelpModal = () => {
     helpModal.style.display = 'flex';
@@ -637,7 +553,6 @@ const setupEventListeners = () => {
     if (e.target === helpModal) closeHelpModal();
   });
 
-  // Info modal
   const infoButtons = document.querySelectorAll('#info-button, #info-button-mobile');
   const infoModal = document.getElementById('info-modal');
   const closeInfoButton = document.getElementById('close-info-modal-button');
@@ -683,7 +598,6 @@ const handlePointerDown = (e, canvasName) => {
   const isCtrl = e.ctrlKey || e.metaKey;
 
   if (foundPiece) {
-    // Selection logic
     if (isCtrl) {
       if (selectedPieces.has(foundPiece)) {
         selectedPieces.delete(foundPiece);
@@ -703,7 +617,6 @@ const handlePointerDown = (e, canvasName) => {
     updateControls();
     renderAll();
 
-    // Prepare for multi-drag
     const dragData = new Map();
     selectedPieces.forEach((p) => {
       dragData.set(p, {
@@ -723,7 +636,6 @@ const handlePointerDown = (e, canvasName) => {
         const targetX = currentMouseX - data.offsetX;
         const targetY = currentMouseY - data.offsetY;
 
-        // Bounding box for clamping
         const bbox = getRotatedBoundingBoxInPixels(p);
         const centerX = targetX + p.width / 2;
         const centerY = targetY + p.height / 2;
@@ -752,13 +664,12 @@ const handlePointerDown = (e, canvasName) => {
     const pointerUp = () => {
       window.removeEventListener('pointermove', pointerMove);
       window.removeEventListener('pointerup', pointerUp);
-      saveState(); // Save state after dragging
+      saveState();
     };
 
     window.addEventListener('pointermove', pointerMove);
     window.addEventListener('pointerup', pointerUp, { once: true });
   } else {
-    // Selection box logic
     if (!isCtrl) {
       selectedPieces.clear();
       activeCanvas = null;
@@ -811,8 +722,8 @@ const snapPieceToGrid = (piece, ctx) => {
   const cellHeight = ctx.canvas.height / GRID_ROWS;
   piece.col = Math.round(piece.x / cellWidth);
   piece.row = Math.round(piece.y / cellHeight);
-  // Re-set pixel x/y to the snapped grid position
-  updatePiecePixelDimensions(piece, ctx.canvas); // From puzzle-core.js
+
+  updatePiecePixelDimensions(piece, ctx.canvas);
 };
 
 const selectPiece = (piece, canvasName, multiSelect = false) => {
@@ -855,13 +766,12 @@ const togglePieceSize = () => {
     }
   });
 
-  saveState(); // Save after toggle size
+  saveState();
   updateControls();
   renderAll();
 };
 
 const handleKeyUp = (e) => {
-  // Can be triggered by keyup or pointerup/leave on the delete button
   const isTKey = e && (e.key === 't' || e.key === 'T');
   const isButtonRelease = e && e.type && (e.type === 'pointerup' || e.type === 'pointerleave');
 
@@ -870,7 +780,7 @@ const handleKeyUp = (e) => {
   if (isTKey || isButtonRelease) {
     clearTimeout(deleteAllTimer);
     clearTimeout(deleteAllAnimationTimer);
-    // If timer was active and it was a T-key quick tap, delete selected pieces
+
     if (isTKey && deleteAllTimer && selectedPieces.size > 0) {
       deleteSelectedPieces();
     }
@@ -880,7 +790,6 @@ const handleKeyUp = (e) => {
 };
 
 const handleKeyPress = (e) => {
-  // Ignore keypresses when focused on input fields (e.g., in publish modal)
   const activeEl = document.activeElement;
   if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
     return;
@@ -888,7 +797,6 @@ const handleKeyPress = (e) => {
 
   const isCtrl = e.ctrlKey || e.metaKey;
 
-  // --- Undo/Redo Keybinds ---
   if (isCtrl && (e.key === 'z' || e.key === 'Z')) {
     e.preventDefault();
     if (e.shiftKey) {
@@ -904,44 +812,38 @@ const handleKeyPress = (e) => {
     return;
   }
 
-  // --- Piece Creation Hotkeys (1-6) ---
-  // These should work even if no piece is selected.
   const keyNum = parseInt(e.key, 10);
   if (keyNum >= 1 && keyNum <= 6 && !isCtrl) {
     const pieceType = PIECE_TYPES[keyNum - 1];
     if (pieceType) {
       e.preventDefault();
       addPiece(pieceType);
-      return; // Stop further processing
+      return;
     }
   }
 
-  // --- T-Key Handling (Start Delete All Timer & Progress) ---
   if ((e.key === 't' || e.key === 'T') && !e.repeat && !isPublishModalOpen) {
     e.preventDefault();
 
-    // Do nothing if there are no pieces on the canvas
     if (solutionPieces.length === 0) return;
 
-    // Set a timer to start the animation after a short delay
     deleteAllAnimationTimer = setTimeout(() => {
-      // Start visual progress animation
       if (deleteProgressFill) {
-        deleteProgressFill.style.transition = 'none'; // Disable transition for instant reset
+        deleteProgressFill.style.transition = 'none';
         deleteProgressFill.style.width = '0%';
-        void deleteProgressFill.offsetWidth; // Force reflow to apply width: 0% immediately
+        void deleteProgressFill.offsetWidth;
         deleteProgressFill.style.transition = 'width 0.9s linear';
         deleteProgressFill.style.width = '100%';
       }
-    }, 200); // 200ms delay
+    }, 200);
 
     deleteAllTimer = setTimeout(() => {
       deleteAllPieces();
-      deleteAllTimer = null; // Reset timer
+      deleteAllTimer = null;
       clearTimeout(deleteAllAnimationTimer);
       deleteAllAnimationTimer = null;
-    }, 1200); // Total hold time: 200ms delay + 1000ms for action
-    return; // Stop further processing for the 'T' key
+    }, 1200);
+    return;
   }
 
   if (selectedPieces.size === 0) return;
@@ -951,7 +853,6 @@ const handleKeyPress = (e) => {
   let doRotate = false;
   let rotationAmount = 0;
 
-  // Allow rotation only on the solution canvas
   if ((e.key === 'r' || e.key === 'R') && activeCanvas === 'solution') {
     e.preventDefault();
     doRotate = true;
@@ -988,7 +889,6 @@ const handleKeyPress = (e) => {
       p.row += dRow;
     }
 
-    // Apply clamping logic
     updatePiecePixelDimensions(p, canvas);
     const bbox = getRotatedBoundingBoxInPixels(p);
     const centerX = p.x + p.width / 2;
@@ -1010,39 +910,31 @@ const handleKeyPress = (e) => {
     syncPieceProperties(p);
   });
 
-  saveState(); // Save state after keyboard manipulation
+  saveState();
   updateControls();
   renderAll();
 };
 
-// --- UI Updates & Export ---
 const updateControls = () => {
-  // Get references to the static elements
   const sizeBtn = document.getElementById('size-toggle-btn');
   const rotateBtn = document.getElementById('rotate-button');
   const deleteBtn = document.getElementById('delete-button');
   const publishBtn = document.getElementById('export-button');
 
-  // Determine if a piece is selected and if rotation/sizing is allowed
   const pieceSelectedCount = selectedPieces.size;
   const isSolutionCanvas = activeCanvas === 'solution';
   const isRotationDisabled = !isSolutionCanvas || pieceSelectedCount === 0;
   const isSizeDisabled = !isSolutionCanvas || pieceSelectedCount === 0;
 
-  // --- Update Delete Button ---
   deleteBtn.disabled = pieceSelectedCount === 0;
 
-  // --- Update Publish Button ---
   publishBtn.disabled = solutionPieces.length < 3;
 
-  // --- Update Rotate Button & Notice ---
   rotateBtn.disabled = isRotationDisabled;
 
-  // --- Update Size Button & Notice ---
   sizeBtn.disabled = isSizeDisabled;
 
   if (pieceSelectedCount > 0 && isSolutionCanvas) {
-    // For simplicity, we base the icon on the first selected piece
     const firstPiece = selectedPieces.values().next().value;
     const originalPiece = PIECE_TYPES.find((p) => p.shape === firstPiece.shape);
     if (originalPiece) {
@@ -1050,21 +942,18 @@ const updateControls = () => {
       const isDefaultSize =
         firstPiece.gridWidth === originalPiece.gridWidth &&
         firstPiece.gridHeight === originalPiece.gridHeight;
-      // Change icon based on size state
+
       icon.className = isDefaultSize
         ? 'fa-solid fa-expand-arrows-alt'
         : 'fa-solid fa-compress-arrows-alt';
       sizeBtn.title = isDefaultSize ? 'Make pieces 1.5x larger' : 'Set to default size';
     }
   } else {
-    // Reset to default icon and text when not applicable
     sizeBtn.querySelector('i').className = 'fa-solid fa-expand-arrows-alt';
     sizeBtn.title = 'Toggle Size (E)';
   }
 };
 
-// --- Add this line at the end of create.js ---
-// Call updateControls once on initial load to display the default state
 document.addEventListener('DOMContentLoaded', () => {
   updateControls();
 });
@@ -1075,7 +964,6 @@ const openPublishModal = () => {
 
   isPublishModalOpen = true;
 
-  // Reset modal state
   const confirmBtn = document.getElementById('confirm-publish-button');
   const puzzleNameInput = document.getElementById('puzzle-name-input');
   confirmBtn.disabled = false;
@@ -1083,15 +971,12 @@ const openPublishModal = () => {
   puzzleNameInput.value = '';
   document.getElementById('publish-error').classList.remove('show');
 
-  // Show modal
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('show'), 10);
 
-  // The start canvas is now visible, so we need to resize and render it
   resizeEditorCanvases();
   renderAll();
 
-  // Attach modal-specific listeners
   const cancelBtn = document.getElementById('cancel-publish-button');
 
   confirmBtn.onclick = publishPuzzle;
@@ -1115,7 +1000,6 @@ const closePublishModal = () => {
     modal.style.display = 'none';
   }, 400);
 
-  // Clear listeners
   document.getElementById('confirm-publish-button').onclick = null;
   document.getElementById('cancel-publish-button').onclick = null;
   modal.onclick = null;
@@ -1134,7 +1018,6 @@ const publishPuzzle = async () => {
   confirmBtn.innerHTML = 'Publishing';
   confirmBtn.disabled = true;
 
-  // Format piece data for API
   const puzzleData = {
     puzzlePiecesData: startPieces.map((p) => ({
       src: p.src,
@@ -1166,13 +1049,11 @@ const publishPuzzle = async () => {
     confirmBtn.innerHTML = 'Try Again';
     confirmBtn.disabled = false;
 
-    // Show the error message to the user nicely
     const errorEl = document.getElementById('publish-error');
     if (errorEl) {
       errorEl.textContent = error.message;
       errorEl.classList.add('show');
 
-      // Auto-hide after 5 seconds
       if (window.publishErrorTimeout) clearTimeout(window.publishErrorTimeout);
       window.publishErrorTimeout = setTimeout(() => {
         errorEl.classList.remove('show');
@@ -1181,5 +1062,4 @@ const publishPuzzle = async () => {
   }
 };
 
-// --- Start Editor ---
 window.onload = initializeEditor;

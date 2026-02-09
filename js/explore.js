@@ -1,7 +1,3 @@
-// --- explore.js ---
-// Logic for the Explore page - displays user-created puzzles from API
-
-// --- Page State ---
 let userPuzzles = [];
 let puzzlePieces = [];
 let referencePieces = [];
@@ -10,7 +6,6 @@ let levelPreviews = [];
 let currentPuzzle = null;
 let isInitialLoad = true;
 
-// --- Helper Functions ---
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
   const now = new Date();
@@ -47,7 +42,6 @@ const getAvgStats = (puzzle) => {
   return { avgTime, avgMoves };
 };
 
-// --- DOM Elements ---
 const gridView = document.getElementById('explore-grid-view');
 const gameplayView = document.getElementById('explore-gameplay-view');
 const searchInput = document.getElementById('search-input');
@@ -59,41 +53,32 @@ const noPuzzlesMessage = document.getElementById('no-puzzles-message');
 const loadingIndicator = document.getElementById('loading-indicator');
 const exploreGrid = document.getElementById('explore-grid');
 
-// --- Scoped Functions for puzzle-gameplay.js ---
 const renderPuzzleScoped = (opacity, showGuide) => renderPuzzle(puzzlePieces, opacity, showGuide);
 const checkCompletionScoped = () => checkCompletion(puzzlePieces, referencePieces);
 const configureCompletionModal = (timeMs, moves) => {
   const nextPuzzleButton = document.getElementById('next-puzzle-button');
   if (nextPuzzleButton) nextPuzzleButton.style.display = 'none';
 
-  // Update vote button states when completion modal opens
   updateCompletionVoteButtons();
 
-  // Update performance comparison if time and moves provided
   if (timeMs !== undefined && moves !== undefined) {
     updatePerformanceComparison(timeMs, moves);
   }
 
-  // If this happens to be a daily puzzle (played via direct link in explore),
-  // also mark it as completed in the daily archive.
   if (currentPuzzle?.isDaily && currentPuzzle?.id) {
     markDailyCompleted(currentPuzzle.id, timeMs, moves);
   }
 };
 
-// --- Initialization ---
 window.onload = async () => {
-  // Restore saved filter preferences from localStorage
   restoreFilterPreferences();
 
   await loadPuzzlesFromAPI();
   setupEventListeners();
 
-  // Handle direct puzzle link
   const urlParams = new URLSearchParams(window.location.search);
   let puzzleId = urlParams.get('puzzle');
 
-  // Also check path for domain/explore/CODE format
   if (!puzzleId) {
     const pathParts = window.location.pathname.split('/').filter((p) => p);
     const exploreIdx = pathParts.findIndex((p) => p.startsWith('explore'));
@@ -103,23 +88,19 @@ window.onload = async () => {
   }
 
   if (puzzleId) {
-    // First check if it's already in the loaded list
     let puzzle = userPuzzles.find((p) => p.id === puzzleId);
     if (puzzle) {
       openGameplayView(puzzle);
     } else {
-      // If not in list, fetch it specifically
       puzzle = await fetchPuzzleById(puzzleId);
       if (puzzle) {
-        // Security check: Block access to future scheduled daily puzzles
-        // even if the API returns them (double-check)
         if (puzzle.isDaily && puzzle.scheduledDate) {
           const today = new Date().toISOString().split('T')[0];
           if (puzzle.scheduledDate > today) {
             console.warn('Attempted to access future puzzle:', puzzle.id);
             alert(`This puzzle is scheduled for ${puzzle.scheduledDate} and is not yet available.`);
             showGridView();
-            // Clear the invalid ID from URL
+
             const url = new URL(window.location.href);
             url.searchParams.delete('puzzle');
             window.history.replaceState({}, '', url.toString());
@@ -127,7 +108,6 @@ window.onload = async () => {
           }
         }
 
-        // We need to ensure we have images preloaded for this puzzle
         await preloadImages([puzzle]);
         openGameplayView(puzzle);
       }
@@ -136,16 +116,13 @@ window.onload = async () => {
 };
 
 const setupEventListeners = () => {
-  // Back buttons
   document.getElementById('back-to-grid-button').addEventListener('click', showGridView);
 
-  // Modal buttons
   document
     .getElementById('share-completion-button')
     .addEventListener('click', shareCurrentPuzzleLink);
   document.getElementById('back-to-explore-button').addEventListener('click', showGridView);
 
-  // Info modal
   const infoButtons = document.querySelectorAll('#info-button, #info-button-mobile');
   const infoModal = document.getElementById('info-modal');
   const closeInfoButton = document.getElementById('close-info-modal-button');
@@ -168,12 +145,10 @@ const setupEventListeners = () => {
     });
   }
 
-  // Canvas reset button
   document.getElementById('reset-button').addEventListener('click', () => {
     resetPuzzlePositions(puzzlePieces, renderPuzzleScoped);
   });
 
-  // Completion modal close on overlay click
   const completionModal = document.getElementById('completion-modal');
   if (completionModal) {
     completionModal.addEventListener('click', (e) => {
@@ -181,7 +156,6 @@ const setupEventListeners = () => {
     });
   }
 
-  // Completion modal star rating
   const completionStars = document.getElementById('completion-star-rating');
   if (completionStars) {
     const stars = completionStars.querySelectorAll('i');
@@ -193,7 +167,6 @@ const setupEventListeners = () => {
     });
   }
 
-  // Filter controls with localStorage persistence
   let searchTimeout;
   searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
@@ -216,14 +189,12 @@ const setupEventListeners = () => {
     filterByPlayed();
   });
 
-  // Handle window resize for explore previews
   window.addEventListener('resize', () => {
     clearTimeout(window.exploreResizeTimeout);
     window.exploreResizeTimeout = setTimeout(rerenderExplorePreviews, 100);
   });
 };
 
-// --- Filter Preferences Persistence ---
 const saveFilterPreferences = () => {
   const prefs = {
     sortField: sortField.value,
@@ -250,7 +221,6 @@ const restoreFilterPreferences = () => {
 };
 
 const loadPuzzlesFromAPI = async () => {
-  // Only show loading indicator on initial load
   if (isInitialLoad) {
     loadingIndicator.classList.remove('hidden');
     exploreGrid.style.display = 'none';
@@ -264,7 +234,6 @@ const loadPuzzlesFromAPI = async () => {
 
   userPuzzles = await fetchPuzzles(options);
 
-  // Client-side sorting
   const field = sortField.value;
   const order = sortOrder.value;
 
@@ -293,7 +262,6 @@ const loadPuzzlesFromAPI = async () => {
   userPuzzles.sort(sortFunctions[field] || sortFunctions.date);
   if (order === 'asc') userPuzzles.reverse();
 
-  // Hide loading indicator and mark initial load complete
   if (isInitialLoad) {
     loadingIndicator.classList.add('hidden');
     exploreGrid.style.display = '';
@@ -358,7 +326,6 @@ const populateExploreGrid = async (puzzles) => {
     card.className = 'explore-preview-card';
     if (playedSet.has(puzzle.id)) card.classList.add('played');
 
-    // Canvas preview
     const canvas = document.createElement('canvas');
     card.appendChild(canvas);
 
@@ -366,17 +333,14 @@ const populateExploreGrid = async (puzzles) => {
     levelPreviews.push({ canvas, puzzlePieces: solutionPieces, imageMap });
     previewsToDraw.push(() => drawPuzzlePreview(canvas, solutionPieces, imageMap));
 
-    // Info section
     const info = document.createElement('div');
     info.className = 'puzzle-card-info';
 
-    // Puzzle name heading
     const title = document.createElement('div');
     title.className = 'puzzle-card-title';
     title.textContent = puzzle.puzzleName;
     info.appendChild(title);
 
-    // 2x2 grid: author/date on left, avg stats on right
     const { avgTime, avgMoves } = getAvgStats(puzzle);
     const gridSection = document.createElement('div');
     gridSection.className = 'puzzle-card-grid';
@@ -394,7 +358,6 @@ const populateExploreGrid = async (puzzles) => {
     `;
     info.appendChild(gridSection);
 
-    // Stats row: rating and plays on left
     const ratingCount = puzzle.ratingCount || 0;
     const ratingSum = puzzle.ratingSum || 0;
     const rating = ratingCount > 0 ? (ratingSum / ratingCount).toFixed(1) : '--';
@@ -417,7 +380,7 @@ const populateExploreGrid = async (puzzles) => {
     shareBtn.setAttribute('aria-label', 'Share puzzle');
     shareBtn.onclick = (e) => {
       e.stopPropagation();
-      // Use query parameter for best local file support
+
       const url = new URL(window.location.href);
       url.searchParams.set('puzzle', puzzle.id);
       const shareUrl = url.toString();
@@ -441,7 +404,6 @@ const populateExploreGrid = async (puzzles) => {
 
     card.appendChild(info);
 
-    // Play on canvas click
     canvas.onclick = () => openGameplayView(puzzle);
 
     grid.appendChild(card);
@@ -458,12 +420,8 @@ const handleCompletionRating = (rating) => {
   const puzzleId = currentPuzzle.id;
   const currentRating = getUserRating(puzzleId);
 
-  // If clicking the same rating, remove it?
-  // Most star systems don't allow 0 stars by clicking the same star.
-  // But we can allow it if we want. Let's say clicking the same star clears it.
   const newRating = currentRating === rating ? null : rating;
 
-  // Calculate new stats optimistically
   let newRatingSum = currentPuzzle.ratingSum || 0;
   let newRatingCount = currentPuzzle.ratingCount || 0;
 
@@ -476,15 +434,12 @@ const handleCompletionRating = (rating) => {
     newRatingCount++;
   }
 
-  // Save rating locally
   saveUserRating(puzzleId, newRating);
   currentPuzzle.ratingSum = newRatingSum;
   currentPuzzle.ratingCount = newRatingCount;
 
-  // Update UI
   updateCompletionVoteButtons();
 
-  // Fire API call
   ratePuzzle(puzzleId, newRating, currentRating).catch((error) => {
     console.error('Rating failed:', error);
   });
@@ -503,7 +458,6 @@ const highlightStars = (stars, rating) => {
   });
 };
 
-// Update vote button states when completion modal opens
 const updateCompletionVoteButtons = () => {
   if (!currentPuzzle) return;
   const userRating = getUserRating(currentPuzzle.id);
@@ -517,12 +471,10 @@ const updateCompletionVoteButtons = () => {
   }
 };
 
-// Update performance comparison section
 const updatePerformanceComparison = (userTimeMs, userMoves) => {
   const comparisonSection = document.getElementById('performance-comparison');
   if (!comparisonSection) return;
 
-  // Check if puzzle has average data
   if (!currentPuzzle || !currentPuzzle.completionCount || currentPuzzle.completionCount === 0) {
     comparisonSection.style.display = 'none';
     return;
@@ -547,12 +499,10 @@ const updatePerformanceComparison = (userTimeMs, userMoves) => {
   const timeDiffEl = document.getElementById('time-diff');
   const movesDiffEl = document.getElementById('moves-diff');
 
-  // Time comparison (lower is better)
   timeDiffEl.textContent = formatTimeDiff(timeDiff);
   timeDiffEl.className =
     'comparison-value ' + (timeDiff < -500 ? 'better' : timeDiff > 500 ? 'worse' : 'same');
 
-  // Moves comparison (lower is better)
   const movesDiffSign = movesDiff > 0 ? '+' : '';
   movesDiffEl.textContent = `${movesDiffSign}${Math.round(movesDiff)}`;
   movesDiffEl.className =
@@ -568,7 +518,6 @@ const openGameplayView = async (puzzle) => {
   document.body.classList.add('no-scroll');
   currentPuzzle = puzzle;
 
-  // Display puzzle info
   document.getElementById('explore-puzzle-name').textContent = puzzle.puzzleName;
   document.getElementById('explore-puzzle-author').textContent = `by ${puzzle.authorName}`;
 
@@ -579,11 +528,9 @@ const openGameplayView = async (puzzle) => {
 
   loadPuzzle(puzzle);
 
-  // Record play
   recordPlay(puzzle.id);
   markPuzzlePlayed(puzzle.id);
 
-  // Update URL in browser (without page reload)
   const url = new URL(window.location.href);
   url.searchParams.set('puzzle', puzzle.id);
   window.history.pushState({ puzzleId: puzzle.id }, '', url.toString());
@@ -599,13 +546,11 @@ const showGridView = () => {
     referenceCtx.clearRect(0, 0, referenceCtx.canvas.width, referenceCtx.canvas.height);
   hideModal('completion-modal');
 
-  // Clear URL parameter or path code
   const url = new URL(window.location.href);
   if (url.searchParams.has('puzzle')) {
     url.searchParams.delete('puzzle');
   }
 
-  // Handle path cleanup if it ends with a code (e.g. /explore/nwlbx)
   let path = url.pathname;
   const pathParts = path.split('/').filter((p) => p);
   if (
@@ -618,7 +563,6 @@ const showGridView = () => {
 
   window.history.replaceState({}, '', path + url.search);
 
-  // Refresh to show updated play counts
   loadPuzzlesFromAPI();
 };
 
@@ -711,13 +655,10 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.parentElement.getBoundingClientRect();
 
-  // Ensure we use integer dimensions for the canvas physical pixels
-  // and that the cell size is an integer multiple of physical pixels to avoid anti-aliasing gaps
   const physicalCellSize = Math.floor((rect.width * dpr) / GRID_COLS);
   canvas.width = physicalCellSize * GRID_COLS;
   canvas.height = physicalCellSize * GRID_COLS;
 
-  // Keep the CSS size consistent
   canvas.style.width = canvas.width / dpr + 'px';
   canvas.style.height = canvas.height / dpr + 'px';
 
@@ -729,11 +670,8 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
   const tempPreviewCtx = tempPreviewCanvas.getContext('2d');
   tempPreviewCtx.imageSmoothingEnabled = false;
 
-  // Use even-odd fill on vector paths to avoid anti-aliasing artifacts between pieces
-  // This matches the rendering logic in the main gameplay view
   tempPreviewCtx.beginPath();
   puzzlePieces.forEach((data) => {
-    // Clone to avoid mutating the original piece data
     const piece = { ...data };
     updatePiecePixelDimensions(piece, canvas);
     addPiecePathToContext(tempPreviewCtx, piece);
@@ -751,7 +689,6 @@ const drawPuzzlePreview = (canvas, puzzlePieces, imageMap) => {
 };
 
 const rerenderExplorePreviews = () => {
-  // Skip if grid view is hidden (user is in gameplay mode)
   if (gridView && gridView.style.display === 'none') return;
 
   levelPreviews.forEach((preview) => {
@@ -759,7 +696,6 @@ const rerenderExplorePreviews = () => {
   });
 };
 
-// Expose function to re-render gameplay canvases when theme changes
 const rerenderGameplayCanvases = () => {
   if (gameplayView && gameplayView.style.display !== 'none') {
     if (referencePieces.length > 0) {

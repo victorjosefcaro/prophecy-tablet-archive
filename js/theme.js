@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const infoButtons = document.querySelectorAll('#info-button, #info-button-mobile');
   const themeOptions = document.querySelectorAll('.theme-option');
 
-  // Flag to prevent document click handler from reverting after a deliberate selection
   let themeJustSelected = false;
 
   const toggleThemeDropdown = (event) => {
@@ -106,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         clearTimeout(previewTimer);
 
-        // Set flag to prevent document click handler from reverting
         themeJustSelected = true;
 
         applyTheme(selectedTheme, false);
@@ -114,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
           themeDropdown.classList.remove('show');
         }
 
-        // Reset flag after a brief delay
         setTimeout(() => {
           themeJustSelected = false;
         }, 100);
@@ -122,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Mobile Menu Toggle ---
   const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
   const navbarLinks = document.querySelector('.navbar-links');
 
@@ -134,23 +130,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.addEventListener('click', (event) => {
-    // Skip if a theme was just selected
     if (themeJustSelected) return;
 
-    // Handle theme dropdown closing
     const isThemeClick = Array.from(themeSelectorButtons).some((btn) => btn.contains(event.target));
     if (themeDropdown && !isThemeClick && !themeDropdown.contains(event.target)) {
       if (themeDropdown.classList.contains('show')) {
         themeDropdown.classList.remove('show');
 
-        // Revert preview to saved theme when clicking outside
         if (document.documentElement.dataset.theme !== currentSavedTheme) {
           applyTheme(currentSavedTheme, false);
         }
       }
     }
 
-    // Handle mobile menu closing
     if (
       navbarLinks &&
       mobileMenuToggle &&
@@ -161,7 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Close mobile menu on resize if it's open
   window.addEventListener('resize', () => {
     if (window.innerWidth > 600 && navbarLinks && navbarLinks.classList.contains('show')) {
       navbarLinks.classList.remove('show');

@@ -144,11 +144,9 @@ const checkCompletion = (puzzlePieces, referencePieces) => {
   if (isSnapping || !referencePieces || referencePieces.length === 0) return;
   if (puzzlePieces.length !== referencePieces.length) return;
 
-  // Render both user pieces and reference to binary masks
   const userMask = renderPiecesToMask(puzzlePieces, puzzleCanvas);
   const refMask = renderPiecesToMask(referencePieces, puzzleCanvas);
 
-  // Compare the masks - if they match, the puzzle is solved
   const isMatch = compareMasks(userMask, refMask);
 
   if (isMatch) {
@@ -285,7 +283,7 @@ const showCompletionModal = async (timeInMs, moves, skipRecord = false) => {
   }
 
   let updatedStats = null;
-  // Record completion stats for averages (if recordCompletion exists and we have a puzzle ID)
+
   if (
     !skipRecord &&
     typeof recordCompletion === 'function' &&

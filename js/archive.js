@@ -95,7 +95,6 @@ const loadArchivePuzzles = async () => {
 
   puzzles = await fetchPuzzles({ isDaily: 'true', sortBy: 'oldest', limit: 100 });
 
-  // Filter out today's puzzle - it should be played on the main page, not archive
   const today = new Date().toISOString().split('T')[0];
   puzzles = puzzles.filter((p) => p.scheduledDate !== today);
 
@@ -105,7 +104,6 @@ const loadArchivePuzzles = async () => {
     return;
   }
 
-  // Preload images for current puzzle and selector
   await preloadImages(puzzles);
 
   loadingIndicator.classList.add('hidden');
@@ -140,7 +138,7 @@ const loadPuzzle = async (index) => {
   if (index < 0 || index >= puzzles.length) return;
 
   currentPuzzleIndex = index;
-  currentPuzzle = puzzles[currentPuzzleIndex]; // Set currentPuzzle for puzzle-gameplay.js
+  currentPuzzle = puzzles[currentPuzzleIndex];
   resetGameplayStats();
 
   activePiece = null;
@@ -177,7 +175,6 @@ const loadPuzzle = async (index) => {
   renderReference(referencePieces);
   renderPuzzleScoped();
 
-  // Highlight active level in selector if modal is open
   updateActiveLevelInSelector();
 };
 
@@ -189,11 +186,9 @@ const configureCompletionModal = (timeMs, moves) => {
     nextPuzzlebutton.style.display = 'none';
   }
 
-  // Mark as completed in local storage (since archive is all daily puzzles)
   if (currentPuzzle?.id) {
     markDailyCompleted(currentPuzzle.id, timeMs, moves);
 
-    // Refresh the level selector to show the new stats
     populateLevelSelector();
   }
 };
@@ -250,7 +245,6 @@ const populateLevelSelector = () => {
   levelGrid.innerHTML = '';
   levelPreviews = [];
 
-  // Group dailies by month
   const groups = {};
   puzzles.forEach((puzzle, index) => {
     const date = new Date(puzzle.scheduledDate + 'T00:00:00');
@@ -258,10 +252,6 @@ const populateLevelSelector = () => {
     if (!groups[monthYear]) groups[monthYear] = [];
     groups[monthYear].push({ puzzle, index });
   });
-
-  // Sort groups (we already fetched puzzles sorted by oldest, so they should be in order)
-  // But if we want newest first in the grid, we could reverse them.
-  // Actually, oldest first is fine for an archive if that's how it's fetched.
 
   Object.keys(groups).forEach((monthYear) => {
     const groupContainer = document.createElement('div');
@@ -344,6 +334,5 @@ const updateActiveLevelInSelector = () => {
 };
 
 const rerenderLevelPreviews = () => {
-  // Not used in simplified archive but good to have for theme changes
   populateLevelSelector();
 };

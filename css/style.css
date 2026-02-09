@@ -725,7 +725,6 @@ canvas {
   }
 }
 
-/* ===== NAVBAR LINKS ===== */
 .mobile-menu-toggle {
   display: none;
   font-size: 1.2rem;
@@ -762,12 +761,10 @@ canvas {
   color: var(--accent-color);
 }
 
-/* Visibility Helpers */
 .mobile-only {
   display: none;
 }
 
-/* ===== EDITOR PAGE STYLES ===== */
 .editor-layout {
   gap: 3rem;
 }
@@ -981,7 +978,6 @@ canvas {
   padding: 1rem 0;
 }
 
-/* Queue Previews */
 .queue-preview-container {
   width: 40px;
   height: 40px;
@@ -1043,7 +1039,6 @@ canvas {
   border-radius: 4px;
 }
 
-/* ===== EXPLORE PAGE STYLES ===== */
 .explore-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1082,7 +1077,6 @@ canvas {
   }
 }
 
-/* ===== EXPLORE CONTROLS ===== */
 .explore-controls {
   display: flex;
   flex-wrap: wrap;
@@ -1138,7 +1132,6 @@ canvas {
   flex-wrap: wrap;
 }
 
-/* Custom Select Wrapper */
 .custom-select {
   position: relative;
   display: inline-block;
@@ -1170,7 +1163,6 @@ canvas {
   pointer-events: none;
 }
 
-/* Puzzle Card with Metadata */
 .explore-preview-card {
   display: flex;
   flex-direction: column;
@@ -1201,7 +1193,6 @@ canvas {
   opacity: 0.6;
 }
 
-/* 2x2 Grid Layout */
 .puzzle-card-grid {
   display: flex;
 }
@@ -1228,7 +1219,6 @@ canvas {
   color: color-mix(in srgb, var(--primary-text-color) 70%, transparent);
 }
 
-/* Stats Row */
 .puzzle-card-stats {
   display: flex;
   font-size: 0.85rem;
@@ -1300,7 +1290,6 @@ canvas {
   padding: 2rem;
 }
 
-/* ===== FORM INPUTS ===== */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -1342,7 +1331,6 @@ canvas {
   margin-top: 1rem;
 }
 
-/* Checkbox Styles */
 .checkbox-group {
   margin-top: 1rem;
 }
@@ -1411,7 +1399,6 @@ html[data-theme='cyrene'] input[type='date']::-webkit-calendar-picker-indicator 
   filter: invert(0);
 }
 
-/* ===== CARD HEADER WITH BUTTON ===== */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -1439,7 +1426,6 @@ html[data-theme='cyrene'] input[type='date']::-webkit-calendar-picker-indicator 
   color: var(--error-color);
 }
 
-/* ===== HELP MODAL ===== */
 .help-modal-content {
   max-width: 500px;
 }
@@ -1487,7 +1473,6 @@ kbd {
   opacity: 0.8;
 }
 
-/* ===== LOADING INDICATOR ===== */
 .loading-indicator {
   position: fixed;
   top: var(--navbar-height);
@@ -1533,7 +1518,6 @@ kbd {
   }
 }
 
-/* ===== COMPLETION VOTE SECTION ===== */
 .completion-vote-section {
   display: flex;
   flex-direction: column;
@@ -1548,7 +1532,6 @@ kbd {
   margin: 0;
 }
 
-/* ===== PERFORMANCE COMPARISON ===== */
 .performance-comparison {
   margin: 1rem 0;
   padding: 0.75rem;
@@ -1886,7 +1869,6 @@ kbd {
     width: 4px;
   }
 
-  /* Publish Modal Mobile Fix */
   .publish-modal-layout {
     flex-direction: column;
     gap: 1.5rem;

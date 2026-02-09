@@ -20,8 +20,6 @@ const puzzleGroups = [
 
 const puzzles = [
   {
-    // Strife Ruins Castrum Kremnos
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/square.svg',
@@ -71,7 +69,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/isosceles-triangle.svg',
@@ -144,7 +141,6 @@ const puzzles = [
     ],
   },
   {
-    // 3
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -226,7 +222,6 @@ const puzzles = [
     ],
   },
   {
-    // 4
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -271,8 +266,6 @@ const puzzles = [
     ],
   },
   {
-    // Abyss of Fate Janusopolis
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/isosceles-triangle.svg',
@@ -329,7 +322,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -402,7 +394,6 @@ const puzzles = [
     ],
   },
   {
-    // 3
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -475,7 +466,6 @@ const puzzles = [
     ],
   },
   {
-    // 4
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -548,7 +538,6 @@ const puzzles = [
     ],
   },
   {
-    // 5
     puzzlePiecesData: [
       { src: 'pieces/square.svg', startCol: 3, startRow: 8, shape: 'square', rotation: 0, size: 0 },
       {
@@ -632,7 +621,6 @@ const puzzles = [
     ],
   },
   {
-    // 6
     puzzlePiecesData: [
       {
         src: 'pieces/square.svg',
@@ -709,8 +697,6 @@ const puzzles = [
     ],
   },
   {
-    // Bloodbathed Battlefront Castrum Kremnos
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/isosceles-triangle.svg',
@@ -760,7 +746,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -805,7 +790,6 @@ const puzzles = [
     ],
   },
   {
-    // 3
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -887,7 +871,6 @@ const puzzles = [
     ],
   },
   {
-    // 4
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -969,8 +952,6 @@ const puzzles = [
     ],
   },
   {
-    // Murmuring Woods Grove of Epiphany
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/isosceles-triangle.svg',
@@ -1027,7 +1008,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -1095,7 +1075,6 @@ const puzzles = [
     ],
   },
   {
-    // 3
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -1177,7 +1156,6 @@ const puzzles = [
     ],
   },
   {
-    // 4
     puzzlePiecesData: [
       {
         src: 'pieces/isosceles-triangle.svg',
@@ -1227,8 +1205,6 @@ const puzzles = [
     ],
   },
   {
-    // Sanctum of Prophecy Janusopolis
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -1310,7 +1286,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -1392,7 +1367,6 @@ const puzzles = [
     ],
   },
   {
-    // 3
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -1474,8 +1448,6 @@ const puzzles = [
     ],
   },
   {
-    // Demigod Council Dawncloud
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -1548,7 +1520,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -1593,8 +1564,6 @@ const puzzles = [
     ],
   },
   {
-    // Dragonbone City Styxia
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -1667,7 +1636,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       { src: 'pieces/square.svg', startCol: 7, startRow: 2, shape: 'square', rotation: 0, size: 0 },
       { src: 'pieces/square.svg', startCol: 9, startRow: 9, shape: 'square', rotation: 0, size: 0 },
@@ -1682,7 +1650,6 @@ const puzzles = [
     ],
   },
   {
-    // 3
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -1727,7 +1694,6 @@ const puzzles = [
     ],
   },
   {
-    // 4
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -1800,7 +1766,6 @@ const puzzles = [
     ],
   },
   {
-    // 5
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -1873,8 +1838,6 @@ const puzzles = [
     ],
   },
   {
-    // Fortress of Dome Eye of Twilight
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -1919,7 +1882,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -1992,8 +1954,6 @@ const puzzles = [
     ],
   },
   {
-    // Cloudedge Bastion Ruins
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -2066,7 +2026,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -2139,7 +2098,6 @@ const puzzles = [
     ],
   },
   {
-    // 3
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -2184,7 +2142,6 @@ const puzzles = [
     ],
   },
   {
-    // 4
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -2229,8 +2186,6 @@ const puzzles = [
     ],
   },
   {
-    // Lightless Chapel Dawncloud
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-left.svg',
@@ -2303,8 +2258,6 @@ const puzzles = [
     ],
   },
   {
-    // Fallen Twilight City Okhema
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -2349,8 +2302,6 @@ const puzzles = [
     ],
   },
   {
-    // Aedes Elysiae
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -2395,7 +2346,6 @@ const puzzles = [
     ],
   },
   {
-    // 2
     puzzlePiecesData: [
       {
         src: 'pieces/trapezoid-right.svg',
@@ -2477,8 +2427,6 @@ const puzzles = [
     ],
   },
   {
-    // Warbling Shores Styxia
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -2560,8 +2508,6 @@ const puzzles = [
     ],
   },
   {
-    // Radiant Scarwood Grove of Epiphany
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/right-triangle.svg',
@@ -2643,8 +2589,6 @@ const puzzles = [
     ],
   },
   {
-    // Universal Matrix Great Tomb of the Nameless Titan
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -2726,8 +2670,6 @@ const puzzles = [
     ],
   },
   {
-    // Nightmare's Echo Great Tomb of the Nameless Titan
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
@@ -2781,8 +2723,6 @@ const puzzles = [
     ],
   },
   {
-    // Memortis Shore Ruins of Time
-    // 1
     puzzlePiecesData: [
       {
         src: 'pieces/diamond.svg',
